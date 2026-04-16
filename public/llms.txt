@@ -1,0 +1,17 @@
+# NEUROMEIN
+> Независимый аналитический ресурс об искусственном интеллекте и рынке труда. Автор — Андрей Майнгардт.
+
+## Исследования
+- [Тихая замена](https://neuromein.ru/research/silent-replacement): Как ИИ-автоматизация незаметно замещает рабочие функции (2025)
+- [ИИ в 2025 и прогнозы на 2026](https://neuromein.ru/research/ai-2025-forecast): Полный анализ трендов ИИ и проверяемые прогнозы (2025)
+
+## Разделы
+- [Прогнозы](https://neuromein.ru/predictions): Публичный prediction tracker
+- [Публикации](https://neuromein.ru/blog): Аналитические заметки и разборы
+- [FAQ](https://neuromein.ru/faq): Ответы о влиянии ИИ на рынок труда
+- [Об авторе](https://neuromein.ru/about): Андрей Майнгардт, AI-аналитик
+
+## Контакты
+- Telegram: https://t.me/neuromein
+- LinkedIn: https://linkedin.com/in/andrew-meinhardt-306821361
+- Email: andrew.meinhardt@yandex.ru
