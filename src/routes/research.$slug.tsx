@@ -101,7 +101,7 @@ function ResearchPage() {
               <aside className="lg:sticky lg:top-20 self-start">
                 <div className="label-eyebrow mb-4">Оглавление</div>
                 <ul className="space-y-2.5">
-                  {r.toc.map((t) => (
+                  {r.toc.map((t: { id: string; label: string }) => (
                     <li key={t.id}>
                       <a
                         href={`#${t.id}`}
@@ -115,7 +115,7 @@ function ResearchPage() {
               </aside>
 
               <div className="reading-content">
-                {r.toc.map((t) => (
+                {r.toc.map((t: { id: string; label: string }) => (
                   <section key={t.id} id={t.id}>
                     <h2>{t.label}</h2>
                     <p>
