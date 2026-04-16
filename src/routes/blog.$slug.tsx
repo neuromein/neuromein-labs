@@ -1,0 +1,95 @@
+import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { Layout } from "@/components/Layout";
+import { FadeIn } from "@/components/Reveal";
+import { Pill } from "@/components/ui-bits";
+import { PUBLICATIONS } from "@/lib/site";
+
+export const Route = createFileRoute("/blog/$slug")({
+  loader: ({ params }) => {
+    const item = PUBLICATIONS.find((p) => p.slug === params.slug);
+    if (!item) throw notFound();
+    return { item };
+  },
+  head: ({ loaderData }) => {
+    const p = loaderData?.item;
+    if (!p) return { meta: [{ title: "Публикация — NEUROMEIN" }] };
+    const title = `${p.title} — NEUROMEIN | Андрей Майнгардт`;
+    return {
+      meta: [
+        { title },
+        { name: "description", content: p.excerpt },
+        { property: "og:title", content: title },
+        { property: "og:description", content: p.excerpt },
+        { property: "og:type", content: "article" },
+        { property: "og:url", content: `https://neuromein.ru/blog/${p.slug}` },
+      ],
+    };
+  },
+  notFoundComponent: () => (
+    <Layout>
+      <div className="max-w-3xl mx-auto px-6 py-32 text-center">
+        <h1 className="text-3xl font-medium text-text-primary">Публикация не найдена</h1>
+        <Link to="/blog" className="mt-6 inline-block text-brand">
+          ← Все публикации
+        </Link>
+      </div>
+    </Layout>
+  ),
+  component: BlogPostPage,
+});
+
+function BlogPostPage() {
+  const { item: p } = Route.useLoaderData();
+  return (
+    <Layout>
+      <article className="bg-bg-reading">
+        <div className="max-w-[720px] mx-auto px-6 lg:px-8 py-16 lg:py-24">
+          <FadeIn>
+            <nav className="text-[13px] text-text-tertiary flex items-center gap-2 flex-wrap">
+              <Link to="/" className="hover:text-text-secondary transition-colors">
+                Главная
+              </Link>
+              <span aria-hidden>/</span>
+              <Link to="/blog" className="hover:text-text-secondary transition-colors">
+                Публикации
+              </Link>
+              <span aria-hidden>/</span>
+              <span className="text-text-secondary">{p.title}</span>
+            </nav>
+          </FadeIn>
+
+          <FadeIn delay={0.06}>
+            <div className="mt-8 flex items-center gap-3 flex-wrap">
+              <span className="text-[13px] text-text-tertiary">{p.dateLabel}</span>
+              <Pill>{p.tag}</Pill>
+            </div>
+          </FadeIn>
+
+          <FadeIn delay={0.12}>
+            <h1 className="mt-5 text-[34px] sm:text-[38px] font-medium text-text-primary leading-[1.18] tracking-tight">
+              {p.title}
+            </h1>
+          </FadeIn>
+
+          <FadeIn delay={0.2}>
+            <div className="reading-content mt-10">
+              <p>{p.excerpt}</p>
+              <p>
+                [Полный текст публикации будет добавлен позже] Этот материал — часть
+                регулярной аналитики NEUROMEIN о трансформации рынка труда под
+                влиянием ИИ.
+              </p>
+              <p>
+                Если вы хотите следить за обновлениями, подпишитесь на{" "}
+                <a href="https://t.me/neuromein" target="_blank" rel="noreferrer">
+                  Telegram-канал
+                </a>
+                .
+              </p>
+            </div>
+          </FadeIn>
+        </div>
+      </article>
+    </Layout>
+  );
+}
