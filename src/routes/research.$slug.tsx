@@ -1,7 +1,7 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { Layout } from "@/components/Layout";
 import { Reveal, FadeIn } from "@/components/Reveal";
-import { Button } from "@/components/ui-bits";
+import { Button, ArrowLink } from "@/components/ui-bits";
 import { RESEARCH } from "@/lib/site";
 
 export const Route = createFileRoute("/research/$slug")({
@@ -58,7 +58,7 @@ function ResearchPage() {
   return (
     <Layout>
       <article className="bg-bg-reading">
-        <div className="max-w-[720px] mx-auto px-6 lg:px-8 py-16 lg:py-24">
+        <div className="max-w-[720px] mx-auto px-5 lg:px-8 py-16 lg:py-24">
           <FadeIn>
             <nav className="text-[13px] text-text-tertiary flex items-center gap-2 flex-wrap">
               <Link to="/" className="hover:text-text-secondary transition-colors">
@@ -74,13 +74,13 @@ function ResearchPage() {
           </FadeIn>
 
           <FadeIn delay={0.05}>
-            <h1 className="mt-8 text-[36px] sm:text-[40px] font-medium text-text-primary leading-[1.15] tracking-tight">
+            <h1 className="mt-10 text-[40px] sm:text-[52px] font-medium text-text-primary leading-[1.05] tracking-tight">
               {r.title}
             </h1>
           </FadeIn>
 
           <FadeIn delay={0.12}>
-            <div className="mt-5 text-[13px] text-text-tertiary flex items-center gap-3 flex-wrap">
+            <div className="mt-6 text-[13px] text-text-tertiary flex items-center gap-3 flex-wrap">
               <span>{r.date}</span>
               <span aria-hidden className="text-border-strong">·</span>
               <span>Андрей Майнгардт</span>
@@ -90,15 +90,15 @@ function ResearchPage() {
           </FadeIn>
 
           <FadeIn delay={0.18}>
-            <div className="mt-10 rounded-[10px] bg-[#1a1a24] p-6 lg:p-7 border-[0.5px] border-border">
+            <div className="mt-12 rounded-2xl bg-[#1a1a24] p-7 lg:p-8 border-[0.5px] border-border">
               <div className="label-eyebrow mb-3">Краткое содержание</div>
               <p className="text-[15px] text-text-secondary leading-[1.7]">{r.summary}</p>
             </div>
           </FadeIn>
 
           <Reveal delay={0.05}>
-            <div className="mt-12 grid grid-cols-1 lg:grid-cols-[200px_1fr] gap-10">
-              <aside className="lg:sticky lg:top-20 self-start">
+            <div className="mt-14 grid grid-cols-1 lg:grid-cols-[200px_1fr] gap-10">
+              <aside className="lg:sticky lg:top-28 self-start">
                 <div className="label-eyebrow mb-4">Оглавление</div>
                 <ul className="space-y-2.5">
                   {r.toc.map((t: { id: string; label: string }) => (
@@ -125,12 +125,10 @@ function ResearchPage() {
                     </p>
                     <p>
                       Здесь будут представлены данные, графики и аналитические
-                      выводы, основанные на сборе и обработке отраслевой
-                      информации за рассматриваемый период.
+                      выводы.
                     </p>
                   </section>
                 ))}
-
                 <div className="mt-12">
                   <Button>Скачать PDF</Button>
                 </div>
@@ -141,19 +139,22 @@ function ResearchPage() {
       </article>
 
       {other && (
-        <section className="max-w-[720px] mx-auto px-6 lg:px-8 pt-16">
+        <section className="max-w-[720px] mx-auto px-5 lg:px-8 pt-16">
           <Reveal>
             <div className="label-eyebrow mb-5">Связанные материалы</div>
             <Link
               to="/research/$slug"
               params={{ slug: other.slug }}
-              className="block rounded-[10px] border-[0.5px] border-border p-6 hover:border-border-strong transition-colors duration-300"
+              className="block group rounded-2xl border-[0.5px] border-border p-7 hover:border-border-strong transition-colors duration-300"
             >
               <div className="label-eyebrow">{other.eyebrow}</div>
-              <h3 className="mt-3 text-[18px] font-medium text-text-primary">
+              <h3 className="mt-3 text-[20px] font-medium text-text-primary tracking-tight">
                 {other.title}
               </h3>
               <p className="mt-2 text-[14px] text-text-secondary">{other.short}</p>
+              <div className="mt-5">
+                <ArrowLink>Читать</ArrowLink>
+              </div>
             </Link>
           </Reveal>
         </section>
