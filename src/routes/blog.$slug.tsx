@@ -43,7 +43,7 @@ function BlogPostPage() {
   return (
     <Layout>
       <article className="bg-bg-reading">
-        <div className="max-w-[720px] mx-auto px-6 lg:px-8 py-16 lg:py-24">
+        <div className="max-w-[720px] mx-auto px-5 lg:px-8 py-16 lg:py-24">
           <FadeIn>
             <nav className="text-[13px] text-text-tertiary flex items-center gap-2 flex-wrap">
               <Link to="/" className="hover:text-text-secondary transition-colors">
@@ -66,13 +66,13 @@ function BlogPostPage() {
           </FadeIn>
 
           <FadeIn delay={0.12}>
-            <h1 className="mt-5 text-[34px] sm:text-[38px] font-medium text-text-primary leading-[1.18] tracking-tight">
+            <h1 className="mt-6 text-[36px] sm:text-[44px] font-medium text-text-primary leading-[1.08] tracking-tight">
               {p.title}
             </h1>
           </FadeIn>
 
           <FadeIn delay={0.2}>
-            <div className="reading-content mt-10">
+            <div className="reading-content mt-12">
               <p>{p.excerpt}</p>
               <p>
                 [Полный текст публикации будет добавлен позже] Этот материал — часть

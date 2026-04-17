@@ -42,26 +42,26 @@ const STATUS_VARIANT: Record<Prediction["status"], "success" | "warn" | "info" |
 function PredictionsPage() {
   return (
     <Layout>
-      <section className="max-w-5xl mx-auto px-6 lg:px-8 pt-20 pb-12">
+      <section className="max-w-[1280px] mx-auto px-5 lg:px-8 pb-16">
         <Reveal>
           <PageHeader
-            eyebrow="Prediction tracker"
-            title="Прогнозы и их проверка"
+            title="Прогнозы"
+            accent="и их проверка"
             description="Я фиксирую прогнозы с датой и возвращаюсь к ним, чтобы проверить — сбылось или нет. Это единственный способ проверить аналитика."
           />
         </Reveal>
 
-        <div className="mt-16 space-y-4">
+        <div className="mt-20 space-y-4">
           {PREDICTIONS.map((p, i) => (
-            <Reveal key={p.id} delay={i * 0.08}>
+            <Reveal key={p.id} delay={i * 0.06}>
               <motion.div
                 whileHover={{ y: -2 }}
                 transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                className="rounded-[10px] border-[0.5px] border-border bg-bg-card p-6 lg:p-7 transition-colors duration-300 hover:border-border-strong"
+                className="rounded-2xl border-[0.5px] border-border p-6 lg:p-7 transition-colors duration-300 hover:border-border-strong"
               >
                 <div className="flex items-start justify-between gap-4 flex-wrap">
                   <div className="flex-1 min-w-[260px]">
-                    <p className="text-[16px] text-[#dddde5] font-medium leading-[1.5]">
+                    <p className="text-[16px] text-text-primary font-medium leading-[1.5]">
                       {p.statement}
                     </p>
                     <div className="mt-4 flex items-center gap-3 flex-wrap text-[13px] text-text-tertiary">

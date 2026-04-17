@@ -2,7 +2,7 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Layout } from "@/components/Layout";
 import { NeuralNetwork } from "@/components/NeuralNetwork";
-import { ButtonLink, Pill } from "@/components/ui-bits";
+import { PillCta, GhostPill, Pill, ArrowLink } from "@/components/ui-bits";
 import { FadeIn, Reveal } from "@/components/Reveal";
 import { PUBLICATIONS, RESEARCH, SITE } from "@/lib/site";
 
@@ -50,148 +50,148 @@ export const Route = createFileRoute("/")({
 function IndexPage() {
   return (
     <Layout>
-      {/* HERO */}
-      <section className="relative overflow-hidden">
-        <div className="max-w-6xl mx-auto px-6 lg:px-8 pt-20 pb-24 lg:pt-28 lg:pb-32">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
-            <div className="lg:col-span-7">
-              <FadeIn>
-                <div className="label-eyebrow">Независимый AI-аналитик</div>
-              </FadeIn>
-              <FadeIn delay={0.1}>
-                <h1 className="mt-5 text-[36px] sm:text-[42px] lg:text-[44px] font-medium text-text-primary leading-[1.15] tracking-tight max-w-[540px] text-balance">
-                  Как ИИ перестраивает работу, профессии и экономику
-                </h1>
-              </FadeIn>
-              <FadeIn delay={0.2}>
-                <p className="mt-6 text-[15px] text-text-secondary leading-[1.65] max-w-[460px]">
-                  Исследую трансформацию рынка труда в горизонте 2026–2030. Пишу
-                  аналитику, делаю проверяемые прогнозы, разбираю последствия для
-                  бизнеса и специалистов.
-                </p>
-              </FadeIn>
-              <FadeIn delay={0.3}>
-                <div className="mt-9 flex flex-wrap gap-3">
-                  <ButtonLink to="/research">Читать исследования</ButtonLink>
-                  <ButtonLink href={SITE.telegram} external variant="secondary">
-                    Telegram-канал
-                  </ButtonLink>
-                </div>
-              </FadeIn>
-            </div>
+      {/* HERO — giant typography */}
+      <section className="max-w-[1280px] mx-auto px-5 lg:px-8 pt-8 lg:pt-16">
+        <FadeIn>
+          <div className="label-eyebrow">Независимый AI-аналитик</div>
+        </FadeIn>
 
-            <div className="lg:col-span-5">
-              <FadeIn delay={0.4} duration={1.5}>
-                <NeuralNetwork />
-              </FadeIn>
+        <FadeIn delay={0.1}>
+          <h1 className="mt-8 display-hero text-text-primary tracking-tight">
+            Как ИИ
+          </h1>
+        </FadeIn>
+        <FadeIn delay={0.15}>
+          <h2 className="display-hero display-hero--fade">
+            перестраивает работу
+          </h2>
+        </FadeIn>
+
+        <FadeIn delay={0.25}>
+          <div className="mt-14 flex flex-col sm:flex-row items-start justify-between gap-10 border-t border-border pt-10">
+            <p className="text-[16px] text-text-secondary leading-[1.65] max-w-[460px]">
+              Исследую трансформацию рынка труда в горизонте 2026–2030.
+              Пишу аналитику, делаю проверяемые прогнозы, разбираю
+              последствия для бизнеса и специалистов.
+            </p>
+            <div className="flex flex-wrap gap-3">
+              <PillCta to="/research">Читать исследования</PillCta>
+              <GhostPill href={SITE.telegram} external>
+                Telegram-канал
+              </GhostPill>
             </div>
           </div>
+        </FadeIn>
+      </section>
 
-          {/* Research cards */}
-          <div className="mt-20 pt-12 border-t border-[#14141c]">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {RESEARCH.map((r, i) => (
-                <Reveal key={r.slug} delay={0.3 + i * 0.1}>
-                  <Link
-                    to="/research/$slug"
-                    params={{ slug: r.slug }}
-                    className="block group"
+      {/* NEURAL NETWORK — decorative section */}
+      <section className="max-w-[1280px] mx-auto px-5 lg:px-8 py-24">
+        <Reveal>
+          <div className="max-w-[600px] mx-auto opacity-50">
+            <NeuralNetwork />
+          </div>
+        </Reveal>
+      </section>
+
+      {/* RESEARCH CARDS */}
+      <section className="max-w-[1280px] mx-auto px-5 lg:px-8 pb-16">
+        <div className="border-t border-border pt-16">
+          <Reveal>
+            <div className="label-eyebrow mb-10">Исследования</div>
+          </Reveal>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            {RESEARCH.map((r, i) => (
+              <Reveal key={r.slug} delay={i * 0.1}>
+                <Link
+                  to="/research/$slug"
+                  params={{ slug: r.slug }}
+                  className="block group"
+                >
+                  <motion.div
+                    whileHover={{ y: -3 }}
+                    transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                    className="rounded-2xl border-[0.5px] border-border p-7 lg:p-8 h-full transition-colors duration-300 group-hover:border-border-strong"
                   >
-                    <motion.div
-                      whileHover={{ y: -2 }}
-                      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                      className="rounded-[10px] border-[0.5px] border-border p-6 h-full transition-colors duration-300 group-hover:border-border-strong"
-                    >
-                      <div className="flex items-center gap-3">
-                        <span
-                          className="inline-block h-1.5 w-1.5 rounded-full"
-                          style={{ background: r.dotColor }}
-                          aria-hidden
-                        />
-                        <span className="label-eyebrow">{r.eyebrow}</span>
-                      </div>
-                      <h3 className="mt-4 text-[15px] font-medium text-[#dddde5]">
-                        {r.title}
-                      </h3>
-                      <p className="mt-2 text-[12px] text-[#55556a] leading-[1.6]">
-                        {r.short}
-                      </p>
-                    </motion.div>
-                  </Link>
-                </Reveal>
-              ))}
-            </div>
+                    <div className="flex items-center gap-3">
+                      <span
+                        className="inline-block h-1.5 w-1.5 rounded-full"
+                        style={{ background: r.dotColor }}
+                        aria-hidden
+                      />
+                      <span className="label-eyebrow">{r.eyebrow} · {r.year}</span>
+                    </div>
+                    <h3 className="mt-5 text-[22px] font-medium text-text-primary tracking-tight">
+                      {r.title}
+                    </h3>
+                    <p className="mt-3 text-[14px] text-text-secondary leading-[1.65]">
+                      {r.short}
+                    </p>
+                    <div className="mt-6">
+                      <ArrowLink>Читать</ArrowLink>
+                    </div>
+                  </motion.div>
+                </Link>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
 
       {/* PUBLICATIONS */}
-      <section className="max-w-6xl mx-auto px-6 lg:px-8 pt-24 pb-8">
-        <Reveal>
-          <div className="flex items-end justify-between gap-6">
-            <h2 className="text-[24px] font-medium text-text-primary">Последние публикации</h2>
+      <section className="max-w-[1280px] mx-auto px-5 lg:px-8 py-24 border-t border-border">
+        <div className="flex items-end justify-between gap-6 mb-10">
+          <Reveal>
+            <h2 className="display-md text-text-primary">Публикации</h2>
+          </Reveal>
+          <Reveal delay={0.05}>
             <Link
               to="/blog"
-              className="hidden sm:inline-flex text-[13px] text-brand hover:text-brand-hover transition-colors"
+              className="hidden sm:inline-flex text-[14px] text-text-secondary hover:text-text-primary transition-colors"
             >
-              Все публикации →
+              Все →
             </Link>
-          </div>
-        </Reveal>
+          </Reveal>
+        </div>
 
-        <div className="mt-10 border-t border-border">
+        <div className="border-t border-border">
           {PUBLICATIONS.slice(0, 3).map((p, i) => (
-            <Reveal key={p.slug} delay={i * 0.08}>
+            <Reveal key={p.slug} delay={i * 0.06}>
               <Link
                 to="/blog/$slug"
                 params={{ slug: p.slug }}
-                className="grid grid-cols-12 gap-4 items-center py-5 border-b border-border group"
+                className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 py-6 border-b border-border group"
               >
-                <span className="col-span-12 sm:col-span-3 text-[13px] text-text-tertiary tabular-nums">
+                <span className="text-[13px] text-text-tertiary tabular-nums shrink-0 w-[140px]">
                   {p.dateLabel}
                 </span>
-                <span className="col-span-12 sm:col-span-7 text-[15px] text-[#dddde5] group-hover:text-text-primary transition-colors">
+                <span className="text-[16px] text-text-primary flex-1 group-hover:text-brand transition-colors">
                   {p.title}
                 </span>
-                <span className="col-span-12 sm:col-span-2 sm:text-right">
-                  <Pill>{p.tag}</Pill>
-                </span>
+                <Pill className="self-start sm:self-auto">{p.tag}</Pill>
               </Link>
             </Reveal>
           ))}
         </div>
-
-        <Reveal delay={0.1}>
-          <div className="mt-6 sm:hidden">
-            <Link to="/blog" className="text-[14px] text-brand">
-              Все публикации →
-            </Link>
-          </div>
-        </Reveal>
       </section>
 
-      {/* ABOUT */}
-      <section className="max-w-6xl mx-auto px-6 lg:px-8 pt-24">
+      {/* ABOUT BLOCK */}
+      <section className="max-w-[1280px] mx-auto px-5 lg:px-8 py-24 border-t border-border">
         <Reveal>
-          <div className="grid grid-cols-1 md:grid-cols-12 gap-8">
-            <div className="md:col-span-3">
-              <div className="label-eyebrow">О проекте</div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-16">
+            <div>
+              <h2 className="display-md text-text-primary">О проекте</h2>
             </div>
-            <div className="md:col-span-9 max-w-[640px]">
-              <p className="text-[18px] text-text-primary leading-[1.55] font-normal">
+            <div className="max-w-[560px]">
+              <p className="text-[18px] text-text-secondary leading-[1.6]">
                 NEUROMEIN — независимый аналитический ресурс об искусственном интеллекте
-                и его влиянии на рынок труда.
+                и его влиянии на рынок труда. Основан Андреем Майнгардтом в 2022 году.
               </p>
-              <p className="mt-5 text-[15px] text-text-secondary leading-[1.7]">
-                Основан Андреем Майнгардтом в 2022 году. Аудитория проекта — более
-                43 000 подписчиков.
+              <p className="mt-4 text-[16px] text-text-tertiary leading-[1.65]">
+                Аудитория проекта — более 43 000 подписчиков.
               </p>
-              <Link
-                to="/about"
-                className="mt-8 inline-flex text-[14px] text-brand hover:text-brand-hover transition-colors"
-              >
-                Подробнее →
-              </Link>
+              <div className="mt-8">
+                <PillCta to="/about" variant="dark">Подробнее</PillCta>
+              </div>
             </div>
           </div>
         </Reveal>

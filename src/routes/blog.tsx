@@ -33,27 +33,26 @@ function BlogPage() {
 
   return (
     <Layout>
-      <section className="max-w-5xl mx-auto px-6 lg:px-8 pt-20 pb-12">
+      <section className="max-w-[1280px] mx-auto px-5 lg:px-8 pb-16">
         <Reveal>
           <PageHeader
-            eyebrow="Блог"
             title="Публикации"
             description="Аналитические заметки, разборы событий и мнения."
           />
         </Reveal>
 
         <Reveal delay={0.1}>
-          <div className="mt-12 flex flex-wrap gap-2">
+          <div className="mt-14 flex flex-wrap gap-2">
             {TAGS.map((tag) => {
               const active = tag === activeTag;
               return (
                 <button
                   key={tag}
                   onClick={() => setActiveTag(tag)}
-                  className={`px-3 py-1.5 rounded-md text-[12px] tracking-[0.02em] transition-all duration-200 ${
+                  className={`px-4 py-2 rounded-full text-[13px] tracking-[0.01em] transition-all duration-200 ${
                     active
-                      ? "bg-status-info-bg text-status-info-fg"
-                      : "bg-bg-card text-text-quaternary hover:text-text-secondary"
+                      ? "bg-brand/15 text-brand border-[0.5px] border-brand/30"
+                      : "bg-transparent border-[0.5px] border-border text-text-secondary hover:text-text-primary hover:border-border-strong"
                   }`}
                 >
                   {tag}
@@ -87,17 +86,15 @@ function BlogPage() {
                   <Link
                     to="/blog/$slug"
                     params={{ slug: p.slug }}
-                    className="grid grid-cols-12 gap-4 items-center py-5 border-b border-border group"
+                    className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 py-6 border-b border-border group"
                   >
-                    <span className="col-span-12 sm:col-span-3 text-[13px] text-text-tertiary tabular-nums">
+                    <span className="text-[13px] text-text-tertiary tabular-nums shrink-0 w-[140px]">
                       {p.dateLabel}
                     </span>
-                    <span className="col-span-12 sm:col-span-7 text-[15px] text-[#dddde5] group-hover:underline underline-offset-4 decoration-text-tertiary">
+                    <span className="text-[16px] text-text-primary flex-1 group-hover:text-brand transition-colors">
                       {p.title}
                     </span>
-                    <span className="col-span-12 sm:col-span-2 sm:text-right">
-                      <Pill>{p.tag}</Pill>
-                    </span>
+                    <Pill className="self-start sm:self-auto">{p.tag}</Pill>
                   </Link>
                 </motion.div>
               ))}
