@@ -1,44 +1,28 @@
 import { Link, useLocation } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { NAV_LINKS, SITE } from "@/lib/site";
+import { NAV_LINKS } from "@/lib/site";
 
 export function Header() {
-  const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const location = useLocation();
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 8);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
 
   useEffect(() => {
     setOpen(false);
   }, [location.pathname]);
 
   return (
-    <header
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
-        scrolled ? "py-3" : "py-5"
-      }`}
-    >
-      <div className="max-w-[1280px] mx-auto px-5 lg:px-8 flex items-center justify-between gap-4">
-        {/* Brand */}
-        <Link to="/" className="text-[15px] font-medium text-text-primary tracking-tight">
-          {SITE.author}
-        </Link>
-
-        {/* Desktop nav: pill */}
-        <nav
-          className={`hidden md:flex items-center gap-1 rounded-full px-2 py-1.5 transition-all duration-300 ${
-            scrolled
-              ? "border-[0.5px] border-border-strong bg-bg-card/70 backdrop-blur-xl"
-              : "border-[0.5px] border-border bg-bg-card/40 backdrop-blur-xl"
-          }`}
+    <header className="fixed top-4 inset-x-0 z-50 flex justify-center px-4">
+      {/* Centered pill (desktop) */}
+      <div className="hidden md:flex items-center gap-1 pl-2 pr-2 py-1.5 rounded-full border-[0.5px] border-border bg-bg-card/70 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.35)]">
+        <Link
+          to="/"
+          className="flex items-center justify-center h-9 w-9 rounded-full bg-bg-deep text-text-primary text-[13px] font-semibold tracking-tight"
+          aria-label="NEUROMEIN"
         >
+          N
+        </Link>
+        <nav className="flex items-center gap-0.5 ml-1">
           <NavPill to="/" exact>Главная</NavPill>
           {NAV_LINKS.map((l) => (
             <NavPill key={l.to} to={l.to}>
@@ -46,41 +30,30 @@ export function Header() {
             </NavPill>
           ))}
         </nav>
-
-        {/* CTA pill (desktop) */}
-        <a
-          href={SITE.telegram}
-          target="_blank"
-          rel="noreferrer"
-          className="hidden md:inline-flex items-center gap-2 pl-5 pr-1.5 py-1.5 rounded-full border-[0.5px] border-border-strong bg-bg-card/40 backdrop-blur-xl text-[14px] text-text-primary hover:bg-bg-card/70 transition-colors group"
+        <button
+          aria-label="Поиск"
+          className="ml-1 flex items-center justify-center h-9 w-9 rounded-full bg-bg-deep text-text-secondary hover:text-text-primary transition-colors"
         >
-          <span>Telegram</span>
-          <span className="flex items-center justify-center h-7 w-7 rounded-full bg-brand text-[#08080D] group-hover:bg-brand-hover transition-colors">
-            <ArrowUpRight />
-          </span>
-        </a>
+          <SearchIcon />
+        </button>
+      </div>
 
-        {/* Mobile burger */}
+      {/* Mobile pill */}
+      <div className="md:hidden flex items-center justify-between w-full max-w-[420px] pl-2 pr-2 py-1.5 rounded-full border-[0.5px] border-border bg-bg-card/70 backdrop-blur-xl">
+        <Link
+          to="/"
+          className="flex items-center justify-center h-9 w-9 rounded-full bg-bg-deep text-text-primary text-[13px] font-semibold"
+          aria-label="NEUROMEIN"
+        >
+          N
+        </Link>
+        <span className="text-[13px] text-text-secondary">NEUROMEIN</span>
         <button
           aria-label="Меню"
-          className="md:hidden flex flex-col gap-1.5 p-2 -mr-2"
+          className="flex items-center justify-center h-9 w-9 rounded-full bg-bg-deep text-text-primary"
           onClick={() => setOpen((v) => !v)}
         >
-          <span
-            className={`block h-px w-5 bg-text-primary transition-transform duration-300 ${
-              open ? "translate-y-[6px] rotate-45" : ""
-            }`}
-          />
-          <span
-            className={`block h-px w-5 bg-text-primary transition-opacity duration-300 ${
-              open ? "opacity-0" : "opacity-100"
-            }`}
-          />
-          <span
-            className={`block h-px w-5 bg-text-primary transition-transform duration-300 ${
-              open ? "-translate-y-[6px] -rotate-45" : ""
-            }`}
-          />
+          <BurgerIcon open={open} />
         </button>
       </div>
 
@@ -91,14 +64,14 @@ export function Header() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.2 }}
-            className="md:hidden fixed inset-0 top-0 bg-bg/95 backdrop-blur-xl z-40 pt-24"
+            className="md:hidden fixed inset-0 top-0 bg-bg/95 backdrop-blur-xl z-40 pt-28"
           >
             <motion.nav
-              initial={{ x: 40, opacity: 0 }}
-              animate={{ x: 0, opacity: 1 }}
-              exit={{ x: 40, opacity: 0 }}
+              initial={{ y: 20, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: 20, opacity: 0 }}
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="flex flex-col gap-7 p-8"
+              className="flex flex-col gap-7 px-8"
             >
               {[{ to: "/", label: "Главная" }, ...NAV_LINKS].map((l, i) => (
                 <motion.div
@@ -116,20 +89,6 @@ export function Header() {
                   </Link>
                 </motion.div>
               ))}
-              <motion.a
-                href={SITE.telegram}
-                target="_blank"
-                rel="noreferrer"
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.4, duration: 0.4 }}
-                className="mt-4 inline-flex items-center gap-3 self-start pl-5 pr-1.5 py-1.5 rounded-full border-[0.5px] border-border-strong bg-bg-card text-[16px] text-text-primary"
-              >
-                Telegram
-                <span className="flex items-center justify-center h-8 w-8 rounded-full bg-brand text-[#08080D]">
-                  <ArrowUpRight />
-                </span>
-              </motion.a>
             </motion.nav>
           </motion.div>
         )}
@@ -154,7 +113,7 @@ function NavPill({
       className="px-3.5 py-1.5 rounded-full text-[13px] text-text-secondary hover:text-text-primary transition-colors"
       activeProps={{
         className:
-          "px-3.5 py-1.5 rounded-full text-[13px] text-text-primary bg-bg-deep/60",
+          "px-3.5 py-1.5 rounded-full text-[13px] text-text-primary bg-bg-deep",
       }}
     >
       {children}
@@ -162,16 +121,21 @@ function NavPill({
   );
 }
 
-function ArrowUpRight() {
+function SearchIcon() {
   return (
-    <svg width="13" height="13" viewBox="0 0 16 16" fill="none" aria-hidden>
-      <path
-        d="M4 12L12 4M12 4H5.5M12 4V10.5"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        strokeLinecap="round"
-        strokeLinejoin="round"
-      />
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
+      <circle cx="7" cy="7" r="5" stroke="currentColor" strokeWidth="1.5" />
+      <path d="M11 11L14 14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
     </svg>
+  );
+}
+
+function BurgerIcon({ open }: { open: boolean }) {
+  return (
+    <div className="flex flex-col gap-1">
+      <span className={`block h-px w-4 bg-current transition-transform duration-300 ${open ? "translate-y-[5px] rotate-45" : ""}`} />
+      <span className={`block h-px w-4 bg-current transition-opacity duration-300 ${open ? "opacity-0" : "opacity-100"}`} />
+      <span className={`block h-px w-4 bg-current transition-transform duration-300 ${open ? "-translate-y-[5px] -rotate-45" : ""}`} />
+    </div>
   );
 }
