@@ -42,54 +42,56 @@ function BlogPostPage() {
   const { item: p } = Route.useLoaderData();
   return (
     <Layout>
-      <article className="bg-bg-reading">
-        <div className="max-w-[720px] mx-auto px-5 lg:px-8 py-16 lg:py-24">
-          <FadeIn>
-            <nav className="text-[13px] text-text-tertiary flex items-center gap-2 flex-wrap">
-              <Link to="/" className="hover:text-text-secondary transition-colors">
-                Главная
-              </Link>
-              <span aria-hidden>/</span>
-              <Link to="/blog" className="hover:text-text-secondary transition-colors">
-                Публикации
-              </Link>
-              <span aria-hidden>/</span>
-              <span className="text-text-secondary">{p.title}</span>
-            </nav>
-          </FadeIn>
+      <div className="max-w-[1320px] mx-auto pb-20">
+        <article className="rounded-[24px] border-[0.5px] border-border bg-bg-reading">
+          <div className="max-w-[760px] mx-auto px-6 lg:px-10 py-16 lg:py-24">
+            <FadeIn>
+              <nav className="text-[13px] text-text-tertiary flex items-center gap-2 flex-wrap">
+                <Link to="/" className="hover:text-text-secondary transition-colors">
+                  Главная
+                </Link>
+                <span aria-hidden>/</span>
+                <Link to="/blog" className="hover:text-text-secondary transition-colors">
+                  Публикации
+                </Link>
+                <span aria-hidden>/</span>
+                <span className="text-text-secondary">{p.title}</span>
+              </nav>
+            </FadeIn>
 
-          <FadeIn delay={0.06}>
-            <div className="mt-8 flex items-center gap-3 flex-wrap">
-              <span className="text-[13px] text-text-tertiary">{p.dateLabel}</span>
-              <Pill>{p.tag}</Pill>
-            </div>
-          </FadeIn>
+            <FadeIn delay={0.06}>
+              <div className="mt-8 flex items-center gap-3 flex-wrap">
+                <span className="text-[13px] text-text-tertiary">{p.dateLabel}</span>
+                <Pill>{p.tag}</Pill>
+              </div>
+            </FadeIn>
 
-          <FadeIn delay={0.12}>
-            <h1 className="mt-6 text-[36px] sm:text-[44px] font-medium text-text-primary leading-[1.08] tracking-tight">
-              {p.title}
-            </h1>
-          </FadeIn>
+            <FadeIn delay={0.12}>
+              <h1 className="mt-6 text-[36px] sm:text-[48px] font-medium text-text-primary leading-[1.05] tracking-[-0.02em]">
+                {p.title}
+              </h1>
+            </FadeIn>
 
-          <FadeIn delay={0.2}>
-            <div className="reading-content mt-12">
-              <p>{p.excerpt}</p>
-              <p>
-                [Полный текст публикации будет добавлен позже] Этот материал — часть
-                регулярной аналитики NEUROMEIN о трансформации рынка труда под
-                влиянием ИИ.
-              </p>
-              <p>
-                Если вы хотите следить за обновлениями, подпишитесь на{" "}
-                <a href="https://t.me/neuromein" target="_blank" rel="noreferrer">
-                  Telegram-канал
-                </a>
-                .
-              </p>
-            </div>
-          </FadeIn>
-        </div>
-      </article>
+            <FadeIn delay={0.2}>
+              <div className="reading-content mt-12">
+                <p>{p.excerpt}</p>
+                <p>
+                  [Полный текст публикации будет добавлен позже] Этот материал — часть
+                  регулярной аналитики NEUROMEIN о трансформации рынка труда под
+                  влиянием ИИ.
+                </p>
+                <p>
+                  Если вы хотите следить за обновлениями, подпишитесь на{" "}
+                  <a href="https://t.me/neuromein" target="_blank" rel="noreferrer">
+                    Telegram-канал
+                  </a>
+                  .
+                </p>
+              </div>
+            </FadeIn>
+          </div>
+        </article>
+      </div>
     </Layout>
   );
 }

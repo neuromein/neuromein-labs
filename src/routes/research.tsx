@@ -1,7 +1,8 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Layout } from "@/components/Layout";
-import { PageHeader, ArrowLink } from "@/components/ui-bits";
+import { PageHero } from "@/components/HeroCard";
+import { ArrowLink } from "@/components/ui-bits";
 import { Reveal } from "@/components/Reveal";
 import { RESEARCH } from "@/lib/site";
 
@@ -28,22 +29,21 @@ export const Route = createFileRoute("/research")({
 function ResearchListPage() {
   return (
     <Layout>
-      <section className="max-w-[1280px] mx-auto px-5 lg:px-8 pb-16">
-        <Reveal>
-          <PageHeader
-            title="Исследования"
-            description="Крупные аналитические работы о влиянии ИИ на рынок труда и экономику."
-          />
-        </Reveal>
+      <div className="max-w-[1320px] mx-auto pb-20">
+        <PageHero
+          eyebrow="Аналитика"
+          title="Исследования"
+          description="Крупные аналитические работы о влиянии ИИ на рынок труда и экономику. Каждое — с проверяемыми прогнозами и открытой методологией."
+        />
 
-        <div className="mt-20 space-y-5">
+        <div className="mt-6 space-y-4">
           {RESEARCH.map((r, i) => (
-            <Reveal key={r.slug} delay={i * 0.1}>
+            <Reveal key={r.slug} delay={i * 0.08}>
               <Link to="/research/$slug" params={{ slug: r.slug }} className="block group">
                 <motion.article
                   whileHover={{ y: -3 }}
                   transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                  className="rounded-2xl border-[0.5px] border-border p-8 lg:p-10 transition-colors duration-300 group-hover:border-border-strong"
+                  className="rounded-[24px] border-[0.5px] border-border bg-bg-card/40 p-8 lg:p-12 transition-colors duration-300 group-hover:border-border-strong group-hover:bg-bg-card/60"
                 >
                   <div className="flex items-center gap-3">
                     <span
@@ -53,10 +53,10 @@ function ResearchListPage() {
                     />
                     <span className="label-eyebrow">{r.eyebrow} · {r.year}</span>
                   </div>
-                  <h2 className="mt-6 text-[32px] lg:text-[40px] font-medium text-text-primary tracking-tight leading-[1.1]">
+                  <h2 className="mt-6 text-[32px] lg:text-[44px] font-medium text-text-primary tracking-[-0.02em] leading-[1.05]">
                     {r.title}
                   </h2>
-                  <p className="mt-5 text-[16px] text-text-secondary leading-[1.7] max-w-[640px]">
+                  <p className="mt-5 text-[16px] text-text-secondary leading-[1.7] max-w-[680px]">
                     {r.long}
                   </p>
                   <div className="mt-8">
@@ -67,7 +67,7 @@ function ResearchListPage() {
             </Reveal>
           ))}
         </div>
-      </section>
+      </div>
     </Layout>
   );
 }

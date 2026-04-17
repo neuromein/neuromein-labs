@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
-import { PageHeader } from "@/components/ui-bits";
+import { PageHero } from "@/components/HeroCard";
 import { Reveal } from "@/components/Reveal";
 
 const FAQ = [
@@ -71,28 +71,26 @@ export const Route = createFileRoute("/faq")({
 });
 
 function FaqPage() {
-  const [open, setOpen] = useState<number | null>(null);
+  const [open, setOpen] = useState<number | null>(0);
 
   return (
     <Layout>
-      <section className="max-w-[960px] mx-auto px-5 lg:px-8 pb-16">
-        <Reveal>
-          <PageHeader
-            title="Частые"
-            accent="вопросы"
-            description="Ответы на ключевые вопросы о влиянии ИИ на рынок труда."
-          />
-        </Reveal>
+      <div className="max-w-[1320px] mx-auto pb-20">
+        <PageHero
+          eyebrow="Часто задаваемые вопросы"
+          title="Частые вопросы"
+          description="Ответы на ключевые вопросы о влиянии ИИ на рынок труда и о моей работе."
+        />
 
-        <div className="mt-16 border-t border-border">
+        <div className="mt-6 rounded-[24px] border-[0.5px] border-border bg-bg-card/40 overflow-hidden">
           {FAQ.map((item, i) => {
             const isOpen = open === i;
             return (
               <Reveal key={item.q} delay={i * 0.04}>
-                <div className="border-b border-border">
+                <div className="border-b border-border last:border-b-0">
                   <button
                     onClick={() => setOpen(isOpen ? null : i)}
-                    className="w-full flex items-start justify-between gap-6 py-7 text-left group"
+                    className="w-full flex items-start justify-between gap-6 px-6 lg:px-10 py-7 text-left group hover:bg-bg-card/40 transition-colors"
                   >
                     <span className="text-[18px] text-text-primary group-hover:text-brand transition-colors leading-[1.4] tracking-tight">
                       {item.q}
@@ -115,7 +113,7 @@ function FaqPage() {
                         transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                         className="overflow-hidden"
                       >
-                        <p className="pb-7 pr-10 text-[16px] text-text-secondary leading-[1.7]">
+                        <p className="px-6 lg:px-10 pb-7 pr-12 text-[16px] text-text-secondary leading-[1.7] max-w-[800px]">
                           {item.a}
                         </p>
                       </motion.div>
@@ -126,7 +124,7 @@ function FaqPage() {
             );
           })}
         </div>
-      </section>
+      </div>
     </Layout>
   );
 }

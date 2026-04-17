@@ -2,7 +2,8 @@ import { createFileRoute, Link } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
 import { Layout } from "@/components/Layout";
-import { PageHeader, Pill } from "@/components/ui-bits";
+import { PageHero } from "@/components/HeroCard";
+import { Pill } from "@/components/ui-bits";
 import { Reveal } from "@/components/Reveal";
 import { PUBLICATIONS, TAGS } from "@/lib/site";
 
@@ -33,16 +34,15 @@ function BlogPage() {
 
   return (
     <Layout>
-      <section className="max-w-[1280px] mx-auto px-5 lg:px-8 pb-16">
-        <Reveal>
-          <PageHeader
-            title="Публикации"
-            description="Аналитические заметки, разборы событий и мнения."
-          />
-        </Reveal>
+      <div className="max-w-[1320px] mx-auto pb-20">
+        <PageHero
+          eyebrow="Заметки и разборы"
+          title="Публикации"
+          description="Аналитические заметки, разборы событий и мнения о развитии ИИ и его влиянии на рынок труда."
+        />
 
-        <Reveal delay={0.1}>
-          <div className="mt-14 flex flex-wrap gap-2">
+        <Reveal>
+          <div className="mt-8 flex flex-wrap gap-2">
             {TAGS.map((tag) => {
               const active = tag === activeTag;
               return (
@@ -51,8 +51,8 @@ function BlogPage() {
                   onClick={() => setActiveTag(tag)}
                   className={`px-4 py-2 rounded-full text-[13px] tracking-[0.01em] transition-all duration-200 ${
                     active
-                      ? "bg-brand/15 text-brand border-[0.5px] border-brand/30"
-                      : "bg-transparent border-[0.5px] border-border text-text-secondary hover:text-text-primary hover:border-border-strong"
+                      ? "bg-brand text-bg-deep border-[0.5px] border-brand"
+                      : "bg-bg-card/40 border-[0.5px] border-border text-text-secondary hover:text-text-primary hover:border-border-strong"
                   }`}
                 >
                   {tag}
@@ -62,7 +62,7 @@ function BlogPage() {
           </div>
         </Reveal>
 
-        <div className="mt-10 border-t border-border">
+        <div className="mt-6 rounded-[24px] border-[0.5px] border-border bg-bg-card/40 overflow-hidden">
           <AnimatePresence mode="wait">
             <motion.div
               key={activeTag}
@@ -72,7 +72,7 @@ function BlogPage() {
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             >
               {filtered.length === 0 && (
-                <p className="py-12 text-[14px] text-text-tertiary">
+                <p className="px-8 py-12 text-[14px] text-text-tertiary">
                   В этой категории пока нет публикаций.
                 </p>
               )}
@@ -81,17 +81,17 @@ function BlogPage() {
                   key={p.slug}
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: i * 0.06, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+                  transition={{ delay: i * 0.05, duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
                 >
                   <Link
                     to="/blog/$slug"
                     params={{ slug: p.slug }}
-                    className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 py-6 border-b border-border group"
+                    className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 px-6 lg:px-8 py-5 border-b border-border last:border-b-0 group hover:bg-bg-card/60 transition-colors"
                   >
-                    <span className="text-[13px] text-text-tertiary tabular-nums shrink-0 w-[140px]">
+                    <span className="text-[12px] text-text-tertiary tabular-nums shrink-0 w-[120px]">
                       {p.dateLabel}
                     </span>
-                    <span className="text-[16px] text-text-primary flex-1 group-hover:text-brand transition-colors">
+                    <span className="text-[15px] text-text-primary flex-1 group-hover:text-brand transition-colors">
                       {p.title}
                     </span>
                     <Pill className="self-start sm:self-auto">{p.tag}</Pill>
@@ -101,7 +101,7 @@ function BlogPage() {
             </motion.div>
           </AnimatePresence>
         </div>
-      </section>
+      </div>
     </Layout>
   );
 }
