@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 import { SITE } from "@/lib/site";
+import { InteractiveNeuralBg } from "./InteractiveNeuralBg";
 
 /**
  * Большая hero-карточка в стиле Madiyour:
@@ -28,10 +29,10 @@ export function HeroCard({
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
       className="relative overflow-hidden rounded-[28px] border-[0.5px] border-border bg-bg-deep"
     >
-      {/* Glow background */}
-      <GlowBackdrop />
+      {/* Interactive neural network background */}
+      <InteractiveNeuralBg />
 
-      <div className="relative z-10 p-7 sm:p-10 lg:p-14 min-h-[560px] flex flex-col justify-between gap-12">
+      <div className="relative z-10 p-7 sm:p-10 lg:p-14 min-h-[560px] flex flex-col justify-between gap-12 pointer-events-none">
         <div>
           {/* Avatar placeholder */}
           <div className="h-[88px] w-[88px] rounded-2xl bg-bg-card/70 backdrop-blur-md border-[0.5px] border-border-strong flex items-center justify-center text-text-tertiary">
@@ -141,7 +142,7 @@ function SocialRow() {
     { label: "LinkedIn", href: SITE.linkedin, icon: <LinkedinIcon /> },
   ];
   return (
-    <div className="flex items-center flex-wrap gap-2">
+    <div className="flex items-center flex-wrap gap-2 pointer-events-auto">
       {items.map((s) => (
         <a
           key={s.label}
@@ -201,7 +202,7 @@ export function PageHero({
       transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
       className="relative overflow-hidden rounded-[28px] border-[0.5px] border-border bg-bg-deep"
     >
-      <GlowBackdrop />
+      <InteractiveNeuralBg />
       <div className="relative z-10 p-8 sm:p-12 lg:p-16">
         {eyebrow && <div className="label-eyebrow mb-5">{eyebrow}</div>}
         <h1 className="text-[40px] sm:text-[56px] lg:text-[72px] font-medium text-text-primary leading-[1.02] tracking-[-0.025em] max-w-[16ch]">
