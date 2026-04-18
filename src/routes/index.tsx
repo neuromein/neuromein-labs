@@ -1,7 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Layout } from "@/components/Layout";
-import { HeroCard, MetaGrid } from "@/components/HeroCard";
+import { HeroCard } from "@/components/HeroCard";
 import { ArrowLink, Pill } from "@/components/ui-bits";
 import { Reveal } from "@/components/Reveal";
 import { PUBLICATIONS, RESEARCH, SITE } from "@/lib/site";
@@ -53,16 +53,7 @@ function IndexPage() {
         <HeroCard
           title="Изучаю, как ИИ перестраивает работу и рынок труда."
           subtitle="Независимый AI-аналитик · Основатель NEUROMEIN · AI Strategist в WMT AI"
-        >
-          <MetaGrid
-            items={[
-              { label: "Кто", value: "Независимый AI-аналитик" },
-              { label: "Где", value: "Россия, удалённо" },
-              { label: "С какого года", value: "2022 — настоящее время" },
-              { label: "Зачем", value: "Понять, как ИИ меняет работу" },
-            ]}
-          />
-        </HeroCard>
+        />
 
         {/* RESEARCH */}
         <Reveal>
