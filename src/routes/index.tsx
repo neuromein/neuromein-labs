@@ -1,10 +1,9 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { createFileRoute } from "@tanstack/react-router";
 import { Layout } from "@/components/Layout";
 import { HeroCard } from "@/components/HeroCard";
 import { Reveal } from "@/components/Reveal";
-import { ResearchShowcase } from "@/components/ResearchShowcase";
-import { PublicationsList } from "@/components/PublicationsList";
-import { SITE } from "@/lib/site";
+import { BentoGrid } from "@/components/BentoGrid";
+import { Marquee } from "@/components/Marquee";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -52,118 +51,16 @@ function IndexPage() {
         {/* HERO CARD */}
         <HeroCard />
 
-        {/* RESEARCH SECTION */}
-        <section
-          className="pt-[100px] pb-20"
-          style={{ borderTop: "1px solid #14141c", marginTop: 80 }}
-        >
+        {/* BENTO GRID — research / predictions / about / publications */}
+        <section className="pt-12">
           <Reveal>
-            <SectionHeader eyebrow="Аналитика" title="Исследования" />
+            <BentoGrid />
           </Reveal>
-          <ResearchShowcase />
         </section>
 
-        {/* PUBLICATIONS SECTION */}
-        <section
-          className="pt-20 pb-[60px]"
-          style={{ borderTop: "1px solid #14141c" }}
-        >
-          <Reveal>
-            <SectionHeader
-              eyebrow="Заметки"
-              title="Публикации"
-              link={{ to: "/blog", label: "Все публикации" }}
-            />
-          </Reveal>
-          <PublicationsList />
-        </section>
-
-        {/* ABOUT BLOCK — different background tone */}
-        <section
-          className="py-20 -mx-4 lg:-mx-6 px-4 lg:px-6 mt-10"
-          style={{
-            background: "#0c0c12",
-            borderTop: "1px solid #14141c",
-            borderBottom: "1px solid #14141c",
-          }}
-        >
-          <div className="max-w-[1320px] mx-auto">
-            <Reveal>
-              <div className="rounded-[24px] border-[0.5px] border-border bg-bg-card/40 p-8 lg:p-12">
-                <div className="grid grid-cols-1 md:grid-cols-[1fr_2fr] gap-10">
-                  <div>
-                    <div className="label-eyebrow mb-3">О проекте</div>
-                    <h2 className="text-[28px] lg:text-[36px] font-medium text-text-primary tracking-tight leading-[1.1]">
-                      NEUROMEIN
-                    </h2>
-                  </div>
-                  <div>
-                    <p
-                      className="text-[16px] leading-[1.65]"
-                      style={{ color: "#9a9aaa" }}
-                    >
-                      Независимый аналитический ресурс об искусственном
-                      интеллекте и его влиянии на рынок труда. Основан Андреем
-                      Майнгардтом в 2022 году.
-                    </p>
-                    <p
-                      className="mt-4 text-[14px] leading-[1.65]"
-                      style={{ color: "#7a7a8a" }}
-                    >
-                      Аудитория проекта — более 43 000 подписчиков в Telegram.
-                    </p>
-                    <div className="mt-7 flex gap-2 flex-wrap">
-                      <Link
-                        to="/about"
-                        className="inline-flex items-center h-10 px-5 rounded-full border-[0.5px] border-border-strong text-[13px] text-text-primary hover:bg-bg-card transition-colors"
-                      >
-                        Подробнее обо мне
-                      </Link>
-                      <a
-                        href={SITE.telegram}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="inline-flex items-center h-10 px-5 rounded-full bg-brand text-bg-deep text-[13px] font-medium hover:bg-brand-hover transition-colors"
-                      >
-                        Telegram-канал →
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Reveal>
-          </div>
-        </section>
+        {/* MARQUEE — visual divider */}
+        <Marquee />
       </div>
     </Layout>
-  );
-}
-
-function SectionHeader({
-  eyebrow,
-  title,
-  link,
-}: {
-  eyebrow: string;
-  title: string;
-  link?: { to: string; label: string };
-}) {
-  return (
-    <div className="flex items-end justify-between gap-6 mb-2">
-      <div>
-        <div className="label-eyebrow mb-3">{eyebrow}</div>
-        <h2 className="text-[36px] lg:text-[48px] font-medium text-text-primary tracking-[-0.02em] leading-[1]">
-          {title}
-        </h2>
-      </div>
-      {link && (
-        <Link
-          to={link.to}
-          className="hidden sm:inline-flex items-center h-9 px-4 rounded-full border-[0.5px] border-border text-[13px] text-text-secondary hover:text-text-primary hover:border-border-strong transition-colors"
-        >
-          {link.label} →
-        </Link>
-      )}
-    </div>
   );
 }

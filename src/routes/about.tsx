@@ -1,8 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Layout } from "@/components/Layout";
-import { HeroCard, MetaGrid } from "@/components/HeroCard";
+import { AboutHero } from "@/components/AboutHero";
 import { Reveal } from "@/components/Reveal";
-import { SITE } from "@/lib/site";
 
 export const Route = createFileRoute("/about")({
   head: () => ({
@@ -28,19 +27,7 @@ function AboutPage() {
   return (
     <Layout>
       <div className="max-w-[1320px] mx-auto pb-20">
-        <HeroCard
-          title="Андрей Майнгардт"
-          subtitle="Независимый AI-аналитик. Основатель NEUROMEIN. AI Strategist в WMT AI."
-        >
-          <MetaGrid
-            items={[
-              { label: "Кто", value: "Независимый AI-аналитик" },
-              { label: "Где", value: "Россия, удалённо" },
-              { label: "С какого года", value: "2022 — настоящее время" },
-              { label: "Зачем", value: "Понять, как ИИ меняет работу" },
-            ]}
-          />
-        </HeroCard>
+        <AboutHero />
 
         {/* About content card */}
         <Reveal>
@@ -105,49 +92,6 @@ function AboutPage() {
                   </li>
                 ))}
               </ul>
-            </div>
-          </div>
-        </Reveal>
-
-        {/* Contacts */}
-        <Reveal>
-          <div className="mt-4 rounded-[24px] border-[0.5px] border-border bg-bg-card/40 p-8 lg:p-12">
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-10">
-              <div>
-                <div className="label-eyebrow mb-3">Связаться</div>
-                <h2 className="text-[28px] lg:text-[36px] font-medium text-text-primary tracking-tight leading-[1.1]">
-                  Контакты
-                </h2>
-              </div>
-              <dl className="space-y-4 text-[15px]">
-                {([
-                  ["Telegram-канал", SITE.telegram, "t.me/neuromein"],
-                  ["Telegram", undefined, SITE.telegramPersonal],
-                  ["LinkedIn", SITE.linkedin, "Andrew Meinhardt"],
-                  ["Email", `mailto:${SITE.email}`, SITE.email],
-                  ["Instagram", undefined, SITE.instagram],
-                ] as const).map(([label, href, value]) => (
-                  <div key={label} className="flex gap-6 items-baseline">
-                    <dt className="text-text-tertiary w-[140px] shrink-0 text-[13px]">
-                      {label}
-                    </dt>
-                    <dd>
-                      {href ? (
-                        <a
-                          href={href}
-                          target={href.startsWith("http") ? "_blank" : undefined}
-                          rel="noreferrer"
-                          className="text-text-primary hover:text-brand transition-colors"
-                        >
-                          {value}
-                        </a>
-                      ) : (
-                        <span className="text-text-primary">{value}</span>
-                      )}
-                    </dd>
-                  </div>
-                ))}
-              </dl>
             </div>
           </div>
         </Reveal>
