@@ -122,10 +122,10 @@ function NavPill({
     <Link
       to={to}
       activeOptions={{ exact: exact ?? false }}
-      className="px-3.5 py-1.5 rounded-full text-[13px] text-text-secondary hover:text-text-primary transition-colors"
+      className="px-4 py-2 rounded-full text-[14px] text-text-secondary hover:text-text-primary transition-colors"
       activeProps={{
         className:
-          "px-3.5 py-1.5 rounded-full text-[13px] text-text-primary bg-bg-deep",
+          "px-4 py-2 rounded-full text-[14px] text-text-primary bg-bg-deep",
       }}
     >
       {children}
