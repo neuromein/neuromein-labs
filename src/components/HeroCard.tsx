@@ -5,18 +5,15 @@ import { InteractiveNeuralBg } from "./InteractiveNeuralBg";
 import { HeroNeuralSvg } from "./HeroNeuralSvg";
 
 /**
- * Главная hero-секция:
- * - левая часть: метка, заголовок, описание, кнопки (CTA)
- * - правая часть: анимированная SVG-нейросеть
- * - снизу через горизонтальный разделитель — две карточки исследований
+ * Hero-секция:
+ * - без `title` (главная) — две колонки: лево copy+CTA, право — SVG-нейросеть, снизу карточки исследований
+ * - с `title` (страницы типа /about) — заголовок-имя 36px, подзаголовок 18px, дети (MetaGrid и т.п.)
  *
  * Контакты/соцсети убраны (они только в /about и footer).
- * Аватар убран.
  */
 export function HeroCard({
-  title: _title,
-  subtitle: _subtitle,
-  socials: _socials = true,
+  title,
+  subtitle,
   children,
 }: {
   title?: ReactNode;
@@ -24,9 +21,71 @@ export function HeroCard({
   socials?: boolean;
   children?: ReactNode;
 }) {
-  // Helper: easing tuple typed as const for framer-motion
   const ease = [0.22, 1, 0.36, 1] as const;
 
+  // Variant for internal pages (about, etc.)
+  if (title) {
+    return (
+      <motion.section
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.7, ease }}
+        className="relative overflow-hidden rounded-[28px] border-[0.5px] border-border bg-bg-deep"
+      >
+        <InteractiveNeuralBg />
+
+        <div className="relative z-10 p-7 sm:p-10 lg:p-14 pointer-events-auto">
+          <motion.h1
+            initial={{ opacity: 0, y: 12 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 0.6, ease }}
+            className="font-medium tracking-[-0.02em] max-w-[20ch]"
+            style={{
+              fontSize: "clamp(28px, 4.5vw, 36px)",
+              lineHeight: 1.15,
+              color: "#f0f0f5",
+              hyphens: "none",
+              wordBreak: "keep-all",
+              overflowWrap: "normal",
+            }}
+          >
+            {title}
+          </motion.h1>
+
+          {subtitle && (
+            <motion.p
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.2, duration: 0.6, ease }}
+              className="mt-5 leading-[1.55] max-w-[640px]"
+              style={{
+                fontSize: 18,
+                fontWeight: 400,
+                color: "#9a9aaa",
+                hyphens: "none",
+                wordBreak: "keep-all",
+                overflowWrap: "normal",
+              }}
+            >
+              {subtitle}
+            </motion.p>
+          )}
+
+          {children && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3, duration: 0.6, ease }}
+            >
+              {children}
+            </motion.div>
+          )}
+        </div>
+      </motion.section>
+    );
+  }
+
+  // Default home hero
   return (
     <motion.section
       initial={{ opacity: 0, y: 16 }}
@@ -46,7 +105,7 @@ export function HeroCard({
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.1, duration: 0.6, ease }}
               className="text-[13px] uppercase mb-4"
-              style={{ color: "#4a4a58", letterSpacing: "0.04em" }}
+              style={{ color: "#7a7a8a", letterSpacing: "0.04em" }}
             >
               Независимый AI-аналитик
             </motion.div>
@@ -66,7 +125,7 @@ export function HeroCard({
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.28, duration: 0.6, ease }}
               className="mt-5 text-[15px] leading-[1.65] max-w-[460px]"
-              style={{ color: "#888898" }}
+              style={{ color: "#9a9aaa" }}
             >
               Исследую трансформацию рынка труда в горизонте 2026–2030.
               Пишу аналитику, делаю проверяемые прогнозы, разбираю последствия
@@ -93,7 +152,7 @@ export function HeroCard({
                 className="inline-flex items-center h-[44px] px-6 rounded-[8px] text-[14px] border transition-all duration-200 hover:text-text-primary hover:opacity-85 active:scale-[0.98]"
                 style={{
                   borderColor: "#2a2a35",
-                  color: "#888898",
+                  color: "#9a9aaa",
                   background: "transparent",
                 }}
               >
