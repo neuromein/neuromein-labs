@@ -2,10 +2,12 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { NAV_LINKS } from "@/lib/site";
+import { SearchDialog } from "./SearchDialog";
 import logoUrl from "@/assets/logo.svg";
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
   const [hovered, setHovered] = useState<string | null>(null);
   const location = useLocation();
 
@@ -13,14 +15,26 @@ export function Header() {
     setOpen(false);
   }, [location.pathname]);
 
+  // Cmd/Ctrl+K opens search
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.key === "k" || e.key === "K") && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        setSearchOpen((v) => !v);
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
   const items = [{ to: "/", label: "Главная", exact: true }, ...NAV_LINKS.map((l) => ({ ...l, exact: false }))];
 
   return (
     <header className="fixed top-4 inset-x-0 z-50 flex justify-center px-4">
       {/* Desktop pill */}
-      <div className="hidden md:flex items-center gap-3 pl-5 pr-3 py-2 rounded-full border-[0.5px] border-border bg-bg-card/70 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.35)]">
-        <Link to="/" aria-label="NEUROMEIN" className="flex items-center justify-center h-10 px-1">
-          <img src={logoUrl} alt="NEUROMEIN" className="h-7 w-auto opacity-95" />
+      <div className="hidden md:flex items-center gap-3 pl-5 pr-3 py-2.5 rounded-full border-[0.5px] border-border bg-bg-card/70 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.35)]">
+        <Link to="/" aria-label="NEUROMEIN" className="flex items-center justify-center h-11 px-1">
+          <img src={logoUrl} alt="NEUROMEIN" className="h-[22px] w-auto opacity-95" />
         </Link>
         <nav
           className="flex items-center ml-3 gap-1"
@@ -33,9 +47,9 @@ export function Header() {
               <motion.div
                 key={l.to}
                 animate={{
-                  marginLeft: anyHovered && !isHovered ? 8 : 2,
-                  marginRight: anyHovered && !isHovered ? 8 : 2,
-                  scale: isHovered ? 1.04 : 1,
+                  marginLeft: anyHovered && !isHovered ? 10 : 2,
+                  marginRight: anyHovered && !isHovered ? 10 : 2,
+                  scale: isHovered ? 1.05 : 1,
                 }}
                 transition={{ type: "spring", stiffness: 300, damping: 26 }}
                 onMouseEnter={() => setHovered(l.to)}
@@ -48,8 +62,9 @@ export function Header() {
           })}
         </nav>
         <button
-          aria-label="Поиск"
-          className="ml-1 flex items-center justify-center h-9 w-9 rounded-full bg-bg-deep text-text-secondary hover:text-text-primary transition-colors"
+          aria-label="Поиск (⌘K)"
+          onClick={() => setSearchOpen(true)}
+          className="ml-1 flex items-center justify-center h-10 w-10 rounded-full bg-bg-deep text-text-secondary hover:text-text-primary hover:bg-bg-card transition-colors"
         >
           <SearchIcon />
         </button>
@@ -58,8 +73,15 @@ export function Header() {
       {/* Mobile pill */}
       <div className="md:hidden flex items-center justify-between w-full max-w-[420px] pl-4 pr-2 py-2 rounded-full border-[0.5px] border-border bg-bg-card/70 backdrop-blur-xl">
         <Link to="/" aria-label="NEUROMEIN" className="flex items-center h-10">
-          <img src={logoUrl} alt="NEUROMEIN" className="h-6 w-auto" />
+          <img src={logoUrl} alt="NEUROMEIN" className="h-[18px] w-auto" />
         </Link>
+        <button
+          aria-label="Поиск"
+          onClick={() => setSearchOpen(true)}
+          className="flex items-center justify-center h-9 w-9 rounded-full bg-bg-deep text-text-secondary mr-1"
+        >
+          <SearchIcon />
+        </button>
         <button
           aria-label="Меню"
           className="flex items-center justify-center h-9 w-9 rounded-full bg-bg-deep text-text-primary"
@@ -105,6 +127,8 @@ export function Header() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
     </header>
   );
 }
@@ -122,10 +146,10 @@ function NavPill({
     <Link
       to={to}
       activeOptions={{ exact: exact ?? false }}
-      className="px-4 py-2 rounded-full text-[14px] text-text-secondary hover:text-text-primary transition-colors"
+      className="px-5 py-2.5 rounded-full text-[14px] text-text-secondary hover:text-text-primary transition-colors"
       activeProps={{
         className:
-          "px-4 py-2 rounded-full text-[14px] text-text-primary bg-bg-deep",
+          "px-5 py-2.5 rounded-full text-[14px] text-text-primary bg-bg-deep",
       }}
     >
       {children}
@@ -135,7 +159,7 @@ function NavPill({
 
 function SearchIcon() {
   return (
-    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
+    <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden>
       <circle cx="7" cy="7" r="5" stroke="currentColor" strokeWidth="1.5" />
       <path d="M11 11L14 14" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
     </svg>
