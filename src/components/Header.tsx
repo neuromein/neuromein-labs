@@ -18,12 +18,12 @@ export function Header() {
   return (
     <header className="fixed top-4 inset-x-0 z-50 flex justify-center px-4">
       {/* Desktop pill */}
-      <div className="hidden md:flex items-center gap-2 pl-3 pr-2 py-1.5 rounded-full border-[0.5px] border-border bg-bg-card/70 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.35)]">
-        <Link to="/" aria-label="NEUROMEIN" className="flex items-center justify-center h-9 px-1">
-          <img src={logoUrl} alt="NEUROMEIN" className="h-4 w-auto opacity-95" />
+      <div className="hidden md:flex items-center gap-3 pl-5 pr-3 py-2 rounded-full border-[0.5px] border-border bg-bg-card/70 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.35)]">
+        <Link to="/" aria-label="NEUROMEIN" className="flex items-center justify-center h-10 px-1">
+          <img src={logoUrl} alt="NEUROMEIN" className="h-7 w-auto opacity-95" />
         </Link>
         <nav
-          className="flex items-center ml-2"
+          className="flex items-center ml-3 gap-1"
           onMouseLeave={() => setHovered(null)}
         >
           {items.map((l) => {
