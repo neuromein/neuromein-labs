@@ -33,8 +33,8 @@ export function Header() {
     <header className="fixed top-4 inset-x-0 z-50 flex justify-center px-4">
       {/* Desktop pill */}
       <div className="hidden md:flex items-center gap-3 pl-5 pr-3 py-2.5 rounded-full border-[0.5px] border-border bg-bg-card/70 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.35)]">
-        <Link to="/" aria-label="NEUROMEIN" className="flex items-center justify-center h-11 px-1">
-          <img src={logoUrl} alt="NEUROMEIN" className="h-[22px] w-auto opacity-95" />
+        <Link to="/" aria-label="NEUROMEIN" className="flex items-center justify-center h-12 px-2">
+          <img src={logoUrl} alt="NEUROMEIN" className="h-9 w-auto opacity-95" />
         </Link>
         <nav
           className="flex items-center ml-3 gap-1"
@@ -73,7 +73,7 @@ export function Header() {
       {/* Mobile pill */}
       <div className="md:hidden flex items-center justify-between w-full max-w-[420px] pl-4 pr-2 py-2 rounded-full border-[0.5px] border-border bg-bg-card/70 backdrop-blur-xl">
         <Link to="/" aria-label="NEUROMEIN" className="flex items-center h-10">
-          <img src={logoUrl} alt="NEUROMEIN" className="h-[18px] w-auto" />
+          <img src={logoUrl} alt="NEUROMEIN" className="h-7 w-auto" />
         </Link>
         <div className="flex items-center gap-1">
           <button
