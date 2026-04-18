@@ -8,7 +8,6 @@ import logoUrl from "@/assets/logo.svg";
 export function Header() {
   const [open, setOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [hovered, setHovered] = useState<string | null>(null);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
 
@@ -48,57 +47,51 @@ export function Header() {
     };
   }, [open]);
 
-  const items = [{ to: "/", label: "Главная", exact: true }, ...NAV_LINKS.map((l) => ({ ...l, exact: false }))];
+  const items = [
+    { to: "/", label: "Главная", exact: true },
+    ...NAV_LINKS.map((l) => ({ ...l, exact: false })),
+  ];
 
   // Pill background style: changes when scrolled
-  const pillBg = scrolled
-    ? "rgba(8, 8, 13, 0.92)"
-    : "rgba(8, 8, 13, 0.55)";
+  const pillBg = scrolled ? "rgba(8, 8, 13, 0.92)" : "rgba(8, 8, 13, 0.55)";
   const pillBlur = scrolled ? "blur(20px)" : "blur(14px)";
 
   return (
     <header className="fixed top-4 inset-x-0 z-50 flex justify-center px-4">
-      {/* Desktop pill — visible on lg and above (>= 1024px). Below uses mobile/burger. */}
+      {/* Desktop pill — madiyour-style: logo left · nav center · search right */}
       <div
-        className="hidden lg:flex items-center gap-2 pl-5 pr-3 py-2.5 rounded-full border-[0.5px] border-border shadow-[0_8px_30px_rgba(0,0,0,0.35)] transition-[background,backdrop-filter] duration-300"
+        className="hidden lg:grid items-center gap-4 pl-4 pr-2 py-2 rounded-full border-[0.5px] border-border shadow-[0_8px_30px_rgba(0,0,0,0.35)] transition-[background,backdrop-filter] duration-300"
         style={{
           background: pillBg,
           backdropFilter: pillBlur,
           WebkitBackdropFilter: pillBlur,
+          gridTemplateColumns: "auto 1fr auto",
+          minWidth: 760,
         }}
       >
-        <Link to="/" aria-label="NEUROMEIN" className="flex items-center justify-center h-11 px-1">
-          <img src={logoUrl} alt="NEUROMEIN" className="h-[18px] w-auto opacity-95" />
-        </Link>
-        <nav
-          className="flex items-center ml-2 gap-0.5"
-          onMouseLeave={() => setHovered(null)}
+        {/* LEFT: compact logo */}
+        <Link
+          to="/"
+          aria-label="NEUROMEIN"
+          className="flex items-center justify-center h-9 w-9 rounded-full transition-opacity hover:opacity-80"
         >
-          {items.map((l) => {
-            const isHovered = hovered === l.to;
-            const anyHovered = hovered !== null;
-            return (
-              <motion.div
-                key={l.to}
-                animate={{
-                  marginLeft: anyHovered && !isHovered ? 6 : 1,
-                  marginRight: anyHovered && !isHovered ? 6 : 1,
-                  scale: isHovered ? 1.05 : 1,
-                }}
-                transition={{ type: "spring", stiffness: 300, damping: 26 }}
-                onMouseEnter={() => setHovered(l.to)}
-              >
-                <NavPill to={l.to} exact={l.exact}>
-                  {l.label}
-                </NavPill>
-              </motion.div>
-            );
-          })}
+          <img src={logoUrl} alt="NEUROMEIN" className="h-[14px] w-auto opacity-95" />
+        </Link>
+
+        {/* CENTER: nav links */}
+        <nav className="flex items-center justify-center gap-7">
+          {items.map((l) => (
+            <NavLink key={l.to} to={l.to} exact={l.exact}>
+              {l.label}
+            </NavLink>
+          ))}
         </nav>
+
+        {/* RIGHT: search */}
         <button
           aria-label="Поиск (⌘K)"
           onClick={() => setSearchOpen(true)}
-          className="ml-1 flex items-center justify-center h-10 w-10 rounded-full bg-bg-deep text-text-secondary hover:text-text-primary hover:bg-bg-card transition-colors"
+          className="flex items-center justify-center h-9 w-9 rounded-full bg-bg-deep text-text-secondary hover:text-text-primary hover:bg-bg-card transition-colors"
         >
           <SearchIcon />
         </button>
@@ -113,8 +106,8 @@ export function Header() {
           WebkitBackdropFilter: pillBlur,
         }}
       >
-        <Link to="/" aria-label="NEUROMEIN" className="flex items-center h-10">
-          <img src={logoUrl} alt="NEUROMEIN" className="h-[15px] w-auto" />
+        <Link to="/" aria-label="NEUROMEIN" className="flex items-center h-9">
+          <img src={logoUrl} alt="NEUROMEIN" className="h-[13px] w-auto" />
         </Link>
         <div className="flex items-center gap-1">
           <button
@@ -138,7 +131,6 @@ export function Header() {
       <AnimatePresence>
         {open && (
           <>
-            {/* Overlay */}
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
@@ -148,7 +140,6 @@ export function Header() {
               className="lg:hidden fixed inset-0 z-40"
               style={{ background: "rgba(0,0,0,0.5)" }}
             />
-            {/* Slide-in panel */}
             <motion.div
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
@@ -158,7 +149,7 @@ export function Header() {
               style={{ background: "#08080D" }}
             >
               <div className="flex items-center justify-between px-6 pt-6 pb-2">
-                <img src={logoUrl} alt="NEUROMEIN" className="h-[16px] w-auto opacity-90" />
+                <img src={logoUrl} alt="NEUROMEIN" className="h-[14px] w-auto opacity-90" />
                 <button
                   aria-label="Закрыть меню"
                   onClick={() => setOpen(false)}
@@ -199,7 +190,13 @@ export function Header() {
   );
 }
 
-function NavPill({
+/**
+ * Madiyour-style nav link:
+ * - просто текст, без фоновой таблетки на активном
+ * - hover плавно меняет цвет с secondary → primary
+ * - активный пункт отмечен тонкой подчёркивающей точкой через ::after
+ */
+function NavLink({
   to,
   children,
   exact,
@@ -212,13 +209,19 @@ function NavPill({
     <Link
       to={to}
       activeOptions={{ exact: exact ?? false }}
-      className="px-3.5 py-2.5 rounded-full text-[14px] text-text-secondary hover:text-text-primary transition-colors whitespace-nowrap"
+      className="group relative text-[14px] text-text-secondary hover:text-text-primary transition-colors duration-200 whitespace-nowrap py-1"
       activeProps={{
         className:
-          "px-3.5 py-2.5 rounded-full text-[14px] text-text-primary bg-bg-deep whitespace-nowrap",
+          "group relative text-[14px] text-text-primary whitespace-nowrap py-1",
       }}
     >
       {children}
+      {/* Underline dot indicator for active state */}
+      <span
+        aria-hidden
+        className="absolute left-1/2 -translate-x-1/2 -bottom-0.5 h-[3px] w-[3px] rounded-full opacity-0 group-data-[status=active]:opacity-100 transition-opacity"
+        style={{ background: "var(--color-text-primary)" }}
+      />
     </Link>
   );
 }
@@ -233,9 +236,11 @@ function SearchIcon() {
 }
 
 function BurgerIcon({ open }: { open: boolean }) {
-  // 3 horizontal lines — color #888898 visually via currentColor on text-text-primary
   return (
-    <div className="flex flex-col gap-[5px]" style={{ color: open ? "#f0f0f5" : "#888898" }}>
+    <div
+      className="flex flex-col gap-[5px]"
+      style={{ color: open ? "#f0f0f5" : "#888898" }}
+    >
       <span
         className={`block h-[1.5px] w-4 bg-current rounded-full transition-transform duration-300 ${open ? "translate-y-[7px] rotate-45" : ""}`}
       />
