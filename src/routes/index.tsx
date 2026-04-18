@@ -1,10 +1,10 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { motion } from "framer-motion";
 import { Layout } from "@/components/Layout";
 import { HeroCard } from "@/components/HeroCard";
-import { ArrowLink, Pill } from "@/components/ui-bits";
 import { Reveal } from "@/components/Reveal";
-import { PUBLICATIONS, RESEARCH, SITE } from "@/lib/site";
+import { ResearchShowcase } from "@/components/ResearchShowcase";
+import { PublicationsList } from "@/components/PublicationsList";
+import { SITE } from "@/lib/site";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -64,41 +64,7 @@ function IndexPage() {
           />
         </Reveal>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-          {RESEARCH.map((r, i) => (
-            <Reveal key={r.slug} delay={i * 0.08}>
-              <Link
-                to="/research/$slug"
-                params={{ slug: r.slug }}
-                className="block group h-full"
-              >
-                <motion.div
-                  whileHover={{ y: -3 }}
-                  transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                  className="rounded-[24px] border-[0.5px] border-border bg-bg-card/60 p-7 lg:p-8 h-full transition-colors duration-300 group-hover:border-border-strong"
-                >
-                  <div className="flex items-center gap-3">
-                    <span
-                      className="inline-block h-1.5 w-1.5 rounded-full"
-                      style={{ background: r.dotColor }}
-                      aria-hidden
-                    />
-                    <span className="label-eyebrow">{r.eyebrow} · {r.year}</span>
-                  </div>
-                  <h3 className="mt-5 text-[24px] font-medium text-text-primary tracking-tight leading-[1.15]">
-                    {r.title}
-                  </h3>
-                  <p className="mt-3 text-[14px] text-text-secondary leading-[1.65]">
-                    {r.short}
-                  </p>
-                  <div className="mt-7">
-                    <ArrowLink>Читать</ArrowLink>
-                  </div>
-                </motion.div>
-              </Link>
-            </Reveal>
-          ))}
-        </div>
+        <ResearchShowcase />
 
         {/* PUBLICATIONS */}
         <Reveal>
@@ -109,25 +75,7 @@ function IndexPage() {
           />
         </Reveal>
 
-        <div className="rounded-[24px] border-[0.5px] border-border bg-bg-card/40 mt-6 overflow-hidden">
-          {PUBLICATIONS.slice(0, 4).map((p, i) => (
-            <Reveal key={p.slug} delay={i * 0.05}>
-              <Link
-                to="/blog/$slug"
-                params={{ slug: p.slug }}
-                className="flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-6 px-6 lg:px-8 py-5 border-b border-border last:border-b-0 group hover:bg-bg-card/60 transition-colors"
-              >
-                <span className="text-[12px] text-text-tertiary tabular-nums shrink-0 w-[120px]">
-                  {p.dateLabel}
-                </span>
-                <span className="text-[15px] text-text-primary flex-1 group-hover:text-brand transition-colors">
-                  {p.title}
-                </span>
-                <Pill className="self-start sm:self-auto">{p.tag}</Pill>
-              </Link>
-            </Reveal>
-          ))}
-        </div>
+        <PublicationsList />
 
         {/* ABOUT BLOCK */}
         <Reveal>
