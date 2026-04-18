@@ -56,9 +56,9 @@ export function Header() {
       </div>
 
       {/* Mobile pill */}
-      <div className="md:hidden flex items-center justify-between w-full max-w-[420px] pl-3 pr-2 py-1.5 rounded-full border-[0.5px] border-border bg-bg-card/70 backdrop-blur-xl">
-        <Link to="/" aria-label="NEUROMEIN" className="flex items-center h-9">
-          <img src={logoUrl} alt="NEUROMEIN" className="h-4 w-auto" />
+      <div className="md:hidden flex items-center justify-between w-full max-w-[420px] pl-4 pr-2 py-2 rounded-full border-[0.5px] border-border bg-bg-card/70 backdrop-blur-xl">
+        <Link to="/" aria-label="NEUROMEIN" className="flex items-center h-10">
+          <img src={logoUrl} alt="NEUROMEIN" className="h-6 w-auto" />
         </Link>
         <button
           aria-label="Меню"
