@@ -1,9 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { Layout } from "@/components/Layout";
 import { HeroCard } from "@/components/HeroCard";
-import { Reveal } from "@/components/Reveal";
-import { BentoGrid } from "@/components/BentoGrid";
-import { Marquee } from "@/components/Marquee";
+import { HomeResearchCards } from "@/components/HomeResearchCards";
+import { HomePublications } from "@/components/HomePublications";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -47,19 +46,19 @@ export const Route = createFileRoute("/")({
 function IndexPage() {
   return (
     <Layout>
-      <div className="max-w-[1320px] mx-auto pb-20">
-        {/* HERO CARD */}
+      <div className="max-w-[1320px] mx-auto">
+        {/* HERO */}
         <HeroCard />
 
-        {/* BENTO GRID — research / predictions / about / publications */}
-        <section className="pt-12">
-          <Reveal>
-            <BentoGrid />
-          </Reveal>
+        {/* RESEARCH — две карточки в ряд, 80px от hero */}
+        <section style={{ paddingTop: 80 }}>
+          <HomeResearchCards />
         </section>
 
-        {/* MARQUEE — visual divider */}
-        <Marquee />
+        {/* PUBLICATIONS — 100px от карточек, 120px до footer */}
+        <section style={{ paddingTop: 100, paddingBottom: 120 }}>
+          <HomePublications />
+        </section>
       </div>
     </Layout>
   );
