@@ -35,12 +35,12 @@ export function PublicationsList() {
 
       <ul className="relative divide-y divide-border">
         {items.map((p, i) => (
-          <Reveal key={p.slug} delay={i * 0.05}>
+          <Reveal key={p.slug} delay={i * 0.1}>
             <li>
               <Link
                 to="/blog/$slug"
                 params={{ slug: p.slug }}
-                className="group relative flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-8 px-6 lg:px-10 py-7"
+                className="group relative flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-8 px-6 lg:px-10 py-7 cursor-pointer"
               >
                 {/* Hover sweep */}
                 <motion.div
@@ -54,7 +54,7 @@ export function PublicationsList() {
                 <span className="relative text-[12px] text-text-tertiary tabular-nums shrink-0 w-[140px] tracking-wide uppercase">
                   {p.dateLabel}
                 </span>
-                <span className="relative text-[16px] lg:text-[18px] text-text-primary flex-1 leading-[1.3] tracking-[-0.01em] group-hover:text-brand transition-colors duration-300">
+                <span className="relative text-[16px] lg:text-[18px] text-text-primary flex-1 leading-[1.3] tracking-[-0.01em] group-hover:underline underline-offset-4 decoration-[1px] decoration-text-primary/50 transition-colors duration-300">
                   {p.title}
                 </span>
                 <span className="relative flex items-center gap-3">

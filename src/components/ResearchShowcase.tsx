@@ -13,11 +13,11 @@ export function ResearchShowcase() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 gap-5 mt-8">
       {RESEARCH.map((r, i) => (
-        <Reveal key={r.slug} delay={i * 0.08}>
+        <Reveal key={r.slug} delay={i * 0.1}>
           <Link
             to="/research/$slug"
             params={{ slug: r.slug }}
-            className="block group h-full"
+            className="block group h-full cursor-pointer"
           >
             <motion.article
               whileHover={{ y: -4 }}

@@ -13,8 +13,8 @@ type RevealProps = {
 export function Reveal({
   children,
   delay = 0,
-  y = 16,
-  duration = 0.7,
+  y = 20,
+  duration = 0.6,
   className,
   once = true,
   ...rest
