@@ -136,16 +136,44 @@ export function Pill({
   variant?: "default" | "info" | "success" | "warn" | "fail";
   className?: string;
 }) {
-  const map: Record<string, string> = {
-    default: "bg-bg-card text-text-secondary border-[0.5px] border-border",
-    info: "bg-status-info-bg text-status-info-fg",
-    success: "bg-status-success-bg text-status-success-fg",
-    warn: "bg-status-warn-bg text-status-warn-fg",
-    fail: "bg-status-fail-bg text-status-fail-fg",
+  // Цветные пилюли для статусов прогнозов:
+  // полупрозрачный фон + тонкая обводка цвета статуса + цветной текст.
+  const map: Record<string, { bg: string; border: string; color: string }> = {
+    default: {
+      bg: "transparent",
+      border: "var(--color-border)",
+      color: "var(--color-text-secondary)",
+    },
+    info: {
+      bg: "rgba(74, 158, 245, 0.10)",
+      border: "rgba(74, 158, 245, 0.20)",
+      color: "#4A9EF5",
+    },
+    success: {
+      bg: "rgba(74, 232, 140, 0.10)",
+      border: "rgba(74, 232, 140, 0.20)",
+      color: "#4AE88C",
+    },
+    warn: {
+      bg: "rgba(232, 200, 74, 0.10)",
+      border: "rgba(232, 200, 74, 0.20)",
+      color: "#E8C84A",
+    },
+    fail: {
+      bg: "rgba(232, 74, 74, 0.10)",
+      border: "rgba(232, 74, 74, 0.20)",
+      color: "#E84A4A",
+    },
   };
+  const s = map[variant];
   return (
     <span
-      className={`inline-flex items-center px-2.5 py-1 rounded-full text-[11px] tracking-[0.04em] ${map[variant]} ${className}`}
+      className={`inline-flex items-center px-3 py-1 rounded-full text-[12px] font-medium tracking-[0.02em] border ${className}`}
+      style={{
+        background: s.bg,
+        borderColor: s.border,
+        color: s.color,
+      }}
     >
       {children}
     </span>

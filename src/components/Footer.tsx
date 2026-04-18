@@ -6,8 +6,9 @@ export function Footer() {
   return (
     <footer className="px-4 lg:px-6 mt-20">
       <div className="max-w-[1320px] mx-auto rounded-[24px] border-[0.5px] border-border bg-bg-card/40 p-8 lg:p-12 mb-8">
-        <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-12">
-          <div className="max-w-[400px]">
+        <div className="grid grid-cols-1 md:grid-cols-[2fr_1fr_1fr] gap-x-[60px] gap-y-10">
+          {/* Column 1: brand + Telegram CTA */}
+          <div className="max-w-[420px]">
             <img src={logoUrl} alt="NEUROMEIN" className="h-5 w-auto opacity-95" />
             <div className="mt-5 text-[14px] text-text-primary font-medium">
               {SITE.author}
@@ -15,66 +16,88 @@ export function Footer() {
             <p className="mt-2 text-[14px] text-text-secondary leading-relaxed">
               Независимый аналитический ресурс об искусственном интеллекте и рынке труда.
             </p>
+
+            {/* Telegram CTA — primary subscribe action */}
+            <a
+              href={SITE.telegram}
+              target="_blank"
+              rel="noreferrer"
+              className="mt-6 inline-flex items-center gap-2.5 h-11 pl-4 pr-5 rounded-full border-[0.5px] border-border-strong bg-bg-deep/60 text-[14px] text-text-primary hover:border-brand/50 hover:bg-bg-card transition-all duration-200 group"
+            >
+              <span
+                className="flex items-center justify-center h-7 w-7 rounded-full"
+                style={{ background: "rgba(74, 158, 245, 0.15)", color: "#4A9EF5" }}
+                aria-hidden
+              >
+                <TelegramIcon />
+              </span>
+              <span>
+                Telegram-канал:{" "}
+                <span className="text-brand group-hover:text-brand-hover transition-colors">
+                  {SITE.telegramHandle}
+                </span>
+              </span>
+            </a>
           </div>
 
-          <div className="flex flex-wrap gap-x-16 gap-y-10">
-            <div>
-              <div className="label-eyebrow mb-4">Навигация</div>
-              <ul className="space-y-2.5">
-                <li>
+          {/* Column 2: navigation */}
+          <div>
+            <div className="label-eyebrow mb-4">Навигация</div>
+            <ul className="space-y-2.5">
+              <li>
+                <Link
+                  to="/"
+                  className="text-[14px] text-text-secondary hover:text-text-primary transition-colors"
+                >
+                  Главная
+                </Link>
+              </li>
+              {NAV_LINKS.map((l) => (
+                <li key={l.to}>
                   <Link
-                    to="/"
+                    to={l.to}
                     className="text-[14px] text-text-secondary hover:text-text-primary transition-colors"
                   >
-                    Главная
+                    {l.label}
                   </Link>
                 </li>
-                {NAV_LINKS.map((l) => (
-                  <li key={l.to}>
-                    <Link
-                      to={l.to}
-                      className="text-[14px] text-text-secondary hover:text-text-primary transition-colors"
-                    >
-                      {l.label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+              ))}
+            </ul>
+          </div>
 
-            <div>
-              <div className="label-eyebrow mb-4">Контакты</div>
-              <ul className="space-y-2.5 text-[14px]">
-                <li>
-                  <a
-                    href={SITE.telegram}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-text-secondary hover:text-text-primary transition-colors"
-                  >
-                    Telegram
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href={SITE.linkedin}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="text-text-secondary hover:text-text-primary transition-colors"
-                  >
-                    LinkedIn
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href={`mailto:${SITE.email}`}
-                    className="text-text-secondary hover:text-text-primary transition-colors"
-                  >
-                    {SITE.email}
-                  </a>
-                </li>
-              </ul>
-            </div>
+          {/* Column 3: contacts */}
+          <div>
+            <div className="label-eyebrow mb-4">Контакты</div>
+            <ul className="space-y-2.5 text-[14px]">
+              <li>
+                <a
+                  href={SITE.telegram}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-text-secondary hover:text-text-primary transition-colors"
+                >
+                  Telegram
+                </a>
+              </li>
+              <li>
+                <a
+                  href={SITE.linkedin}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-text-secondary hover:text-text-primary transition-colors"
+                >
+                  LinkedIn
+                </a>
+              </li>
+              <li>
+                <a
+                  href={`mailto:${SITE.email}`}
+                  className="text-text-secondary hover:text-text-primary transition-colors break-all"
+                >
+                  {SITE.email}
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
 
@@ -84,5 +107,18 @@ export function Footer() {
         </div>
       </div>
     </footer>
+  );
+}
+
+function TelegramIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden>
+      <path
+        d="M21 4L3 11l6 2 2 6 4-4 5 4 1-15z"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinejoin="round"
+      />
+    </svg>
   );
 }

@@ -29,8 +29,8 @@ function AboutPage() {
     <Layout>
       <div className="max-w-[1320px] mx-auto pb-20">
         <HeroCard
-          title="Андрей Майнгардт. Независимый AI-аналитик."
-          subtitle="Основатель NEUROMEIN. AI Strategist в WMT AI. Исследую, как искусственный интеллект меняет рынок труда и бизнес-процессы."
+          title="Андрей Майнгардт"
+          subtitle="Независимый AI-аналитик. Основатель NEUROMEIN. AI Strategist в WMT AI."
         >
           <MetaGrid
             items={[
