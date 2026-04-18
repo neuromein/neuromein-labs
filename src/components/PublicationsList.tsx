@@ -51,13 +51,25 @@ export function PublicationsList() {
                       "linear-gradient(90deg, transparent 0%, oklch(0.62 0.16 245 / 0.06) 50%, transparent 100%)",
                   }}
                 />
-                <span className="relative text-[12px] text-text-tertiary tabular-nums shrink-0 w-[140px] tracking-wide uppercase">
+                <span
+                  className="relative text-[12px] tabular-nums shrink-0 w-[140px] tracking-wide uppercase"
+                  style={{ color: "#7a7a8a" }}
+                >
                   {p.dateLabel}
                 </span>
-                <span className="relative text-[16px] lg:text-[18px] text-text-primary flex-1 leading-[1.3] tracking-[-0.01em] group-hover:underline underline-offset-4 decoration-[1px] decoration-text-primary/50 transition-colors duration-300">
-                  {p.title}
+                <span className="relative flex-1 min-w-0">
+                  <span className="block text-[16px] lg:text-[18px] text-text-primary leading-[1.3] tracking-[-0.01em] group-hover:underline underline-offset-4 decoration-[1px] decoration-text-primary/50 transition-colors duration-300">
+                    {p.title}
+                  </span>
+                  <span
+                    className="block mt-1.5 text-[13px] leading-[1.4] truncate"
+                    style={{ color: "#7a7a8a" }}
+                    title={p.excerpt}
+                  >
+                    {p.excerpt}
+                  </span>
                 </span>
-                <span className="relative flex items-center gap-3">
+                <span className="relative flex items-center gap-3 shrink-0">
                   <span className="inline-flex items-center h-7 px-3 rounded-full border-[0.5px] border-border-strong bg-bg-card/60 text-[11px] text-text-secondary tracking-[0.04em] uppercase">
                     {p.tag}
                   </span>
