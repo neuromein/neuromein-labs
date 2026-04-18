@@ -1,5 +1,6 @@
 import { Link } from "@tanstack/react-router";
 import { NAV_LINKS, SITE } from "@/lib/site";
+import logoUrl from "@/assets/logo.svg";
 
 export function Footer() {
   return (
@@ -7,10 +8,11 @@ export function Footer() {
       <div className="max-w-[1320px] mx-auto rounded-[24px] border-[0.5px] border-border bg-bg-card/40 p-8 lg:p-12 mb-8">
         <div className="flex flex-col lg:flex-row lg:items-start lg:justify-between gap-12">
           <div className="max-w-[400px]">
-            <div className="text-[15px] text-text-primary font-medium tracking-tight">
+            <img src={logoUrl} alt="NEUROMEIN" className="h-5 w-auto opacity-95" />
+            <div className="mt-5 text-[14px] text-text-primary font-medium">
               {SITE.author}
             </div>
-            <p className="mt-3 text-[14px] text-text-secondary leading-relaxed">
+            <p className="mt-2 text-[14px] text-text-secondary leading-relaxed">
               Независимый аналитический ресурс об искусственном интеллекте и рынке труда.
             </p>
           </div>
@@ -77,8 +79,8 @@ export function Footer() {
         </div>
 
         <div className="mt-12 pt-6 border-t border-border flex items-center justify-between text-[12px] text-text-tertiary">
-          <span>© 2026 {SITE.name}</span>
-          <span className="tracking-[0.08em]">NEUROMEIN.RU</span>
+          <span>© 2026 {SITE.author}</span>
+          <img src={logoUrl} alt="NEUROMEIN" className="h-3 w-auto opacity-40" />
         </div>
       </div>
     </footer>
