@@ -248,25 +248,4 @@
   .no-scrollbar::-webkit-scrollbar { display: none; }
   .no-scrollbar { scrollbar-width: none; }
 
-  /* Marquee — infinite horizontal scroll */
-  .marquee-track {
-    display: inline-block;
-    will-change: transform;
-    animation: marquee-scroll 30s linear infinite;
-    font-size: 28px;
-  }
-  @media (min-width: 768px) {
-    .marquee-track { font-size: 48px; }
-  }
-  .marquee-text {
-    display: inline-block;
-    padding-right: 2rem;
-  }
-  @keyframes marquee-scroll {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
-  }
-  @media (prefers-reduced-motion: reduce) {
-    .marquee-track { animation: none; }
-  }
 }
