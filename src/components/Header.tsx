@@ -67,7 +67,7 @@ export function Header() {
           WebkitBackdropFilter: pillBlur,
         }}
       >
-        <Link to="/" aria-label="NEUROMEIN" className="flex items-center justify-center h-11 px-1">
+        <Link to="/" aria-label="NEUROMEIN" className="flex items-center justify-center h-11 px-[3px]">
           <img src={logoUrl} alt="NEUROMEIN" className="h-[18px] w-auto opacity-95" />
         </Link>
         <nav
