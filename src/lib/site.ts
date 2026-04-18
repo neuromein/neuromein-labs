@@ -17,7 +17,7 @@ export const NAV_LINKS = [
   { to: "/predictions" as const, label: "Прогнозы" },
   { to: "/blog" as const, label: "Публикации" },
   { to: "/faq" as const, label: "FAQ" },
-  { to: "/about" as const, label: "Обо мне" },
+  { to: "/about" as const, label: "О себе" },
 ];
 
 export type Publication = {
