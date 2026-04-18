@@ -81,7 +81,7 @@ export function HeroCard({
             >
               <Link
                 to="/research"
-                className="inline-flex items-center h-[44px] px-6 rounded-[8px] text-[14px] font-medium transition-opacity active:scale-[0.98]"
+                className="inline-flex items-center h-[44px] px-6 rounded-[8px] text-[14px] font-medium transition-all duration-200 hover:opacity-85 active:scale-[0.98]"
                 style={{ background: "#f0f0f5", color: "#08080D" }}
               >
                 Читать исследования
@@ -90,7 +90,7 @@ export function HeroCard({
                 href="https://t.me/neuromein"
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center h-[44px] px-6 rounded-[8px] text-[14px] border transition-colors hover:text-text-primary"
+                className="inline-flex items-center h-[44px] px-6 rounded-[8px] text-[14px] border transition-all duration-200 hover:text-text-primary hover:opacity-85 active:scale-[0.98]"
                 style={{
                   borderColor: "#2a2a35",
                   color: "#888898",
