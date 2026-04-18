@@ -18,12 +18,12 @@ export function Header() {
   return (
     <header className="fixed top-4 inset-x-0 z-50 flex justify-center px-4">
       {/* Desktop pill */}
-      <div className="hidden md:flex items-center gap-2 pl-3 pr-2 py-1.5 rounded-full border-[0.5px] border-border bg-bg-card/70 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.35)]">
-        <Link to="/" aria-label="NEUROMEIN" className="flex items-center justify-center h-9 px-1">
-          <img src={logoUrl} alt="NEUROMEIN" className="h-4 w-auto opacity-95" />
+      <div className="hidden md:flex items-center gap-3 pl-5 pr-3 py-2 rounded-full border-[0.5px] border-border bg-bg-card/70 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.35)]">
+        <Link to="/" aria-label="NEUROMEIN" className="flex items-center justify-center h-10 px-1">
+          <img src={logoUrl} alt="NEUROMEIN" className="h-7 w-auto opacity-95" />
         </Link>
         <nav
-          className="flex items-center ml-2"
+          className="flex items-center ml-3 gap-1"
           onMouseLeave={() => setHovered(null)}
         >
           {items.map((l) => {
@@ -56,9 +56,9 @@ export function Header() {
       </div>
 
       {/* Mobile pill */}
-      <div className="md:hidden flex items-center justify-between w-full max-w-[420px] pl-3 pr-2 py-1.5 rounded-full border-[0.5px] border-border bg-bg-card/70 backdrop-blur-xl">
-        <Link to="/" aria-label="NEUROMEIN" className="flex items-center h-9">
-          <img src={logoUrl} alt="NEUROMEIN" className="h-4 w-auto" />
+      <div className="md:hidden flex items-center justify-between w-full max-w-[420px] pl-4 pr-2 py-2 rounded-full border-[0.5px] border-border bg-bg-card/70 backdrop-blur-xl">
+        <Link to="/" aria-label="NEUROMEIN" className="flex items-center h-10">
+          <img src={logoUrl} alt="NEUROMEIN" className="h-6 w-auto" />
         </Link>
         <button
           aria-label="Меню"
@@ -122,10 +122,10 @@ function NavPill({
     <Link
       to={to}
       activeOptions={{ exact: exact ?? false }}
-      className="px-3.5 py-1.5 rounded-full text-[13px] text-text-secondary hover:text-text-primary transition-colors"
+      className="px-4 py-2 rounded-full text-[14px] text-text-secondary hover:text-text-primary transition-colors"
       activeProps={{
         className:
-          "px-3.5 py-1.5 rounded-full text-[13px] text-text-primary bg-bg-deep",
+          "px-4 py-2 rounded-full text-[14px] text-text-primary bg-bg-deep",
       }}
     >
       {children}

@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 import { SITE } from "@/lib/site";
 import { InteractiveNeuralBg } from "./InteractiveNeuralBg";
+import avatarUrl from "@/assets/avatar.jpg";
 
 /**
  * Большая hero-карточка в стиле Madiyour:
@@ -34,9 +35,9 @@ export function HeroCard({
 
       <div className="relative z-10 p-7 sm:p-10 lg:p-14 min-h-[560px] flex flex-col justify-between gap-12 pointer-events-none">
         <div>
-          {/* Avatar placeholder */}
-          <div className="h-[88px] w-[88px] rounded-2xl bg-bg-card/70 backdrop-blur-md border-[0.5px] border-border-strong flex items-center justify-center text-text-tertiary">
-            <AvatarPlaceholderIcon />
+          {/* Avatar */}
+          <div className="h-[88px] w-[88px] rounded-2xl overflow-hidden border-[0.5px] border-border-strong bg-bg-card/70 backdrop-blur-md">
+            <img src={avatarUrl} alt="Avatar" className="h-full w-full object-cover" />
           </div>
 
           {/* Title */}
