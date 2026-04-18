@@ -2,33 +2,50 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { NAV_LINKS } from "@/lib/site";
+import logoUrl from "@/assets/logo.svg";
 
 export function Header() {
   const [open, setOpen] = useState(false);
+  const [hovered, setHovered] = useState<string | null>(null);
   const location = useLocation();
 
   useEffect(() => {
     setOpen(false);
   }, [location.pathname]);
 
+  const items = [{ to: "/", label: "Главная", exact: true }, ...NAV_LINKS.map((l) => ({ ...l, exact: false }))];
+
   return (
     <header className="fixed top-4 inset-x-0 z-50 flex justify-center px-4">
-      {/* Centered pill (desktop) */}
-      <div className="hidden md:flex items-center gap-1 pl-2 pr-2 py-1.5 rounded-full border-[0.5px] border-border bg-bg-card/70 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.35)]">
-        <Link
-          to="/"
-          className="flex items-center justify-center h-9 w-9 rounded-full bg-bg-deep text-text-primary text-[13px] font-semibold tracking-tight"
-          aria-label="NEUROMEIN"
-        >
-          N
+      {/* Desktop pill */}
+      <div className="hidden md:flex items-center gap-2 pl-3 pr-2 py-1.5 rounded-full border-[0.5px] border-border bg-bg-card/70 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.35)]">
+        <Link to="/" aria-label="NEUROMEIN" className="flex items-center justify-center h-9 px-1">
+          <img src={logoUrl} alt="NEUROMEIN" className="h-4 w-auto opacity-95" />
         </Link>
-        <nav className="flex items-center gap-0.5 ml-1">
-          <NavPill to="/" exact>Главная</NavPill>
-          {NAV_LINKS.map((l) => (
-            <NavPill key={l.to} to={l.to}>
-              {l.label}
-            </NavPill>
-          ))}
+        <nav
+          className="flex items-center ml-2"
+          onMouseLeave={() => setHovered(null)}
+        >
+          {items.map((l) => {
+            const isHovered = hovered === l.to;
+            const anyHovered = hovered !== null;
+            return (
+              <motion.div
+                key={l.to}
+                animate={{
+                  marginLeft: anyHovered && !isHovered ? 8 : 2,
+                  marginRight: anyHovered && !isHovered ? 8 : 2,
+                  scale: isHovered ? 1.04 : 1,
+                }}
+                transition={{ type: "spring", stiffness: 300, damping: 26 }}
+                onMouseEnter={() => setHovered(l.to)}
+              >
+                <NavPill to={l.to} exact={l.exact}>
+                  {l.label}
+                </NavPill>
+              </motion.div>
+            );
+          })}
         </nav>
         <button
           aria-label="Поиск"
@@ -39,15 +56,10 @@ export function Header() {
       </div>
 
       {/* Mobile pill */}
-      <div className="md:hidden flex items-center justify-between w-full max-w-[420px] pl-2 pr-2 py-1.5 rounded-full border-[0.5px] border-border bg-bg-card/70 backdrop-blur-xl">
-        <Link
-          to="/"
-          className="flex items-center justify-center h-9 w-9 rounded-full bg-bg-deep text-text-primary text-[13px] font-semibold"
-          aria-label="NEUROMEIN"
-        >
-          N
+      <div className="md:hidden flex items-center justify-between w-full max-w-[420px] pl-3 pr-2 py-1.5 rounded-full border-[0.5px] border-border bg-bg-card/70 backdrop-blur-xl">
+        <Link to="/" aria-label="NEUROMEIN" className="flex items-center h-9">
+          <img src={logoUrl} alt="NEUROMEIN" className="h-4 w-auto" />
         </Link>
-        <span className="text-[13px] text-text-secondary">NEUROMEIN</span>
         <button
           aria-label="Меню"
           className="flex items-center justify-center h-9 w-9 rounded-full bg-bg-deep text-text-primary"
@@ -73,7 +85,7 @@ export function Header() {
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
               className="flex flex-col gap-7 px-8"
             >
-              {[{ to: "/", label: "Главная" }, ...NAV_LINKS].map((l, i) => (
+              {items.map((l, i) => (
                 <motion.div
                   key={l.to}
                   initial={{ opacity: 0, y: 8 }}
