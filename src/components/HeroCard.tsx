@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 import { SITE } from "@/lib/site";
 import { InteractiveNeuralBg } from "./InteractiveNeuralBg";
+import avatarUrl from "@/assets/avatar.jpg";
 
 /**
  * Большая hero-карточка в стиле Madiyour:
