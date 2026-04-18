@@ -50,17 +50,13 @@ function IndexPage() {
     <Layout>
       <div className="max-w-[1320px] mx-auto pb-20">
         {/* HERO CARD */}
-        <HeroCard
-          title="Изучаю, как ИИ перестраивает работу и рынок труда."
-          subtitle="Независимый AI-аналитик · Основатель NEUROMEIN · AI Strategist в WMT AI"
-        />
+        <HeroCard />
 
         {/* RESEARCH */}
         <Reveal>
           <SectionHeader
             eyebrow="Аналитика"
             title="Исследования"
-            link={{ to: "/research", label: "Все исследования" }}
           />
         </Reveal>
 

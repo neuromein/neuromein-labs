@@ -9,11 +9,20 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [hovered, setHovered] = useState<string | null>(null);
+  const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
 
   useEffect(() => {
     setOpen(false);
   }, [location.pathname]);
+
+  // Track scroll to make header opaque
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   // Cmd/Ctrl+K opens search
   useEffect(() => {
@@ -27,17 +36,42 @@ export function Header() {
     return () => window.removeEventListener("keydown", onKey);
   }, []);
 
+  // Lock body scroll when mobile menu open
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
   const items = [{ to: "/", label: "Главная", exact: true }, ...NAV_LINKS.map((l) => ({ ...l, exact: false }))];
+
+  // Pill background style: changes when scrolled
+  const pillBg = scrolled
+    ? "rgba(8, 8, 13, 0.92)"
+    : "rgba(8, 8, 13, 0.55)";
+  const pillBlur = scrolled ? "blur(20px)" : "blur(14px)";
 
   return (
     <header className="fixed top-4 inset-x-0 z-50 flex justify-center px-4">
-      {/* Desktop pill */}
-      <div className="hidden md:flex items-center gap-3 pl-5 pr-3 py-2.5 rounded-full border-[0.5px] border-border bg-bg-card/70 backdrop-blur-xl shadow-[0_8px_30px_rgba(0,0,0,0.35)]">
+      {/* Desktop pill — visible on lg and above (>= 1024px). Below uses mobile/burger. */}
+      <div
+        className="hidden lg:flex items-center gap-2 pl-5 pr-3 py-2.5 rounded-full border-[0.5px] border-border shadow-[0_8px_30px_rgba(0,0,0,0.35)] transition-[background,backdrop-filter] duration-300"
+        style={{
+          background: pillBg,
+          backdropFilter: pillBlur,
+          WebkitBackdropFilter: pillBlur,
+        }}
+      >
         <Link to="/" aria-label="NEUROMEIN" className="flex items-center justify-center h-11 px-1">
           <img src={logoUrl} alt="NEUROMEIN" className="h-[18px] w-auto opacity-95" />
         </Link>
         <nav
-          className="flex items-center ml-3 gap-1"
+          className="flex items-center ml-2 gap-0.5"
           onMouseLeave={() => setHovered(null)}
         >
           {items.map((l) => {
@@ -47,8 +81,8 @@ export function Header() {
               <motion.div
                 key={l.to}
                 animate={{
-                  marginLeft: anyHovered && !isHovered ? 10 : 2,
-                  marginRight: anyHovered && !isHovered ? 10 : 2,
+                  marginLeft: anyHovered && !isHovered ? 6 : 1,
+                  marginRight: anyHovered && !isHovered ? 6 : 1,
                   scale: isHovered ? 1.05 : 1,
                 }}
                 transition={{ type: "spring", stiffness: 300, damping: 26 }}
@@ -70,8 +104,15 @@ export function Header() {
         </button>
       </div>
 
-      {/* Mobile pill */}
-      <div className="md:hidden flex items-center justify-between w-full max-w-[420px] pl-4 pr-2 py-2 rounded-full border-[0.5px] border-border bg-bg-card/70 backdrop-blur-xl">
+      {/* Mobile / tablet pill — shown below lg (< 1024px) */}
+      <div
+        className="lg:hidden flex items-center justify-between w-full max-w-[420px] pl-4 pr-2 py-2 rounded-full border-[0.5px] border-border transition-[background,backdrop-filter] duration-300"
+        style={{
+          background: pillBg,
+          backdropFilter: pillBlur,
+          WebkitBackdropFilter: pillBlur,
+        }}
+      >
         <Link to="/" aria-label="NEUROMEIN" className="flex items-center h-10">
           <img src={logoUrl} alt="NEUROMEIN" className="h-[15px] w-auto" />
         </Link>
@@ -84,7 +125,7 @@ export function Header() {
             <SearchIcon />
           </button>
           <button
-            aria-label="Меню"
+            aria-label={open ? "Закрыть меню" : "Открыть меню"}
             className="flex items-center justify-center h-9 w-9 rounded-full bg-bg-deep text-text-primary"
             onClick={() => setOpen((v) => !v)}
           >
@@ -93,40 +134,63 @@ export function Header() {
         </div>
       </div>
 
+      {/* Mobile menu: dim overlay + slide-in panel from the right */}
       <AnimatePresence>
         {open && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.2 }}
-            className="md:hidden fixed inset-0 top-0 bg-bg/95 backdrop-blur-xl z-40 pt-28"
-          >
-            <motion.nav
-              initial={{ y: 20, opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: 20, opacity: 0 }}
+          <>
+            {/* Overlay */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              onClick={() => setOpen(false)}
+              className="lg:hidden fixed inset-0 z-40"
+              style={{ background: "rgba(0,0,0,0.5)" }}
+            />
+            {/* Slide-in panel */}
+            <motion.div
+              initial={{ x: "100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "100%" }}
               transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="flex flex-col gap-7 px-8"
+              className="lg:hidden fixed top-0 right-0 bottom-0 z-50 w-full sm:w-[380px] flex flex-col"
+              style={{ background: "#08080D" }}
             >
-              {items.map((l, i) => (
-                <motion.div
-                  key={l.to}
-                  initial={{ opacity: 0, y: 8 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.05 + i * 0.05, duration: 0.4 }}
+              <div className="flex items-center justify-between px-6 pt-6 pb-2">
+                <img src={logoUrl} alt="NEUROMEIN" className="h-[16px] w-auto opacity-90" />
+                <button
+                  aria-label="Закрыть меню"
+                  onClick={() => setOpen(false)}
+                  className="flex items-center justify-center h-10 w-10 rounded-full bg-bg-card/60 text-text-primary"
                 >
-                  <Link
-                    to={l.to}
-                    className="text-[28px] font-medium text-text-primary tracking-tight"
-                    activeProps={{ className: "text-brand" }}
+                  <CloseIcon />
+                </button>
+              </div>
+              <nav className="flex flex-col gap-6 px-8 pt-12">
+                {items.map((l, i) => (
+                  <motion.div
+                    key={l.to}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: 0.08 + i * 0.05, duration: 0.3 }}
                   >
-                    {l.label}
-                  </Link>
-                </motion.div>
-              ))}
-            </motion.nav>
-          </motion.div>
+                    <Link
+                      to={l.to}
+                      activeOptions={{ exact: l.exact }}
+                      className="text-[18px] font-medium text-text-secondary hover:text-text-primary transition-colors whitespace-nowrap"
+                      activeProps={{
+                        className:
+                          "text-[18px] font-medium text-brand whitespace-nowrap",
+                      }}
+                    >
+                      {l.label}
+                    </Link>
+                  </motion.div>
+                ))}
+              </nav>
+            </motion.div>
+          </>
         )}
       </AnimatePresence>
 
@@ -148,10 +212,10 @@ function NavPill({
     <Link
       to={to}
       activeOptions={{ exact: exact ?? false }}
-      className="px-5 py-2.5 rounded-full text-[14px] text-text-secondary hover:text-text-primary transition-colors"
+      className="px-3.5 py-2.5 rounded-full text-[14px] text-text-secondary hover:text-text-primary transition-colors whitespace-nowrap"
       activeProps={{
         className:
-          "px-5 py-2.5 rounded-full text-[14px] text-text-primary bg-bg-deep",
+          "px-3.5 py-2.5 rounded-full text-[14px] text-text-primary bg-bg-deep whitespace-nowrap",
       }}
     >
       {children}
@@ -169,11 +233,31 @@ function SearchIcon() {
 }
 
 function BurgerIcon({ open }: { open: boolean }) {
+  // 3 horizontal lines — color #888898 visually via currentColor on text-text-primary
   return (
-    <div className="flex flex-col gap-1">
-      <span className={`block h-px w-4 bg-current transition-transform duration-300 ${open ? "translate-y-[5px] rotate-45" : ""}`} />
-      <span className={`block h-px w-4 bg-current transition-opacity duration-300 ${open ? "opacity-0" : "opacity-100"}`} />
-      <span className={`block h-px w-4 bg-current transition-transform duration-300 ${open ? "-translate-y-[5px] -rotate-45" : ""}`} />
+    <div className="flex flex-col gap-[5px]" style={{ color: open ? "#f0f0f5" : "#888898" }}>
+      <span
+        className={`block h-[1.5px] w-4 bg-current rounded-full transition-transform duration-300 ${open ? "translate-y-[7px] rotate-45" : ""}`}
+      />
+      <span
+        className={`block h-[1.5px] w-4 bg-current rounded-full transition-opacity duration-300 ${open ? "opacity-0" : "opacity-100"}`}
+      />
+      <span
+        className={`block h-[1.5px] w-4 bg-current rounded-full transition-transform duration-300 ${open ? "-translate-y-[7px] -rotate-45" : ""}`}
+      />
     </div>
+  );
+}
+
+function CloseIcon() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
+      <path
+        d="M3 3L13 13M13 3L3 13"
+        stroke="currentColor"
+        strokeWidth="1.5"
+        strokeLinecap="round"
+      />
+    </svg>
   );
 }
