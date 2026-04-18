@@ -68,7 +68,7 @@ export function Header() {
         }}
       >
         <Link to="/" aria-label="NEUROMEIN" className="flex items-center justify-center h-11 px-[3px]">
-          <img src={logoUrl} alt="NEUROMEIN" className="h-[13px] w-auto opacity-95" />
+          <img src={logoUrl} alt="NEUROMEIN" className="h-[15px] w-auto opacity-95" />
         </Link>
         <nav
           className="flex items-center ml-2 gap-0.5"
