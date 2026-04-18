@@ -75,20 +75,22 @@ export function Header() {
         <Link to="/" aria-label="NEUROMEIN" className="flex items-center h-10">
           <img src={logoUrl} alt="NEUROMEIN" className="h-[18px] w-auto" />
         </Link>
-        <button
-          aria-label="Поиск"
-          onClick={() => setSearchOpen(true)}
-          className="flex items-center justify-center h-9 w-9 rounded-full bg-bg-deep text-text-secondary mr-1"
-        >
-          <SearchIcon />
-        </button>
-        <button
-          aria-label="Меню"
-          className="flex items-center justify-center h-9 w-9 rounded-full bg-bg-deep text-text-primary"
-          onClick={() => setOpen((v) => !v)}
-        >
-          <BurgerIcon open={open} />
-        </button>
+        <div className="flex items-center gap-1">
+          <button
+            aria-label="Поиск"
+            onClick={() => setSearchOpen(true)}
+            className="flex items-center justify-center h-9 w-9 rounded-full bg-bg-deep text-text-secondary"
+          >
+            <SearchIcon />
+          </button>
+          <button
+            aria-label="Меню"
+            className="flex items-center justify-center h-9 w-9 rounded-full bg-bg-deep text-text-primary"
+            onClick={() => setOpen((v) => !v)}
+          >
+            <BurgerIcon open={open} />
+          </button>
+        </div>
       </div>
 
       <AnimatePresence>
