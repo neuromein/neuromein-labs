@@ -122,7 +122,7 @@ export function HeroCard({
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.18, duration: 0.7, ease }}
-          className="mt-7 font-medium tracking-[-0.025em] max-w-[18ch] text-4xl"
+          className="mt-7 font-medium tracking-[-0.025em] max-w-[18ch] text-3xl"
           style={{
             lineHeight: 1.06,
             color: "#f0f0f5",
