@@ -23,7 +23,6 @@ export function HomeResearchCards() {
             title={r.title}
             short={r.short}
             date={r.date}
-            readTime={r.readTime}
           />
         </Reveal>
       ))}
@@ -39,7 +38,6 @@ function ResearchCard({
   title,
   short,
   date,
-  readTime,
 }: {
   slug: string;
   dotColor: string;
@@ -48,7 +46,6 @@ function ResearchCard({
   title: string;
   short: string;
   date: string;
-  readTime: string;
 }) {
   return (
     <Link
@@ -119,7 +116,7 @@ function ResearchCard({
 
         <div className="relative mt-6 flex items-center justify-between gap-4">
           <span className="text-[12px]" style={{ color: "#7a7a8a" }}>
-            {date} · {readTime}
+            {date}
           </span>
           <span
             className="inline-flex items-center gap-1.5 h-9 px-4 rounded-full text-[13px] font-medium"
