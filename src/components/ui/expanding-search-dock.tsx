@@ -1,14 +1,16 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Search, X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { NAV_LINKS, PUBLICATIONS, RESEARCH } from "@/lib/site";
+import { PUBLICATIONS, RESEARCH } from "@/lib/site";
 
 type Result = {
   key: string;
-  group: "Разделы" | "Исследования" | "Публикации";
+  group: "Исследования" | "Публикации";
   title: string;
   subtitle?: string;
+  snippet?: string; // matched fragment from full text
+  score: number;
   onSelect: () => void;
 };
 
@@ -53,44 +55,118 @@ export function ExpandingSearchDock({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isExpanded]);
 
-  // Build results from site data
-  const allResults: Result[] = [
-    {
-      key: "home",
-      group: "Разделы",
-      title: "Главная",
-      onSelect: () => navigate({ to: "/" }),
-    },
-    ...NAV_LINKS.map((l) => ({
-      key: `nav-${l.to}`,
-      group: "Разделы" as const,
-      title: l.label,
-      onSelect: () => navigate({ to: l.to }),
-    })),
-    ...RESEARCH.map((r) => ({
-      key: `r-${r.slug}`,
-      group: "Исследования" as const,
-      title: r.title,
-      subtitle: `${r.year} · ${r.short}`,
-      onSelect: () =>
-        navigate({ to: "/research/$slug", params: { slug: r.slug } }),
-    })),
-    ...PUBLICATIONS.map((p) => ({
-      key: `p-${p.slug}`,
-      group: "Публикации" as const,
-      title: p.title,
-      subtitle: `${p.dateLabel} · ${p.tag}`,
-      onSelect: () =>
-        navigate({ to: "/blog/$slug", params: { slug: p.slug } }),
-    })),
-  ];
+  // Build a searchable index from RESEARCH + PUBLICATIONS
+  const index = useMemo(() => {
+    const items: Array<{
+      key: string;
+      group: "Исследования" | "Публикации";
+      title: string;
+      subtitle: string;
+      fullText: string;
+      onSelect: () => void;
+    }> = [];
 
-  const q = query.trim().toLowerCase();
-  const filtered = q
-    ? allResults.filter((r) =>
-        `${r.title} ${r.subtitle ?? ""}`.toLowerCase().includes(q),
-      )
-    : allResults.slice(0, 6);
+    for (const r of RESEARCH) {
+      const toc = r.toc?.map((t) => t.label).join(" ") ?? "";
+      items.push({
+        key: `r-${r.slug}`,
+        group: "Исследования",
+        title: r.title,
+        subtitle: `${r.year} · ${r.short}`,
+        fullText: [
+          r.eyebrow,
+          r.title,
+          r.subtitle,
+          r.year,
+          r.date,
+          r.short,
+          r.long,
+          r.summary,
+          toc,
+        ]
+          .filter(Boolean)
+          .join(" "),
+        onSelect: () =>
+          navigate({ to: "/research/$slug", params: { slug: r.slug } }),
+      });
+    }
+
+    for (const p of PUBLICATIONS) {
+      items.push({
+        key: `p-${p.slug}`,
+        group: "Публикации",
+        title: p.title,
+        subtitle: `${p.dateLabel} · ${p.tag}`,
+        fullText: [p.title, p.tag, p.excerpt, p.dateLabel].filter(Boolean).join(" "),
+        onSelect: () =>
+          navigate({ to: "/blog/$slug", params: { slug: p.slug } }),
+      });
+    }
+
+    return items;
+  }, [navigate]);
+
+  const filtered: Result[] = useMemo(() => {
+    const raw = query.trim();
+    if (!raw) {
+      // Default state: show all items, sorted by group
+      return index.map((it) => ({
+        key: it.key,
+        group: it.group,
+        title: it.title,
+        subtitle: it.subtitle,
+        score: 0,
+        onSelect: it.onSelect,
+      }));
+    }
+
+    const tokens = tokenize(raw).map(expandSynonyms).flat();
+    if (tokens.length === 0) return [];
+
+    const scored = index
+      .map((it) => {
+        const haystack = normalize(it.fullText);
+        const haystackTitle = normalize(it.title);
+        let score = 0;
+        const matchedTerms: string[] = [];
+
+        for (const t of tokens) {
+          if (!t) continue;
+          // Title hit weighs more
+          if (haystackTitle.includes(t)) {
+            score += 10;
+            matchedTerms.push(t);
+          }
+          // Count occurrences in full text
+          const occ = countOccurrences(haystack, t);
+          if (occ > 0) {
+            score += occ * 2;
+            matchedTerms.push(t);
+          }
+        }
+
+        // Bonus: full phrase match
+        const phrase = normalize(raw);
+        if (phrase.length > 2 && haystack.includes(phrase)) score += 25;
+
+        const snippet =
+          score > 0 ? extractSnippet(it.fullText, matchedTerms[0] ?? phrase) : undefined;
+
+        return {
+          key: it.key,
+          group: it.group,
+          title: it.title,
+          subtitle: it.subtitle,
+          snippet,
+          score,
+          onSelect: it.onSelect,
+        };
+      })
+      .filter((r) => r.score > 0)
+      .sort((a, b) => b.score - a.score);
+
+    return scored;
+  }, [query, index]);
 
   const grouped = filtered.reduce<Record<string, Result[]>>((acc, r) => {
     (acc[r.group] ||= []).push(r);
@@ -224,11 +300,16 @@ export function ExpandingSearchDock({
                             className="w-full text-left px-3 py-2.5 rounded-lg hover:bg-white/5 transition-colors flex flex-col"
                           >
                             <span className="text-[14px] text-text-primary">
-                              {r.title}
+                              {highlight(r.title, query)}
                             </span>
                             {r.subtitle && (
                               <span className="text-[12px] text-text-tertiary mt-0.5">
                                 {r.subtitle}
+                              </span>
+                            )}
+                            {r.snippet && (
+                              <span className="text-[12px] text-text-secondary mt-1 leading-snug line-clamp-2">
+                                …{highlight(r.snippet, query)}…
                               </span>
                             )}
                           </button>
@@ -242,6 +323,142 @@ export function ExpandingSearchDock({
           </>
         )}
       </AnimatePresence>
+    </>
+  );
+}
+
+/* ─────────── Search utilities (smart full-text matching) ─────────── */
+
+/** Normalize: lowercase, ё→е, strip punctuation, collapse spaces */
+function normalize(s: string): string {
+  return s
+    .toLowerCase()
+    .replace(/ё/g, "е")
+    .replace(/[«»"'`(),.:;!?\-—–\[\]{}/\\|]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/** Crude Russian/English stemming — strip common suffixes/endings */
+function stem(word: string): string {
+  let w = word;
+  // Russian endings (longest first)
+  const ru = [
+    "ьное", "ьном", "ьная", "ьную", "ьные", "ьных", "ьными",
+    "ование", "ования", "ованию", "ованиям", "ованиями", "ованиях",
+    "иями", "иях", "иям", "ями", "ях", "ям",
+    "ость", "ости", "остью", "остях",
+    "ение", "ения", "ению", "ением", "ении",
+    "ция", "ции", "цию", "цией",
+    "ого", "его", "ому", "ему", "ыми", "ими",
+    "ает", "ают", "ует", "уют", "ить", "еть", "ать", "ять",
+    "ами", "ями", "ах", "ях", "ов", "ев", "ей",
+    "ая", "яя", "ое", "ее", "ые", "ие", "ый", "ий",
+    "ам", "ям", "ом", "ем", "ой", "ей",
+    "у", "ю", "а", "я", "о", "е", "ы", "и",
+  ];
+  for (const e of ru) {
+    if (w.length > e.length + 2 && w.endsWith(e)) {
+      w = w.slice(0, -e.length);
+      break;
+    }
+  }
+  // English endings
+  const en = ["ization", "ational", "tional", "ingly", "ing", "edly", "ed", "es", "s", "ly", "ies"];
+  for (const e of en) {
+    if (w.length > e.length + 2 && w.endsWith(e)) {
+      w = w.slice(0, -e.length);
+      break;
+    }
+  }
+  return w;
+}
+
+function tokenize(s: string): string[] {
+  return normalize(s)
+    .split(" ")
+    .filter((t) => t.length > 1)
+    .map(stem);
+}
+
+/** Lightweight synonym map — expands a token to several semantic variants */
+const SYNONYMS: Record<string, string[]> = {
+  ии: ["искусствен", "интеллект", "нейросет", "ai", "генератив"],
+  ai: ["искусствен", "интеллект", "ии", "нейросет"],
+  работ: ["труд", "профес", "занят", "вакан", "найм"],
+  труд: ["работ", "профес", "занят", "найм"],
+  замен: ["автоматиз", "увольн", "сокращ", "замещ"],
+  автоматиз: ["замен", "робот"],
+  прогноз: ["предсказ", "будущ", "сценар", "тренд"],
+  кризис: ["рецесс", "слом", "обвал"],
+  бизнес: ["компани", "корпорат", "рынок"],
+  деньг: ["финанс", "доход", "затрат", "капитал", "инвест"],
+  модел: ["gpt", "claude", "gemini", "llm"],
+  gpt: ["openai", "модел", "llm"],
+  claude: ["anthropic", "модел", "llm"],
+  пузыр: ["bubble", "перегрев"],
+  банк: ["финанс", "сбер"],
+  обучен: ["учеб", "образован", "курс"],
+  пандем: ["covid", "вирус", "карантин"],
+  войн: ["конфликт", "военн"],
+};
+
+function expandSynonyms(token: string): string[] {
+  const out = new Set<string>([token]);
+  for (const [key, variants] of Object.entries(SYNONYMS)) {
+    if (token.startsWith(key) || key.startsWith(token)) {
+      out.add(key);
+      for (const v of variants) out.add(v);
+    }
+  }
+  return Array.from(out);
+}
+
+function countOccurrences(haystack: string, needle: string): number {
+  if (!needle) return 0;
+  let count = 0;
+  let i = 0;
+  while ((i = haystack.indexOf(needle, i)) !== -1) {
+    count++;
+    i += needle.length;
+  }
+  return count;
+}
+
+/** Pull a ~140-char window around the first match */
+function extractSnippet(text: string, term: string): string {
+  const norm = normalize(text);
+  const idx = norm.indexOf(term);
+  if (idx === -1) return text.slice(0, 140);
+  const start = Math.max(0, idx - 60);
+  const end = Math.min(text.length, idx + 80);
+  return text.slice(start, end).trim();
+}
+
+/** Highlight tokens from query inside text */
+function highlight(text: string, query: string) {
+  const tokens = Array.from(
+    new Set(tokenize(query).flatMap(expandSynonyms).filter((t) => t.length > 1)),
+  );
+  if (tokens.length === 0) return text;
+  // Build a regex that matches any token at word-start (case-insensitive)
+  const escaped = tokens.map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  const re = new RegExp(`(${escaped.join("|")})`, "gi");
+  const parts = text.split(re);
+  return (
+    <>
+      {parts.map((part, i) =>
+        re.test(part) ? (
+          <mark
+            key={i}
+            className="bg-brand/25 text-text-primary rounded-sm px-0.5"
+          >
+            {part}
+          </mark>
+        ) : (
+          <span key={i}>{part}</span>
+        ),
+      )}
     </>
   );
 }
