@@ -122,9 +122,8 @@ export function HeroCard({
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.18, duration: 0.7, ease }}
-          className="mt-7 font-medium tracking-[-0.025em] max-w-[18ch]"
+          className="mt-7 font-medium tracking-[-0.025em] max-w-[18ch] text-4xl"
           style={{
-            fontSize: "clamp(40px, 6vw, 64px)",
             lineHeight: 1.06,
             color: "#f0f0f5",
           }}
@@ -137,9 +136,8 @@ export function HeroCard({
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.28, duration: 0.6, ease }}
-          className="mt-6 max-w-[640px]"
+          className="mt-6 max-w-[640px] text-2xl"
           style={{
-            fontSize: "clamp(18px, 2vw, 22px)",
             lineHeight: 1.45,
             color: "#d8d8e0",
             fontWeight: 400,
