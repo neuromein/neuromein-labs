@@ -55,44 +55,118 @@ export function ExpandingSearchDock({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isExpanded]);
 
-  // Build results from site data
-  const allResults: Result[] = [
-    {
-      key: "home",
-      group: "Разделы",
-      title: "Главная",
-      onSelect: () => navigate({ to: "/" }),
-    },
-    ...NAV_LINKS.map((l) => ({
-      key: `nav-${l.to}`,
-      group: "Разделы" as const,
-      title: l.label,
-      onSelect: () => navigate({ to: l.to }),
-    })),
-    ...RESEARCH.map((r) => ({
-      key: `r-${r.slug}`,
-      group: "Исследования" as const,
-      title: r.title,
-      subtitle: `${r.year} · ${r.short}`,
-      onSelect: () =>
-        navigate({ to: "/research/$slug", params: { slug: r.slug } }),
-    })),
-    ...PUBLICATIONS.map((p) => ({
-      key: `p-${p.slug}`,
-      group: "Публикации" as const,
-      title: p.title,
-      subtitle: `${p.dateLabel} · ${p.tag}`,
-      onSelect: () =>
-        navigate({ to: "/blog/$slug", params: { slug: p.slug } }),
-    })),
-  ];
+  // Build a searchable index from RESEARCH + PUBLICATIONS
+  const index = useMemo(() => {
+    const items: Array<{
+      key: string;
+      group: "Исследования" | "Публикации";
+      title: string;
+      subtitle: string;
+      fullText: string;
+      onSelect: () => void;
+    }> = [];
 
-  const q = query.trim().toLowerCase();
-  const filtered = q
-    ? allResults.filter((r) =>
-        `${r.title} ${r.subtitle ?? ""}`.toLowerCase().includes(q),
-      )
-    : allResults.slice(0, 6);
+    for (const r of RESEARCH) {
+      const toc = r.toc?.map((t) => t.label).join(" ") ?? "";
+      items.push({
+        key: `r-${r.slug}`,
+        group: "Исследования",
+        title: r.title,
+        subtitle: `${r.year} · ${r.short}`,
+        fullText: [
+          r.eyebrow,
+          r.title,
+          r.subtitle,
+          r.year,
+          r.date,
+          r.short,
+          r.long,
+          r.summary,
+          toc,
+        ]
+          .filter(Boolean)
+          .join(" "),
+        onSelect: () =>
+          navigate({ to: "/research/$slug", params: { slug: r.slug } }),
+      });
+    }
+
+    for (const p of PUBLICATIONS) {
+      items.push({
+        key: `p-${p.slug}`,
+        group: "Публикации",
+        title: p.title,
+        subtitle: `${p.dateLabel} · ${p.tag}`,
+        fullText: [p.title, p.tag, p.excerpt, p.dateLabel].filter(Boolean).join(" "),
+        onSelect: () =>
+          navigate({ to: "/blog/$slug", params: { slug: p.slug } }),
+      });
+    }
+
+    return items;
+  }, [navigate]);
+
+  const filtered: Result[] = useMemo(() => {
+    const raw = query.trim();
+    if (!raw) {
+      // Default state: show all items, sorted by group
+      return index.map((it) => ({
+        key: it.key,
+        group: it.group,
+        title: it.title,
+        subtitle: it.subtitle,
+        score: 0,
+        onSelect: it.onSelect,
+      }));
+    }
+
+    const tokens = tokenize(raw).map(expandSynonyms).flat();
+    if (tokens.length === 0) return [];
+
+    const scored = index
+      .map((it) => {
+        const haystack = normalize(it.fullText);
+        const haystackTitle = normalize(it.title);
+        let score = 0;
+        const matchedTerms: string[] = [];
+
+        for (const t of tokens) {
+          if (!t) continue;
+          // Title hit weighs more
+          if (haystackTitle.includes(t)) {
+            score += 10;
+            matchedTerms.push(t);
+          }
+          // Count occurrences in full text
+          const occ = countOccurrences(haystack, t);
+          if (occ > 0) {
+            score += occ * 2;
+            matchedTerms.push(t);
+          }
+        }
+
+        // Bonus: full phrase match
+        const phrase = normalize(raw);
+        if (phrase.length > 2 && haystack.includes(phrase)) score += 25;
+
+        const snippet =
+          score > 0 ? extractSnippet(it.fullText, matchedTerms[0] ?? phrase) : undefined;
+
+        return {
+          key: it.key,
+          group: it.group,
+          title: it.title,
+          subtitle: it.subtitle,
+          snippet,
+          score,
+          onSelect: it.onSelect,
+        };
+      })
+      .filter((r) => r.score > 0)
+      .sort((a, b) => b.score - a.score);
+
+    return scored;
+  }, [query, index]);
 
   const grouped = filtered.reduce<Record<string, Result[]>>((acc, r) => {
     (acc[r.group] ||= []).push(r);
