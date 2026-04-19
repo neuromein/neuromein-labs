@@ -60,9 +60,9 @@ export function Header() {
 
   return (
     <header className="fixed top-4 inset-x-0 z-50 flex justify-center px-4">
-      {/* Desktop pill — visible on lg and above (>= 1024px). Below uses mobile/burger. */}
+      {/* Desktop pill — fixed width, three-zone layout (logo / nav / search) */}
       <div
-        className="hidden lg:flex items-center gap-2 pl-5 pr-3 py-2.5 rounded-full shadow-[0_8px_30px_rgba(0,0,0,0.35)] transition-[background,backdrop-filter] duration-300"
+        className="hidden lg:grid grid-cols-[auto_1fr_auto] items-center gap-6 w-full max-w-[920px] pl-5 pr-3 py-2.5 rounded-full transition-[background,backdrop-filter] duration-300"
         style={{
           background: pillBg,
           backdropFilter: pillBlur,
@@ -76,21 +76,26 @@ export function Header() {
           <img src={logoUrl} alt="NEUROMEIN" className="h-[15px] w-auto opacity-95" />
         </Link>
         <nav
-          className="flex items-center ml-2 gap-0.5"
+          className="flex items-center justify-center gap-0.5"
           onMouseLeave={() => setHovered(null)}
         >
-          {items.map((l) => {
-            const isHovered = hovered === l.to;
-            const anyHovered = hovered !== null;
+          {items.map((l, i) => {
+            const hoveredIdx = hovered ? items.findIndex((x) => x.to === hovered) : -1;
+            // Magnetic spread: neighbors of the hovered item move outward
+            let offset = 0;
+            if (hoveredIdx !== -1 && hoveredIdx !== i) {
+              const dist = i - hoveredIdx;
+              const abs = Math.abs(dist);
+              if (abs <= 2) {
+                const sign = dist > 0 ? 1 : -1;
+                offset = sign * (abs === 1 ? 10 : 4);
+              }
+            }
             return (
               <motion.div
                 key={l.to}
-                animate={{
-                  marginLeft: anyHovered && !isHovered ? 6 : 1,
-                  marginRight: anyHovered && !isHovered ? 6 : 1,
-                  scale: isHovered ? 1.05 : 1,
-                }}
-                transition={{ type: "spring", stiffness: 300, damping: 26 }}
+                animate={{ x: offset }}
+                transition={{ type: "spring", stiffness: 320, damping: 28 }}
                 onMouseEnter={() => setHovered(l.to)}
               >
                 <NavPill to={l.to} exact={l.exact}>
@@ -103,7 +108,7 @@ export function Header() {
         <button
           aria-label="Поиск (⌘K)"
           onClick={() => setSearchOpen(true)}
-          className="ml-1 flex items-center justify-center h-10 w-10 rounded-full bg-bg-deep text-text-secondary hover:text-text-primary hover:bg-bg-card transition-colors"
+          className="justify-self-end flex items-center justify-center h-10 w-10 rounded-full bg-bg-deep text-text-secondary hover:text-text-primary hover:bg-bg-card transition-colors"
         >
           <SearchIcon />
         </button>
