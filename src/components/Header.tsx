@@ -50,11 +50,13 @@ export function Header() {
 
   const items = [{ to: "/", label: "Главная", exact: true }, ...NAV_LINKS.map((l) => ({ ...l, exact: false }))];
 
-  // Pill background style: changes when scrolled
+  // Pill background — liquid glass: very translucent, strong blur, subtle saturation boost
   const pillBg = scrolled
-    ? "rgba(8, 8, 13, 0.92)"
-    : "rgba(8, 8, 13, 0.55)";
-  const pillBlur = scrolled ? "blur(20px)" : "blur(14px)";
+    ? "rgba(12, 12, 18, 0.55)"
+    : "rgba(12, 12, 18, 0.32)";
+  const pillBlur = scrolled
+    ? "blur(28px) saturate(180%)"
+    : "blur(22px) saturate(160%)";
 
   return (
     <header className="fixed top-4 inset-x-0 z-50 flex justify-center px-4">
