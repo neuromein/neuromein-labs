@@ -166,22 +166,9 @@ export function HeroCard({
           transition={{ delay: 0.44, duration: 0.6, ease }}
           className="mt-9 flex flex-wrap items-center gap-2.5"
         >
-          <a
-            href={`mailto:${SITE.email}`}
-            className="inline-flex items-center gap-2 h-11 pl-3 pr-4 rounded-full text-[14px] transition-colors"
-            style={{
-              background: "rgba(20,20,28,0.7)",
-              border: "1px solid rgba(255,255,255,0.08)",
-              color: "#d8d8e0",
-              backdropFilter: "blur(10px)",
-              WebkitBackdropFilter: "blur(10px)",
-            }}
-          >
-            <SocialIconWrap>
-              <MailIcon />
-            </SocialIconWrap>
-            <span>{SITE.email}</span>
-          </a>
+          <SocialIconLink href={`mailto:${SITE.email}`} label={SITE.email}>
+            <MailIcon />
+          </SocialIconLink>
 
           <SocialIconLink href={SITE.telegram} label="Telegram">
             <TelegramIcon />
