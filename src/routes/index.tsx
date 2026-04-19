@@ -7,13 +7,13 @@ import { HomePublications } from "@/components/HomePublications";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "NEUROMEIN — Андрей Майнгардт. Независимый AI-аналитик" },
+      { title: "NEUROMEIN — Андрей Майнгардт. AI-стратег и аналитик" },
       {
         name: "description",
         content:
-          "Независимый AI-аналитик Андрей Майнгардт исследует трансформацию рынка труда в горизонте 2026–2030. Аналитика, исследования и проверяемые прогнозы.",
+          "AI-стратег и аналитик Андрей Майнгардт исследует трансформацию рынка труда в горизонте 2026–2030. Аналитика, исследования и проверяемые прогнозы.",
       },
-      { property: "og:title", content: "NEUROMEIN — Андрей Майнгардт. Независимый AI-аналитик" },
+      { property: "og:title", content: "NEUROMEIN — Андрей Майнгардт. AI-стратег и аналитик" },
       {
         property: "og:description",
         content:
@@ -30,7 +30,7 @@ export const Route = createFileRoute("/")({
           "@type": "Person",
           name: "Андрей Майнгардт",
           alternateName: "Andrew Meinhardt",
-          jobTitle: "Независимый AI-аналитик",
+          jobTitle: "AI-стратег и аналитик",
           url: "https://neuromein.ru",
           sameAs: [
             "https://t.me/neuromein",

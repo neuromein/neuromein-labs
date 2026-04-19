@@ -93,8 +93,6 @@ function ResearchPage() {
                 <span>{r.date}</span>
                 <span aria-hidden className="text-border-strong">·</span>
                 <span>Андрей Майнгардт</span>
-                <span aria-hidden className="text-border-strong">·</span>
-                <span>{r.readTime}</span>
               </div>
             </FadeIn>
 

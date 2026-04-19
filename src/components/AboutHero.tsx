@@ -77,7 +77,7 @@ export function AboutHero() {
             wordBreak: "keep-all",
           }}
         >
-          Независимый AI-аналитик · Основатель NEUROMEIN · AI Strategist в WMT AI
+          AI-стратег и аналитик · Основатель NEUROMEIN · AI Strategist в WMT AI
         </motion.p>
 
         <motion.div

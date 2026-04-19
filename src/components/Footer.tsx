@@ -14,7 +14,7 @@ export function Footer() {
               {SITE.author}
             </div>
             <p className="mt-2 text-[14px] text-text-secondary leading-relaxed">
-              Независимый аналитический ресурс об искусственном интеллекте и рынке труда.
+              AI-стратег и аналитик. Аналитический ресурс об искусственном интеллекте и рынке труда.
             </p>
 
             {/* Telegram CTA — primary subscribe action */}

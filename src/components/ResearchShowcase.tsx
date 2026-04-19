@@ -80,7 +80,7 @@ export function ResearchShowcase() {
 
               <div className="relative mt-10 flex items-center justify-between">
                 <span className="text-[12px] text-text-tertiary">
-                  {r.date} · {r.readTime}
+                  {r.date}
                 </span>
                 <span className="flex items-center gap-2 h-10 px-4 rounded-full border-[0.5px] border-border-strong bg-bg-card/60 backdrop-blur text-[13px] text-text-primary group-hover:bg-bg-card group-hover:border-brand/40 transition-all">
                   Читать
