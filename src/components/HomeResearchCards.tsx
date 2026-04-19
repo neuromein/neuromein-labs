@@ -108,7 +108,7 @@ function ResearchCard({
               className="text-[11px] uppercase"
               style={{ color: "#5a5a6a", letterSpacing: "0.06em" }}
             >
-              {eyebrow} · {year}
+              {year ? `${eyebrow} · ${year}` : eyebrow}
             </span>
             <h3
               className="mt-3 text-[24px] lg:text-[26px] font-medium leading-[1.15] tracking-[-0.02em]"
