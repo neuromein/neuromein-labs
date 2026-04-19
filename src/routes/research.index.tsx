@@ -6,7 +6,7 @@ import { ArrowLink } from "@/components/ui-bits";
 import { Reveal } from "@/components/Reveal";
 import { RESEARCH } from "@/lib/site";
 
-export const Route = createFileRoute("/research")({
+export const Route = createFileRoute("/research/")({
   head: () => ({
     meta: [
       { title: "Исследования — NEUROMEIN | Андрей Майнгардт" },

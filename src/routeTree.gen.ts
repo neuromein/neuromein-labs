@@ -9,20 +9,15 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ResearchRouteImport } from './routes/research'
 import { Route as PredictionsRouteImport } from './routes/predictions'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as BlogRouteImport } from './routes/blog'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ResearchIndexRouteImport } from './routes/research.index'
 import { Route as ResearchSlugRouteImport } from './routes/research.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 
-const ResearchRoute = ResearchRouteImport.update({
-  id: '/research',
-  path: '/research',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const PredictionsRoute = PredictionsRouteImport.update({
   id: '/predictions',
   path: '/predictions',
@@ -48,10 +43,15 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResearchIndexRoute = ResearchIndexRouteImport.update({
+  id: '/research/',
+  path: '/research/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ResearchSlugRoute = ResearchSlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => ResearchRoute,
+  id: '/research/$slug',
+  path: '/research/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/$slug',
@@ -65,9 +65,9 @@ export interface FileRoutesByFullPath {
   '/blog': typeof BlogRouteWithChildren
   '/faq': typeof FaqRoute
   '/predictions': typeof PredictionsRoute
-  '/research': typeof ResearchRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
   '/research/$slug': typeof ResearchSlugRoute
+  '/research/': typeof ResearchIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -75,9 +75,9 @@ export interface FileRoutesByTo {
   '/blog': typeof BlogRouteWithChildren
   '/faq': typeof FaqRoute
   '/predictions': typeof PredictionsRoute
-  '/research': typeof ResearchRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
   '/research/$slug': typeof ResearchSlugRoute
+  '/research': typeof ResearchIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -86,9 +86,9 @@ export interface FileRoutesById {
   '/blog': typeof BlogRouteWithChildren
   '/faq': typeof FaqRoute
   '/predictions': typeof PredictionsRoute
-  '/research': typeof ResearchRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
   '/research/$slug': typeof ResearchSlugRoute
+  '/research/': typeof ResearchIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -98,9 +98,9 @@ export interface FileRouteTypes {
     | '/blog'
     | '/faq'
     | '/predictions'
-    | '/research'
     | '/blog/$slug'
     | '/research/$slug'
+    | '/research/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -108,9 +108,9 @@ export interface FileRouteTypes {
     | '/blog'
     | '/faq'
     | '/predictions'
-    | '/research'
     | '/blog/$slug'
     | '/research/$slug'
+    | '/research'
   id:
     | '__root__'
     | '/'
@@ -118,9 +118,9 @@ export interface FileRouteTypes {
     | '/blog'
     | '/faq'
     | '/predictions'
-    | '/research'
     | '/blog/$slug'
     | '/research/$slug'
+    | '/research/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -129,18 +129,12 @@ export interface RootRouteChildren {
   BlogRoute: typeof BlogRouteWithChildren
   FaqRoute: typeof FaqRoute
   PredictionsRoute: typeof PredictionsRoute
-  ResearchRoute: typeof ResearchRouteWithChildren
+  ResearchSlugRoute: typeof ResearchSlugRoute
+  ResearchIndexRoute: typeof ResearchIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/research': {
-      id: '/research'
-      path: '/research'
-      fullPath: '/research'
-      preLoaderRoute: typeof ResearchRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/predictions': {
       id: '/predictions'
       path: '/predictions'
@@ -176,12 +170,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/research/': {
+      id: '/research/'
+      path: '/research'
+      fullPath: '/research/'
+      preLoaderRoute: typeof ResearchIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/research/$slug': {
       id: '/research/$slug'
-      path: '/$slug'
+      path: '/research/$slug'
       fullPath: '/research/$slug'
       preLoaderRoute: typeof ResearchSlugRouteImport
-      parentRoute: typeof ResearchRoute
+      parentRoute: typeof rootRouteImport
     }
     '/blog/$slug': {
       id: '/blog/$slug'
@@ -203,25 +204,14 @@ const BlogRouteChildren: BlogRouteChildren = {
 
 const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
 
-interface ResearchRouteChildren {
-  ResearchSlugRoute: typeof ResearchSlugRoute
-}
-
-const ResearchRouteChildren: ResearchRouteChildren = {
-  ResearchSlugRoute: ResearchSlugRoute,
-}
-
-const ResearchRouteWithChildren = ResearchRoute._addFileChildren(
-  ResearchRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   BlogRoute: BlogRouteWithChildren,
   FaqRoute: FaqRoute,
   PredictionsRoute: PredictionsRoute,
-  ResearchRoute: ResearchRouteWithChildren,
+  ResearchSlugRoute: ResearchSlugRoute,
+  ResearchIndexRoute: ResearchIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
