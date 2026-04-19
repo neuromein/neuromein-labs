@@ -102,14 +102,8 @@ export function SpeakingSlider() {
     <div>
       <div className="flex items-end justify-between gap-4 mb-8">
         <div>
-          <div
-            className="text-[11px] uppercase"
-            style={{ color: "#5a5a6a", letterSpacing: "0.06em" }}
-          >
-            Опыт
-          </div>
           <h2
-            className="mt-2 text-[26px] lg:text-[30px] font-medium leading-[1.15] tracking-[-0.02em]"
+            className="text-[26px] lg:text-[30px] font-medium leading-[1.15] tracking-[-0.02em]"
             style={{ color: "#f0f0f5" }}
           >
             Выступления и обучения
