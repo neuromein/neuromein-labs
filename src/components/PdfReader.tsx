@@ -20,6 +20,16 @@ export function PdfReader({ file, title }: PdfReaderProps) {
   const [error, setError] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
+  const pdfOptions = useMemo(
+    () => ({
+      cMapUrl: "https://unpkg.com/pdfjs-dist@4.8.69/cmaps/",
+      cMapPacked: true,
+      standardFontDataUrl:
+        "https://unpkg.com/pdfjs-dist@4.8.69/standard_fonts/",
+    }),
+    [],
+  );
+
   useEffect(() => {
     if (!containerRef.current) return;
     const ro = new ResizeObserver((entries) => {
