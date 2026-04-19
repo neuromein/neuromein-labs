@@ -94,7 +94,7 @@ export function HeroCard({
       transition={{ duration: 0.7, ease }}
       className="relative overflow-hidden rounded-[28px] border-[0.5px] border-border bg-bg-deep"
     >
-      <InteractiveNeuralBg />
+      <PaperShaderBg />
 
       <div className="relative z-10 p-7 sm:p-10 lg:p-14 pointer-events-auto">
         {/* Avatar */}
