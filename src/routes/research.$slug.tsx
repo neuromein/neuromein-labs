@@ -163,7 +163,7 @@ function ResearchPage() {
                   <div className="mt-8">
                     <div className="label-eyebrow mb-4">Оглавление</div>
                     <ol className="space-y-2.5 list-none">
-                      {r.toc.map((t, idx) => (
+                      {r.toc.map((t: { id: string; label: string }, idx: number) => (
                         <li
                           key={t.id}
                           className="text-[14px] text-text-secondary leading-[1.5] flex gap-3"
