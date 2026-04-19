@@ -247,14 +247,15 @@ export function SpeakingSlider() {
 
           <div
             ref={scrollerRef}
-            className="flex gap-5 overflow-x-auto pb-4 px-4 sm:px-6 lg:px-0 snap-x snap-mandatory scroll-smooth no-scrollbar"
+            className="flex gap-5 overflow-x-auto pb-4 px-4 sm:px-6 lg:px-0 no-scrollbar"
             style={{
               scrollbarWidth: "none",
               msOverflowStyle: "none",
             }}
           >
-            {ITEMS.map((item) => (
-              <SpeakingCard key={item.id} item={item} />
+            {/* Дублируем список для бесшовного зацикливания авто-прокрутки */}
+            {[...ITEMS, ...ITEMS].map((item, idx) => (
+              <SpeakingCard key={`${item.id}-${idx}`} item={item} />
             ))}
           </div>
         </div>
