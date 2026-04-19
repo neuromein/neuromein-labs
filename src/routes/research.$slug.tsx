@@ -1,8 +1,13 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
+import { lazy, Suspense, useEffect, useState } from "react";
 import { Layout } from "@/components/Layout";
 import { Reveal, FadeIn } from "@/components/Reveal";
 import { ArrowLink } from "@/components/ui-bits";
 import { RESEARCH } from "@/lib/site";
+
+const PdfReader = lazy(() =>
+  import("@/components/PdfReader").then((m) => ({ default: m.PdfReader })),
+);
 
 export const Route = createFileRoute("/research/$slug")({
   loader: ({ params }) => {
@@ -55,6 +60,8 @@ export const Route = createFileRoute("/research/$slug")({
 function ResearchPage() {
   const { item: r } = Route.useLoaderData();
   const other = RESEARCH.find((x) => x.slug !== r.slug);
+  const [isClient, setIsClient] = useState(false);
+  useEffect(() => setIsClient(true), []);
 
   return (
     <Layout>
@@ -215,88 +222,28 @@ function ResearchPage() {
               </div>
             </div>
 
-            {/* Desktop / planshet: встроенный PDF-вьюер */}
-            <div
-              className="hidden md:block bg-[#0a0a10] relative"
-              style={{ height: "min(85vh, 1100px)" }}
-            >
-              <object
-                data={`${r.pdf}#view=FitH&toolbar=1&navpanes=0`}
-                type="application/pdf"
-                className="w-full h-full"
-                style={{ border: 0 }}
-              >
-                <div className="w-full h-full flex items-center justify-center p-8">
-                  <div className="text-center max-w-md">
-                    <div className="label-eyebrow mb-3">PDF не открылся в браузере</div>
-                    <p className="text-[14px] text-text-secondary mb-6 leading-[1.6]">
-                      Ваш браузер не отобразил встроенный просмотр.
-                      Откройте PDF в новой вкладке или скачайте его на устройство.
-                    </p>
-                    <div className="flex items-center justify-center gap-3">
-                      <a
-                        href={r.pdf}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="inline-flex items-center gap-2 h-11 px-5 rounded-full text-[14px] font-medium border-[0.5px] border-border-strong text-text-primary hover:bg-bg-card/60 transition-colors"
-                      >
-                        Открыть в новой вкладке
-                      </a>
-                      <a
-                        href={r.pdf}
-                        download
-                        className="inline-flex items-center gap-2 h-11 px-5 rounded-full text-[14px] font-medium"
-                        style={{ background: "var(--brand)", color: "#0a0a10" }}
-                      >
-                        Скачать PDF
-                      </a>
-                    </div>
+            {/* Универсальный PDF-вьюер на pdf.js — работает во всех браузерах */}
+            {isClient ? (
+              <Suspense
+                fallback={
+                  <div
+                    className="bg-[#0a0a10] flex items-center justify-center"
+                    style={{ height: "min(85vh, 1100px)" }}
+                  >
+                    <div className="text-text-tertiary text-[13px]">Загрузка PDF…</div>
                   </div>
-                </div>
-              </object>
-            </div>
-
-            {/* Mobile: PDF inline не работает в iOS/Android Chrome — показываем CTA */}
-            <div className="md:hidden bg-[#0a0a10] px-6 py-12">
-              <div className="text-center max-w-sm mx-auto">
-                <div
-                  className="mx-auto mb-5 overflow-hidden rounded-md"
-                  style={{
-                    width: 100,
-                    height: 138,
-                    border: "1px solid #1c1c28",
-                    background: "#0a0a10",
-                  }}
-                >
-                  <img
-                    src={r.cover}
-                    alt={r.title}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-                <p className="text-[14px] text-text-secondary mb-6 leading-[1.6]">
-                  Откройте PDF в браузере или скачайте на устройство — {r.pages} страниц.
-                </p>
-                <div className="flex flex-col gap-3">
-                  <a
-                    href={r.pdf}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="inline-flex items-center justify-center gap-2 h-11 px-5 rounded-full text-[14px] font-medium"
-                    style={{ background: "var(--brand)", color: "#0a0a10" }}
-                  >
-                    Открыть PDF
-                  </a>
-                  <a
-                    href={r.pdf}
-                    download
-                    className="inline-flex items-center justify-center gap-2 h-11 px-5 rounded-full text-[14px] font-medium border-[0.5px] border-border-strong text-text-primary"
-                  >
-                    Скачать на устройство
-                  </a>
-                </div>
+                }
+              >
+                <PdfReader file={r.pdf} title={r.title} />
+              </Suspense>
+            ) : (
+              <div
+                className="bg-[#0a0a10] flex items-center justify-center"
+                style={{ height: "min(85vh, 1100px)" }}
+              >
+                <div className="text-text-tertiary text-[13px]">Загрузка PDF…</div>
               </div>
-            </div>
+            )}
 
             <div className="px-6 lg:px-8 py-4 border-t border-border text-[12px] text-text-tertiary">
               Если PDF не отображается, воспользуйтесь кнопкой «Скачать PDF» выше.
