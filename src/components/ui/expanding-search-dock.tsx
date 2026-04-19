@@ -326,3 +326,139 @@ export function ExpandingSearchDock({
     </>
   );
 }
+
+/* ─────────── Search utilities (smart full-text matching) ─────────── */
+
+/** Normalize: lowercase, ё→е, strip punctuation, collapse spaces */
+function normalize(s: string): string {
+  return s
+    .toLowerCase()
+    .replace(/ё/g, "е")
+    .replace(/[«»"'`(),.:;!?\-—–\[\]{}/\\|]/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+
+/** Crude Russian/English stemming — strip common suffixes/endings */
+function stem(word: string): string {
+  let w = word;
+  // Russian endings (longest first)
+  const ru = [
+    "ьное", "ьном", "ьная", "ьную", "ьные", "ьных", "ьными",
+    "ование", "ования", "ованию", "ованиям", "ованиями", "ованиях",
+    "иями", "иях", "иям", "ями", "ях", "ям",
+    "ость", "ости", "остью", "остях",
+    "ение", "ения", "ению", "ением", "ении",
+    "ция", "ции", "цию", "цией",
+    "ого", "его", "ому", "ему", "ыми", "ими",
+    "ает", "ают", "ует", "уют", "ить", "еть", "ать", "ять",
+    "ами", "ями", "ах", "ях", "ов", "ев", "ей",
+    "ая", "яя", "ое", "ее", "ые", "ие", "ый", "ий",
+    "ам", "ям", "ом", "ем", "ой", "ей",
+    "у", "ю", "а", "я", "о", "е", "ы", "и",
+  ];
+  for (const e of ru) {
+    if (w.length > e.length + 2 && w.endsWith(e)) {
+      w = w.slice(0, -e.length);
+      break;
+    }
+  }
+  // English endings
+  const en = ["ization", "ational", "tional", "ingly", "ing", "edly", "ed", "es", "s", "ly", "ies"];
+  for (const e of en) {
+    if (w.length > e.length + 2 && w.endsWith(e)) {
+      w = w.slice(0, -e.length);
+      break;
+    }
+  }
+  return w;
+}
+
+function tokenize(s: string): string[] {
+  return normalize(s)
+    .split(" ")
+    .filter((t) => t.length > 1)
+    .map(stem);
+}
+
+/** Lightweight synonym map — expands a token to several semantic variants */
+const SYNONYMS: Record<string, string[]> = {
+  ии: ["искусствен", "интеллект", "нейросет", "ai", "генератив"],
+  ai: ["искусствен", "интеллект", "ии", "нейросет"],
+  работ: ["труд", "профес", "занят", "вакан", "найм"],
+  труд: ["работ", "профес", "занят", "найм"],
+  замен: ["автоматиз", "увольн", "сокращ", "замещ"],
+  автоматиз: ["замен", "робот"],
+  прогноз: ["предсказ", "будущ", "сценар", "тренд"],
+  кризис: ["рецесс", "слом", "обвал"],
+  бизнес: ["компани", "корпорат", "рынок"],
+  деньг: ["финанс", "доход", "затрат", "капитал", "инвест"],
+  модел: ["gpt", "claude", "gemini", "llm"],
+  gpt: ["openai", "модел", "llm"],
+  claude: ["anthropic", "модел", "llm"],
+  пузыр: ["bubble", "перегрев"],
+  банк: ["финанс", "сбер"],
+  обучен: ["учеб", "образован", "курс"],
+  пандем: ["covid", "вирус", "карантин"],
+  войн: ["конфликт", "военн"],
+};
+
+function expandSynonyms(token: string): string[] {
+  const out = new Set<string>([token]);
+  for (const [key, variants] of Object.entries(SYNONYMS)) {
+    if (token.startsWith(key) || key.startsWith(token)) {
+      out.add(key);
+      for (const v of variants) out.add(v);
+    }
+  }
+  return Array.from(out);
+}
+
+function countOccurrences(haystack: string, needle: string): number {
+  if (!needle) return 0;
+  let count = 0;
+  let i = 0;
+  while ((i = haystack.indexOf(needle, i)) !== -1) {
+    count++;
+    i += needle.length;
+  }
+  return count;
+}
+
+/** Pull a ~140-char window around the first match */
+function extractSnippet(text: string, term: string): string {
+  const norm = normalize(text);
+  const idx = norm.indexOf(term);
+  if (idx === -1) return text.slice(0, 140);
+  const start = Math.max(0, idx - 60);
+  const end = Math.min(text.length, idx + 80);
+  return text.slice(start, end).trim();
+}
+
+/** Highlight tokens from query inside text */
+function highlight(text: string, query: string) {
+  const tokens = Array.from(
+    new Set(tokenize(query).flatMap(expandSynonyms).filter((t) => t.length > 1)),
+  );
+  if (tokens.length === 0) return text;
+  // Build a regex that matches any token at word-start (case-insensitive)
+  const escaped = tokens.map((t) => t.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  const re = new RegExp(`(${escaped.join("|")})`, "gi");
+  const parts = text.split(re);
+  return (
+    <>
+      {parts.map((part, i) =>
+        re.test(part) ? (
+          <mark
+            key={i}
+            className="bg-brand/25 text-text-primary rounded-sm px-0.5"
+          >
+            {part}
+          </mark>
+        ) : (
+          <span key={i}>{part}</span>
+        ),
+      )}
+    </>
+  );
+}
