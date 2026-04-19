@@ -254,6 +254,7 @@ function ResearchPage() {
         {other && (
           <Reveal>
             <Link
+              from="/"
               to="/research/$slug"
               params={{ slug: other.slug }}
               className="block group mt-4 rounded-[24px] border-[0.5px] border-border bg-bg-card/40 p-8 lg:p-10 hover:border-border-strong hover:bg-bg-card/60 transition-colors duration-300"

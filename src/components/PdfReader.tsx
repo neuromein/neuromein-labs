@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import "react-pdf/dist/Page/AnnotationLayer.css";
 import "react-pdf/dist/Page/TextLayer.css";
@@ -19,6 +19,16 @@ export function PdfReader({ file, title }: PdfReaderProps) {
   const [width, setWidth] = useState<number>(900);
   const [error, setError] = useState<string | null>(null);
   const containerRef = useRef<HTMLDivElement>(null);
+
+  const pdfOptions = useMemo(
+    () => ({
+      cMapUrl: "https://unpkg.com/pdfjs-dist@4.8.69/cmaps/",
+      cMapPacked: true,
+      standardFontDataUrl:
+        "https://unpkg.com/pdfjs-dist@4.8.69/standard_fonts/",
+    }),
+    [],
+  );
 
   useEffect(() => {
     if (!containerRef.current) return;
@@ -70,12 +80,7 @@ export function PdfReader({ file, title }: PdfReaderProps) {
               Не удалось загрузить PDF
             </div>
           }
-          options={{
-            cMapUrl: "https://unpkg.com/pdfjs-dist@4.8.69/cmaps/",
-            cMapPacked: true,
-            standardFontDataUrl:
-              "https://unpkg.com/pdfjs-dist@4.8.69/standard_fonts/",
-          }}
+          options={pdfOptions}
         >
           {Array.from({ length: numPages }, (_, i) => (
             <div
