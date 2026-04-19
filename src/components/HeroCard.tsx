@@ -92,7 +92,7 @@ export function HeroCard({
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease }}
-      className="relative overflow-hidden rounded-[28px] border-[0.5px] border-border bg-bg-deep"
+      className="relative overflow-hidden rounded-[28px] border-[0.5px] border-border"
     >
       <PaperShaderBg />
 
