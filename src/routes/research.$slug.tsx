@@ -66,44 +66,34 @@ function ResearchPage() {
   return (
     <Layout>
       <div className="max-w-[1320px] mx-auto pb-20">
-        {/* HERO — журнальная вёрстка */}
-        <article
-          className="relative overflow-hidden rounded-[20px] noise-overlay"
-          style={{
-            background: "linear-gradient(180deg, #0e0e16 0%, #08080d 100%)",
-            border: "1px solid rgba(255,255,255,0.05)",
-          }}
-        >
-          <div className="aurora-bg" aria-hidden />
-
-          <div className="relative z-10 px-6 lg:px-14 py-14 lg:py-20">
+        {/* HERO с обложкой и метаданными */}
+        <article className="rounded-[24px] border-[0.5px] border-border bg-bg-reading overflow-hidden">
+          <div className="px-6 lg:px-12 py-16 lg:py-20">
             <FadeIn>
-              <nav className="font-mono-meta text-[11px] uppercase flex items-center gap-2 flex-wrap" style={{ color: "#5a5a6a", letterSpacing: "0.16em" }}>
+              <nav className="text-[13px] text-text-tertiary flex items-center gap-2 flex-wrap">
                 <Link to="/" className="hover:text-text-secondary transition-colors">
                   Главная
                 </Link>
-                <span aria-hidden style={{ color: "#2a2a35" }}>/</span>
+                <span aria-hidden>/</span>
                 <Link to="/research" className="hover:text-text-secondary transition-colors">
                   Исследования
                 </Link>
-                <span aria-hidden style={{ color: "#2a2a35" }}>/</span>
-                <span style={{ color: "#9a9aaa" }}>{r.eyebrow}</span>
+                <span aria-hidden>/</span>
+                <span className="text-text-secondary">{r.title}</span>
               </nav>
             </FadeIn>
 
-            <div className="mt-12 lg:mt-16 grid grid-cols-1 lg:grid-cols-[380px_1fr] gap-12 lg:gap-20 items-start">
-              {/* Обложка — лежит на столе */}
+            <div className="mt-12 grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-10 lg:gap-14 items-start">
+              {/* Обложка */}
               <FadeIn delay={0.05}>
                 <div
                   className="overflow-hidden rounded-[12px] mx-auto lg:mx-0"
                   style={{
-                    maxWidth: 380,
+                    maxWidth: 280,
                     aspectRatio: "1 / 1.414",
-                    border: "1px solid rgba(255,255,255,0.06)",
+                    border: "1px solid #1c1c28",
                     background: "#0a0a10",
-                    boxShadow:
-                      "0 50px 100px -30px rgba(0,0,0,0.85), 0 20px 40px -15px rgba(0,0,0,0.5)",
-                    transform: "rotate(-1.2deg)",
+                    boxShadow: "0 20px 60px rgba(0,0,0,0.4)",
                   }}
                 >
                   <img
@@ -117,64 +107,36 @@ function ResearchPage() {
               {/* Заголовок и метаданные */}
               <div>
                 <FadeIn delay={0.08}>
-                  <div
-                    className="font-mono-meta text-[11px] uppercase flex items-center gap-3"
-                    style={{ color: "#7a7a8a", letterSpacing: "0.18em" }}
-                  >
-                    <span>{r.eyebrow}</span>
-                    <span aria-hidden style={{ color: "#2a2a35" }}>·</span>
-                    <span>{r.year}</span>
-                  </div>
-                  <h1
-                    className="font-display-serif mt-6 max-w-[18ch]"
-                    style={{
-                      fontSize: "clamp(44px, 6vw, 80px)",
-                      lineHeight: 1.0,
-                      color: "#f0f0f5",
-                    }}
-                  >
+                  <span className="label-eyebrow">{r.eyebrow} · {r.year}</span>
+                  <h1 className="mt-4 text-[40px] sm:text-[52px] font-medium text-text-primary leading-[1.02] tracking-[-0.025em]">
                     {r.title}
                   </h1>
                   {r.subtitle && (
-                    <p
-                      className="mt-6 max-w-[560px]"
-                      style={{
-                        fontSize: 19,
-                        lineHeight: 1.45,
-                        color: "#9a9aaa",
-                        fontStyle: "italic",
-                        fontFamily: "var(--font-serif)",
-                      }}
-                    >
+                    <p className="mt-4 text-[18px] text-text-secondary leading-[1.4] max-w-[560px]">
                       {r.subtitle}
                     </p>
                   )}
                 </FadeIn>
 
-                <FadeIn delay={0.14}>
-                  <div
-                    className="mt-8 font-mono-meta text-[11px] uppercase flex items-center gap-3 flex-wrap"
-                    style={{ color: "#5a5a6a", letterSpacing: "0.14em" }}
-                  >
+                <FadeIn delay={0.12}>
+                  <div className="mt-6 text-[13px] text-text-tertiary flex items-center gap-3 flex-wrap">
                     <span>{r.date}</span>
-                    <span aria-hidden style={{ color: "#2a2a35" }}>—</span>
+                    <span aria-hidden className="text-border-strong">·</span>
                     <span>Андрей Майнгардт</span>
-                    <span aria-hidden style={{ color: "#2a2a35" }}>—</span>
+                    <span aria-hidden className="text-border-strong">·</span>
                     <span>{r.pages} стр.</span>
                   </div>
                 </FadeIn>
 
                 {/* CTA */}
-                <FadeIn delay={0.2}>
-                  <div className="mt-10 flex flex-wrap gap-4 items-center">
+                <FadeIn delay={0.16}>
+                  <div className="mt-8 flex flex-wrap gap-3">
                     <a
                       href="#read"
-                      className="inline-flex items-center gap-2 h-12 px-6 rounded-[10px] text-[14px] font-medium transition-all"
+                      className="inline-flex items-center gap-2 h-11 px-5 rounded-full text-[14px] font-medium transition-colors"
                       style={{
                         background: "var(--brand)",
-                        color: "#08080d",
-                        boxShadow:
-                          "0 12px 36px -10px color-mix(in oklch, var(--brand) 50%, transparent)",
+                        color: "#0a0a10",
                       }}
                     >
                       Читать на сайте
@@ -185,69 +147,38 @@ function ResearchPage() {
                     <a
                       href={r.pdf}
                       download
-                      className="font-mono-meta inline-flex items-center gap-2 h-12 px-5 rounded-[10px] text-[12px] uppercase transition-colors hover:text-text-primary"
-                      style={{
-                        border: "1px solid rgba(255,255,255,0.10)",
-                        color: "#9a9aaa",
-                        letterSpacing: "0.14em",
-                      }}
+                      className="inline-flex items-center gap-2 h-11 px-5 rounded-full text-[14px] font-medium border-[0.5px] border-border-strong text-text-primary hover:bg-bg-card/60 transition-colors"
                     >
                       Скачать PDF
+                      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
+                        <path d="M8 2v9M4 7l4 4 4-4M3 14h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
                     </a>
                   </div>
                 </FadeIn>
 
-                {/* Краткое содержание — выделенная цитата */}
-                <FadeIn delay={0.26}>
-                  <div className="mt-12 relative pl-8">
-                    <div
-                      aria-hidden
-                      className="absolute left-0 top-1 bottom-1"
-                      style={{
-                        width: 2,
-                        background:
-                          "linear-gradient(180deg, var(--brand), var(--accent-cyan), transparent)",
-                      }}
-                    />
-                    <div className="label-eyebrow mb-4">Краткое содержание</div>
-                    <p
-                      className="text-[17px] leading-[1.65] max-w-[640px]"
-                      style={{ color: "#c5c5d0", fontFamily: "var(--font-serif)", fontSize: 20 }}
-                    >
-                      {r.summary}
-                    </p>
+                {/* Краткое содержание */}
+                <FadeIn delay={0.2}>
+                  <div className="mt-10 rounded-[16px] bg-bg-card/60 p-6 lg:p-7 border-[0.5px] border-border">
+                    <div className="label-eyebrow mb-3">Краткое содержание</div>
+                    <p className="text-[15px] text-text-secondary leading-[1.7]">{r.summary}</p>
                   </div>
                 </FadeIn>
 
-                {/* Оглавление — hairline лист */}
-                <FadeIn delay={0.32}>
-                  <div className="mt-12">
-                    <div className="label-eyebrow mb-6">Оглавление</div>
-                    <ol className="list-none">
+                {/* Оглавление */}
+                <FadeIn delay={0.24}>
+                  <div className="mt-8">
+                    <div className="label-eyebrow mb-4">Оглавление</div>
+                    <ol className="space-y-2.5 list-none">
                       {r.toc.map((t: { id: string; label: string }, idx: number) => (
                         <li
                           key={t.id}
-                          className="group flex items-baseline gap-5 py-3 transition-colors"
-                          style={{
-                            borderTop:
-                              idx === 0
-                                ? "1px solid rgba(255,255,255,0.06)"
-                                : "none",
-                            borderBottom: "1px solid rgba(255,255,255,0.06)",
-                          }}
+                          className="text-[14px] text-text-secondary leading-[1.5] flex gap-3"
                         >
-                          <span
-                            className="font-mono-meta tabular-nums text-[12px] shrink-0"
-                            style={{ color: "#5a5a6a", letterSpacing: "0.1em", width: 32 }}
-                          >
+                          <span className="text-text-tertiary tabular-nums w-6 shrink-0">
                             {String(idx + 1).padStart(2, "0")}
                           </span>
-                          <span
-                            className="text-[15px] leading-[1.45] transition-colors group-hover:text-text-primary"
-                            style={{ color: "#9a9aaa" }}
-                          >
-                            {t.label}
-                          </span>
+                          <span>{t.label}</span>
                         </li>
                       ))}
                     </ol>
@@ -262,26 +193,13 @@ function ResearchPage() {
         <Reveal>
           <section
             id="read"
-            className="mt-6 rounded-[20px] overflow-hidden scroll-mt-28"
-            style={{
-              background: "linear-gradient(180deg, #0d0d14 0%, #08080d 100%)",
-              border: "1px solid rgba(255,255,255,0.05)",
-            }}
+            className="mt-4 rounded-[24px] border-[0.5px] border-border bg-bg-card/40 overflow-hidden scroll-mt-28"
           >
-            <div
-              className="flex items-center justify-between gap-4 px-6 lg:px-8 py-5"
-              style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}
-            >
+            <div className="flex items-center justify-between gap-4 px-6 lg:px-8 py-5 border-b border-border">
               <div className="min-w-0">
                 <div className="label-eyebrow">Полный текст</div>
-                <h2
-                  className="mt-2 font-display-serif truncate"
-                  style={{ fontSize: 22, color: "#f0f0f5", lineHeight: 1.2 }}
-                >
-                  {r.title} <span style={{ color: "#5a5a6a" }}>·</span>{" "}
-                  <span className="font-mono-meta text-[12px] uppercase" style={{ color: "#7a7a8a", letterSpacing: "0.14em" }}>
-                    {r.pages} стр.
-                  </span>
+                <h2 className="mt-1 text-[18px] text-text-primary truncate">
+                  {r.title} · {r.pages} стр.
                 </h2>
               </div>
               <div className="flex items-center gap-2 shrink-0">
@@ -289,30 +207,22 @@ function ResearchPage() {
                   href={r.pdf}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="font-mono-meta hidden sm:inline-flex items-center gap-1.5 h-9 px-4 rounded-[8px] text-[11px] uppercase transition-colors"
-                  style={{
-                    border: "1px solid rgba(255,255,255,0.08)",
-                    color: "#9a9aaa",
-                    letterSpacing: "0.14em",
-                  }}
+                  className="hidden sm:inline-flex items-center gap-1.5 h-9 px-4 rounded-full text-[13px] text-text-secondary hover:text-text-primary border-[0.5px] border-border-strong transition-colors"
                 >
-                  В новой вкладке
+                  Открыть в новой вкладке
                 </a>
                 <a
                   href={r.pdf}
                   download
-                  className="inline-flex items-center gap-1.5 h-9 px-4 rounded-[8px] text-[13px] font-medium"
-                  style={{
-                    background: "var(--brand)",
-                    color: "#08080d",
-                    boxShadow: "0 8px 24px -8px color-mix(in oklch, var(--brand) 40%, transparent)",
-                  }}
+                  className="inline-flex items-center gap-1.5 h-9 px-4 rounded-full text-[13px] font-medium"
+                  style={{ background: "var(--brand)", color: "#0a0a10" }}
                 >
                   Скачать PDF
                 </a>
               </div>
             </div>
 
+            {/* Универсальный PDF-вьюер на pdf.js — работает во всех браузерах */}
             {isClient ? (
               <Suspense
                 fallback={
@@ -335,10 +245,7 @@ function ResearchPage() {
               </div>
             )}
 
-            <div
-              className="px-6 lg:px-8 py-4 text-[12px]"
-              style={{ borderTop: "1px solid rgba(255,255,255,0.06)", color: "#5a5a6a" }}
-            >
+            <div className="px-6 lg:px-8 py-4 border-t border-border text-[12px] text-text-tertiary">
               Если PDF не отображается, воспользуйтесь кнопкой «Скачать PDF» выше.
             </div>
           </section>
@@ -349,31 +256,16 @@ function ResearchPage() {
             <Link
               to="/research/$slug"
               params={{ slug: other.slug }}
-              className="block group mt-6 rounded-[20px] p-8 lg:p-10 transition-all duration-400"
-              style={{
-                background: "linear-gradient(180deg, #0e0e16 0%, #08080d 100%)",
-                border: "1px solid rgba(255,255,255,0.05)",
-              }}
-              onMouseEnter={(e) => {
-                const el = e.currentTarget as HTMLElement;
-                el.style.borderColor = "rgba(74,158,245,0.30)";
-                el.style.boxShadow = "0 24px 80px -20px rgba(74,158,245,0.15)";
-              }}
-              onMouseLeave={(e) => {
-                const el = e.currentTarget as HTMLElement;
-                el.style.borderColor = "rgba(255,255,255,0.05)";
-                el.style.boxShadow = "none";
-              }}
+              className="block group mt-4 rounded-[24px] border-[0.5px] border-border bg-bg-card/40 p-8 lg:p-10 hover:border-border-strong hover:bg-bg-card/60 transition-colors duration-300"
             >
-              <div className="flex items-start gap-7">
+              <div className="flex items-start gap-6">
                 <div
-                  className="shrink-0 overflow-hidden rounded-[8px] hidden sm:block"
+                  className="shrink-0 overflow-hidden rounded-md hidden sm:block"
                   style={{
-                    width: 96,
-                    height: 134,
-                    border: "1px solid rgba(255,255,255,0.06)",
+                    width: 72,
+                    height: 100,
+                    border: "1px solid #1c1c28",
                     background: "#0a0a10",
-                    boxShadow: "0 20px 40px -15px rgba(0,0,0,0.6)",
                   }}
                 >
                   <img
@@ -384,22 +276,12 @@ function ResearchPage() {
                   />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <div className="label-eyebrow">
-                    Связанные материалы · {other.eyebrow}
-                  </div>
-                  <h3
-                    className="font-display-serif mt-4"
-                    style={{ fontSize: "clamp(24px, 3vw, 32px)", lineHeight: 1.1, color: "#f0f0f5" }}
-                  >
+                  <div className="label-eyebrow">Связанные материалы · {other.eyebrow}</div>
+                  <h3 className="mt-3 text-[24px] font-medium text-text-primary tracking-tight">
                     {other.title}
                   </h3>
-                  <p
-                    className="mt-3 text-[15px] leading-[1.6] max-w-[640px]"
-                    style={{ color: "#9a9aaa" }}
-                  >
-                    {other.short}
-                  </p>
-                  <div className="mt-6">
+                  <p className="mt-2 text-[14px] text-text-secondary max-w-[640px]">{other.short}</p>
+                  <div className="mt-5">
                     <ArrowLink>Читать</ArrowLink>
                   </div>
                 </div>

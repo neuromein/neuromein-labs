@@ -4,59 +4,30 @@ import { Reveal } from "./Reveal";
 import { RESEARCH } from "@/lib/site";
 
 /**
- * «Киноплакаты» исследований: крупная обложка слева,
- * типографика справа, hover — лёгкое масштабирование обложки и glow.
+ * Две богатые карточки исследований под hero на главной.
+ * Без цветных «точек» — только лаконичная типографика и обложка работы.
  */
 export function HomeResearchCards() {
   return (
-    <div>
-      <div className="flex items-end justify-between gap-4 mb-10">
-        <div>
-          <div className="label-eyebrow">Исследования</div>
-          <h2
-            className="font-display-serif mt-3"
-            style={{
-              fontSize: "clamp(32px, 4.5vw, 52px)",
-              lineHeight: 1.05,
-              color: "#f0f0f5",
-            }}
-          >
-            Длинные тексты <span style={{ color: "#5a5a6a" }}>·</span>{" "}
-            <span style={{ fontStyle: "italic", color: "var(--accent-cyan)" }}>
-              открытый PDF
-            </span>
-          </h2>
-        </div>
-        <Link
-          to="/research"
-          className="hidden sm:inline-flex items-center gap-2 text-[14px] transition-colors hover:text-text-primary"
-          style={{ color: "#7a7a8a" }}
-        >
-          Все материалы →
-        </Link>
-      </div>
-
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {RESEARCH.map((r, i) => (
-          <Reveal key={r.slug} delay={i * 0.08}>
-            <ResearchPoster
-              slug={r.slug}
-              eyebrow={r.eyebrow}
-              year={r.year}
-              title={r.title}
-              short={r.short}
-              date={r.date}
-              cover={r.cover}
-              pages={r.pages}
-            />
-          </Reveal>
-        ))}
-      </div>
+    <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+      {RESEARCH.map((r, i) => (
+        <Reveal key={r.slug} delay={i * 0.1}>
+          <ResearchCard
+            slug={r.slug}
+            eyebrow={r.eyebrow}
+            year={r.year}
+            title={r.title}
+            short={r.short}
+            date={r.date}
+            cover={r.cover}
+          />
+        </Reveal>
+      ))}
     </div>
   );
 }
 
-function ResearchPoster({
+function ResearchCard({
   slug,
   eyebrow,
   year,
@@ -64,7 +35,6 @@ function ResearchPoster({
   short,
   date,
   cover,
-  pages,
 }: {
   slug: string;
   eyebrow: string;
@@ -73,135 +43,103 @@ function ResearchPoster({
   short: string;
   date: string;
   cover: string;
-  pages: number;
 }) {
   return (
     <Link
       to="/research/$slug"
       params={{ slug }}
-      className="block h-full group"
+      className="block h-full cursor-pointer"
     >
       <motion.article
-        whileHover={{ y: -3 }}
-        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
-        className="relative overflow-hidden h-full"
+        whileHover={{ y: -2 }}
+        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        className="relative overflow-hidden h-full flex flex-col"
         style={{
-          minHeight: 380,
-          background: "linear-gradient(180deg, #0e0e16 0%, #08080d 100%)",
-          border: "1px solid rgba(255,255,255,0.05)",
-          borderRadius: 20,
-          padding: 28,
-          transition: "border-color 0.4s ease, box-shadow 0.4s ease",
+          minHeight: 280,
+          background: "#0c0c12",
+          border: "1px solid #1c1c28",
+          borderRadius: 12,
+          padding: "28px 30px",
+          transition: "border-color 0.3s ease, box-shadow 0.3s ease",
         }}
         onMouseEnter={(e) => {
           const el = e.currentTarget as HTMLElement;
-          el.style.borderColor = "rgba(74,158,245,0.35)";
-          el.style.boxShadow = "0 24px 80px -20px rgba(74,158,245,0.18)";
+          el.style.borderColor = "rgba(74,158,245,0.3)";
+          el.style.boxShadow = "0 4px 24px rgba(74,158,245,0.08)";
         }}
         onMouseLeave={(e) => {
           const el = e.currentTarget as HTMLElement;
-          el.style.borderColor = "rgba(255,255,255,0.05)";
+          el.style.borderColor = "#1c1c28";
           el.style.boxShadow = "none";
         }}
       >
-        <div className="grid grid-cols-[140px_1fr] sm:grid-cols-[180px_1fr] gap-7 h-full">
-          {/* Обложка как герой */}
-          <div className="relative">
-            <motion.div
-              className="overflow-hidden rounded-[10px]"
-              style={{
-                aspectRatio: "2 / 3",
-                background: "#0a0a10",
-                border: "1px solid rgba(255,255,255,0.06)",
-                boxShadow: "0 30px 60px -20px rgba(0,0,0,0.7)",
-              }}
-              whileHover={{ scale: 1.025 }}
-              transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
-            >
-              <img
-                src={cover}
-                alt={title}
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
-            </motion.div>
+        {/* Тонкий голубой градиент сверху */}
+        <div
+          aria-hidden
+          className="absolute top-0 left-0 right-0 pointer-events-none"
+          style={{
+            height: "40%",
+            background:
+              "linear-gradient(to bottom, rgba(74,158,245,0.06), transparent)",
+          }}
+        />
+
+        <div className="relative flex items-start gap-5">
+          {/* Миниатюра обложки */}
+          <div
+            className="shrink-0 overflow-hidden rounded-md"
+            style={{
+              width: 64,
+              height: 88,
+              border: "1px solid #1c1c28",
+              background: "#0a0a10",
+            }}
+          >
+            <img
+              src={cover}
+              alt={title}
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
           </div>
 
-          {/* Контент */}
-          <div className="flex flex-col h-full min-w-0">
-            <div
-              className="font-mono-meta text-[10px] uppercase flex items-center gap-2"
-              style={{ color: "#5a5a6a", letterSpacing: "0.16em" }}
+          <div className="flex flex-col min-w-0 flex-1">
+            <span
+              className="text-[11px] uppercase"
+              style={{ color: "#5a5a6a", letterSpacing: "0.06em" }}
             >
-              <span>{eyebrow}</span>
-              <span aria-hidden style={{ color: "#2a2a35" }}>·</span>
-              <span>{year}</span>
-            </div>
-
+              {eyebrow} · {year}
+            </span>
             <h3
-              className="font-display-serif mt-4"
-              style={{
-                fontSize: "clamp(28px, 3vw, 36px)",
-                lineHeight: 1.05,
-                color: "#f0f0f5",
-              }}
+              className="mt-3 text-[24px] lg:text-[26px] font-medium leading-[1.15] tracking-[-0.02em]"
+              style={{ color: "#f0f0f5" }}
             >
               {title}
             </h3>
-
-            <p
-              className="mt-4 text-[14px] leading-[1.6] flex-grow"
-              style={{ color: "#9a9aaa" }}
-            >
-              {short}
-            </p>
-
-            {/* Hairline + meta + arrow */}
-            <div className="mt-6">
-              <div
-                style={{
-                  height: 1,
-                  background:
-                    "linear-gradient(90deg, rgba(255,255,255,0.08), transparent)",
-                }}
-              />
-              <div className="mt-4 flex items-center justify-between gap-4">
-                <div
-                  className="font-mono-meta text-[11px] uppercase flex items-center gap-2 flex-wrap"
-                  style={{ color: "#5a5a6a", letterSpacing: "0.12em" }}
-                >
-                  <span>{pages} стр.</span>
-                  <span aria-hidden style={{ color: "#2a2a35" }}>·</span>
-                  <span>{date}</span>
-                  <span aria-hidden style={{ color: "#2a2a35" }}>·</span>
-                  <span>PDF</span>
-                </div>
-
-                <span
-                  className="inline-flex items-center gap-1.5 text-[13px] font-medium transition-colors"
-                  style={{ color: "#f0f0f5" }}
-                >
-                  Читать
-                  <svg
-                    width="13"
-                    height="13"
-                    viewBox="0 0 16 16"
-                    fill="none"
-                    className="transition-transform duration-300 group-hover:translate-x-1"
-                    aria-hidden
-                  >
-                    <path
-                      d="M3 8h10M9 4l4 4-4 4"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    />
-                  </svg>
-                </span>
-              </div>
-            </div>
           </div>
+        </div>
+
+        <p
+          className="relative mt-5 text-[14px] leading-[1.55] max-w-[44ch] flex-grow"
+          style={{ color: "#9a9aaa" }}
+        >
+          {short}
+        </p>
+
+        <div className="relative mt-6 flex items-center justify-between gap-4">
+          <span className="text-[12px]" style={{ color: "#7a7a8a" }}>
+            {date}
+          </span>
+          <span
+            className="inline-flex items-center gap-1.5 h-9 px-4 rounded-full text-[13px] font-medium"
+            style={{
+              border: "1px solid #2a2a35",
+              color: "#f0f0f5",
+              background: "rgba(255,255,255,0.02)",
+            }}
+          >
+            Читать →
+          </span>
         </div>
       </motion.article>
     </Link>
