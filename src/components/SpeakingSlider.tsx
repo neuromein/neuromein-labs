@@ -177,7 +177,7 @@ export function SpeakingSlider() {
 
           <div
             ref={scrollerRef}
-            className="flex gap-5 overflow-x-auto pb-4 px-4 sm:px-6 lg:px-0 snap-x snap-mandatory scroll-smooth scrollbar-hide"
+            className="flex gap-5 overflow-x-auto pb-4 px-4 sm:px-6 lg:px-0 snap-x snap-mandatory scroll-smooth no-scrollbar"
             style={{
               scrollbarWidth: "none",
               msOverflowStyle: "none",
