@@ -271,46 +271,48 @@ export function ExpandingSearchDock({
                   </button>
                 </form>
 
-                {/* Results */}
-                <div className="max-h-[60vh] overflow-y-auto px-2 py-2">
-                  {filtered.length === 0 ? (
-                    <div className="px-4 py-8 text-center text-[13px] text-text-tertiary">
-                      Ничего не найдено.
-                    </div>
-                  ) : (
-                    Object.entries(grouped).map(([group, items]) => (
-                      <div key={group} className="py-1">
-                        <div className="px-3 py-1.5 text-[11px] uppercase tracking-wider text-text-tertiary">
-                          {group}
-                        </div>
-                        {items.map((r) => (
-                          <button
-                            key={r.key}
-                            onClick={() => {
-                              r.onSelect();
-                              handleCollapse();
-                            }}
-                            className="w-full text-left px-3 py-2.5 rounded-lg hover:bg-white/5 transition-colors flex flex-col"
-                          >
-                            <span className="text-[14px] text-text-primary">
-                              {highlight(r.title, query)}
-                            </span>
-                            {r.subtitle && (
-                              <span className="text-[12px] text-text-tertiary mt-0.5">
-                                {r.subtitle}
-                              </span>
-                            )}
-                            {r.snippet && (
-                              <span className="text-[12px] text-text-secondary mt-1 leading-snug line-clamp-2">
-                                …{highlight(r.snippet, query)}…
-                              </span>
-                            )}
-                          </button>
-                        ))}
+                {/* Results — only render container when there is a query */}
+                {query.trim().length > 0 && (
+                  <div className="max-h-[60vh] overflow-y-auto px-2 py-2">
+                    {filtered.length === 0 ? (
+                      <div className="px-4 py-8 text-center text-[13px] text-text-tertiary">
+                        Ничего не найдено.
                       </div>
-                    ))
-                  )}
-                </div>
+                    ) : (
+                      Object.entries(grouped).map(([group, items]) => (
+                        <div key={group} className="py-1">
+                          <div className="px-3 py-1.5 text-[11px] uppercase tracking-wider text-text-tertiary">
+                            {group}
+                          </div>
+                          {items.map((r) => (
+                            <button
+                              key={r.key}
+                              onClick={() => {
+                                r.onSelect();
+                                handleCollapse();
+                              }}
+                              className="w-full text-left px-3 py-2.5 rounded-lg hover:bg-white/5 transition-colors flex flex-col"
+                            >
+                              <span className="text-[14px] text-text-primary">
+                                {highlight(r.title, query)}
+                              </span>
+                              {r.subtitle && (
+                                <span className="text-[12px] text-text-tertiary mt-0.5">
+                                  {r.subtitle}
+                                </span>
+                              )}
+                              {r.snippet && (
+                                <span className="text-[12px] text-text-secondary mt-1 leading-snug line-clamp-2">
+                                  …{highlight(r.snippet, query)}…
+                                </span>
+                              )}
+                            </button>
+                          ))}
+                        </div>
+                      ))
+                    )}
+                  </div>
+                )}
               </div>
             </motion.div>
           </>
