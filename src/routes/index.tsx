@@ -3,6 +3,7 @@ import { Layout } from "@/components/Layout";
 import { HeroCard } from "@/components/HeroCard";
 import { HomeResearchCards } from "@/components/HomeResearchCards";
 import { HomePublications } from "@/components/HomePublications";
+import { SpeakingSlider } from "@/components/SpeakingSlider";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -76,7 +77,12 @@ function IndexPage() {
           <HomeResearchCards />
         </section>
 
-        {/* PUBLICATIONS — 100px от карточек, 120px до footer */}
+        {/* SPEAKING — 100px от исследований */}
+        <section style={{ paddingTop: 100 }}>
+          <SpeakingSlider />
+        </section>
+
+        {/* PUBLICATIONS — 100px от слайдера, 120px до footer */}
         <section style={{ paddingTop: 100, paddingBottom: 120 }}>
           <HomePublications />
         </section>
