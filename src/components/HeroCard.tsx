@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { motion } from "framer-motion";
 import { InteractiveNeuralBg } from "./InteractiveNeuralBg";
+import { PaperShaderBg } from "./PaperShaderBg";
 import { SITE } from "@/lib/site";
 import avatarUrl from "@/assets/avatar.jpg";
 
