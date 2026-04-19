@@ -189,12 +189,6 @@ export function HeroCard({
           <SocialIconLink href={SITE.linkedin} label="LinkedIn">
             <LinkedInIcon />
           </SocialIconLink>
-          <SocialIconLink
-            href={`https://instagram.com/${SITE.instagram.replace("@", "")}`}
-            label="Instagram"
-          >
-            <InstagramIcon />
-          </SocialIconLink>
         </motion.div>
 
         {children}
@@ -263,15 +257,6 @@ function LinkedInIcon() {
   return (
     <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
       <path d="M4.98 3.5C4.98 4.88 3.87 6 2.5 6S0 4.88 0 3.5 1.12 1 2.5 1s2.48 1.12 2.48 2.5zM.22 8h4.56v14H.22V8zm7.5 0H12v1.93h.06c.6-1.13 2.07-2.32 4.27-2.32 4.57 0 5.42 3 5.42 6.9V22h-4.56v-6.34c0-1.51-.03-3.46-2.11-3.46-2.11 0-2.43 1.65-2.43 3.35V22H7.72V8z" />
-    </svg>
-  );
-}
-function InstagramIcon() {
-  return (
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" aria-hidden>
-      <rect x="3" y="3" width="18" height="18" rx="5" />
-      <circle cx="12" cy="12" r="4" />
-      <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none" />
     </svg>
   );
 }

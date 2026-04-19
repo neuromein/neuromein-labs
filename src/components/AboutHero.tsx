@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Mail, Send, Linkedin, Instagram } from "lucide-react";
+import { Mail, Send, Linkedin } from "lucide-react";
 import { SITE } from "@/lib/site";
 
 /**
@@ -109,9 +109,6 @@ export function AboutHero() {
             <Linkedin size={16} strokeWidth={1.5} />
           </SocialIconLink>
 
-          <SocialIconLink label="Instagram" disabled>
-            <Instagram size={16} strokeWidth={1.5} />
-          </SocialIconLink>
         </motion.div>
       </div>
     </motion.section>

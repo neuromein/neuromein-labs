@@ -7,7 +7,7 @@ export const SITE = {
   telegram: "https://t.me/neuromein",
   telegramHandle: "t.me/neuromein",
   linkedin: "https://linkedin.com/in/andrew-meinhardt-306821361",
-  instagram: "@neuromein.ai",
+  
   email: "andrew.meinhardt@yandex.ru",
   telegramPersonal: "@andrew_meinhardt",
 };
