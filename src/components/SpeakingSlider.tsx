@@ -90,6 +90,82 @@ export function SpeakingSlider() {
     };
   }, []);
 
+  // Авто-прокрутка: медленный непрерывный скролл с бесшовным зацикливанием.
+  // Пауза при наведении, тач-взаимодействии или скрытой вкладке.
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    if (reduceMotion) return;
+
+    let paused = false;
+    let userInteracting = false;
+    let interactionTimer: number | null = null;
+    let raf = 0;
+    let last = performance.now();
+    const SPEED = 18; // пикселей в секунду — медленно и плавно
+
+    const onEnter = () => {
+      paused = true;
+    };
+    const onLeave = () => {
+      paused = false;
+    };
+    const onUserScroll = () => {
+      // если пользователь сам скроллит — приостанавливаем на 2.5с
+      userInteracting = true;
+      if (interactionTimer) window.clearTimeout(interactionTimer);
+      interactionTimer = window.setTimeout(() => {
+        userInteracting = false;
+      }, 2500);
+    };
+    const onVisibility = () => {
+      paused = document.hidden;
+      last = performance.now();
+    };
+
+    const tick = (now: number) => {
+      const dt = (now - last) / 1000;
+      last = now;
+
+      if (!paused && !userInteracting) {
+        const half = el.scrollWidth / 2;
+        let next = el.scrollLeft + SPEED * dt;
+        // бесшовное зацикливание: после прохождения половины (дубль) откатываем
+        if (next >= half) {
+          next -= half;
+          el.scrollLeft = next;
+        } else {
+          el.scrollLeft = next;
+        }
+      }
+      raf = requestAnimationFrame(tick);
+    };
+
+    el.addEventListener("pointerenter", onEnter);
+    el.addEventListener("pointerleave", onLeave);
+    el.addEventListener("touchstart", onEnter, { passive: true });
+    el.addEventListener("touchend", onLeave, { passive: true });
+    el.addEventListener("wheel", onUserScroll, { passive: true });
+    document.addEventListener("visibilitychange", onVisibility);
+
+    raf = requestAnimationFrame(tick);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      if (interactionTimer) window.clearTimeout(interactionTimer);
+      el.removeEventListener("pointerenter", onEnter);
+      el.removeEventListener("pointerleave", onLeave);
+      el.removeEventListener("touchstart", onEnter);
+      el.removeEventListener("touchend", onLeave);
+      el.removeEventListener("wheel", onUserScroll);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, []);
+
   const scrollByCard = (dir: 1 | -1) => {
     const el = scrollerRef.current;
     if (!el) return;
