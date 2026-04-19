@@ -54,23 +54,22 @@ function IndexPage() {
         <section style={{ paddingTop: 80 }}>
           <div className="flex items-end justify-between gap-4 mb-8">
             <div>
-              <div
-                className="text-[11px] uppercase"
-                style={{ color: "#5a5a6a", letterSpacing: "0.06em" }}
+              <Link
+                to="/research"
+                className="inline-block group"
               >
-                Исследования
-              </div>
-              <h2
-                className="mt-2 text-[26px] lg:text-[30px] font-medium leading-[1.15] tracking-[-0.02em]"
-                style={{ color: "#f0f0f5" }}
-              >
-                Авторские исследования
-              </h2>
+                <h2
+                  className="text-[26px] lg:text-[30px] font-medium leading-[1.15] tracking-[-0.02em] transition-opacity duration-200 group-hover:opacity-80"
+                  style={{ color: "#f0f0f5" }}
+                >
+                  Авторские исследования
+                </h2>
+              </Link>
               <p
                 className="mt-3 text-[15px] leading-[1.6] max-w-[560px]"
                 style={{ color: "#9a9aaa" }}
               >
-                О влиянии ИИ на бизнес, рынок труда и жизнь каждого из нас.
+                О влиянии ИИ на бизнес, рынок труда и жизнь каждого из нас
               </p>
             </div>
           </div>
