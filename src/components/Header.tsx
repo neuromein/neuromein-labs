@@ -111,11 +111,14 @@ export function Header() {
 
       {/* Mobile / tablet pill — shown below lg (< 1024px) */}
       <div
-        className="lg:hidden flex items-center justify-between w-full max-w-[420px] pl-4 pr-2 py-2 rounded-full border-[0.5px] border-border transition-[background,backdrop-filter] duration-300"
+        className="lg:hidden flex items-center justify-between w-full max-w-[420px] pl-4 pr-2 py-2 rounded-full transition-[background,backdrop-filter] duration-300"
         style={{
           background: pillBg,
           backdropFilter: pillBlur,
           WebkitBackdropFilter: pillBlur,
+          border: "1px solid rgba(255,255,255,0.06)",
+          boxShadow:
+            "0 8px 24px rgba(0,0,0,0.35), inset 0 1px 0 rgba(255,255,255,0.04)",
         }}
       >
         <Link to="/" aria-label="NEUROMEIN" className="flex items-center h-10">
