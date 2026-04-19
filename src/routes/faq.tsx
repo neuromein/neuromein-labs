@@ -32,7 +32,7 @@ const FAQ = [
   },
   {
     q: "Где следить за обновлениями?",
-    a: "Основной канал — Telegram: t.me/neuromein. Также публикую в LinkedIn (Andrew Meinhardt) и Instagram (@neuromein.ai).",
+    a: "Основной канал — Telegram: t.me/neuromein. Также публикую в LinkedIn (Andrew Meinhardt).",
   },
 ];
 

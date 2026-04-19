@@ -189,12 +189,6 @@ export function HeroCard({
           <SocialIconLink href={SITE.linkedin} label="LinkedIn">
             <LinkedInIcon />
           </SocialIconLink>
-          <SocialIconLink
-            href={`https://instagram.com/${SITE.instagram.replace("@", "")}`}
-            label="Instagram"
-          >
-            <InstagramIcon />
-          </SocialIconLink>
         </motion.div>
 
         {children}
