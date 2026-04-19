@@ -109,15 +109,8 @@ export function ExpandingSearchDock({
   const filtered: Result[] = useMemo(() => {
     const raw = query.trim();
     if (!raw) {
-      // Default state: show all items, sorted by group
-      return index.map((it) => ({
-        key: it.key,
-        group: it.group,
-        title: it.title,
-        subtitle: it.subtitle,
-        score: 0,
-        onSelect: it.onSelect,
-      }));
+      // Empty state: show nothing — only search input is visible
+      return [];
     }
 
     const tokens = tokenize(raw).map(expandSynonyms).flat();
