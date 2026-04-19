@@ -300,11 +300,16 @@ export function ExpandingSearchDock({
                             className="w-full text-left px-3 py-2.5 rounded-lg hover:bg-white/5 transition-colors flex flex-col"
                           >
                             <span className="text-[14px] text-text-primary">
-                              {r.title}
+                              {highlight(r.title, query)}
                             </span>
                             {r.subtitle && (
                               <span className="text-[12px] text-text-tertiary mt-0.5">
                                 {r.subtitle}
+                              </span>
+                            )}
+                            {r.snippet && (
+                              <span className="text-[12px] text-text-secondary mt-1 leading-snug line-clamp-2">
+                                …{highlight(r.snippet, query)}…
                               </span>
                             )}
                           </button>
