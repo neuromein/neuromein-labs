@@ -153,10 +153,23 @@
 
 @layer utilities {
   .label-eyebrow {
+    font-family: var(--font-mono);
     font-size: 11px;
-    letter-spacing: 0.08em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
     color: var(--color-text-tertiary);
+  }
+
+  .font-mono-meta {
+    font-family: var(--font-mono);
+    letter-spacing: 0.04em;
+  }
+
+  .font-display-serif {
+    font-family: var(--font-serif);
+    font-weight: 400;
+    letter-spacing: -0.02em;
+    font-feature-settings: "ss01";
   }
 
   .nav-glass {
@@ -169,20 +182,21 @@
     text-wrap: balance;
   }
 
-  /* Huge display heading — Daniel Santos style */
+  /* Cinematic display heading — Anthropic / Editorial style */
   .display-hero {
+    font-family: var(--font-serif);
     font-size: clamp(56px, 12vw, 168px);
-    font-weight: 500;
+    font-weight: 400;
     line-height: 0.95;
-    letter-spacing: -0.04em;
+    letter-spacing: -0.025em;
     margin: 0;
   }
   .display-hero--fade {
     background: linear-gradient(
       180deg,
-      color-mix(in oklch, var(--color-text-primary) 75%, transparent) 0%,
-      color-mix(in oklch, var(--color-text-primary) 25%, transparent) 60%,
-      transparent 100%
+      color-mix(in oklch, var(--color-text-primary) 92%, transparent) 0%,
+      color-mix(in oklch, var(--color-text-primary) 38%, transparent) 70%,
+      color-mix(in oklch, var(--color-text-primary) 12%, transparent) 100%
     );
     -webkit-background-clip: text;
     background-clip: text;
@@ -201,10 +215,61 @@
   }
 
   .display-md {
+    font-family: var(--font-serif);
     font-size: clamp(40px, 6vw, 72px);
-    font-weight: 500;
+    font-weight: 400;
     line-height: 1;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.02em;
+  }
+
+  /* Subtle film-grain noise overlay */
+  .noise-overlay::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: url("/noise.svg");
+    background-size: 240px 240px;
+    opacity: 0.035;
+    mix-blend-mode: overlay;
+    z-index: 1;
+  }
+
+  /* Aurora ambient layer */
+  .aurora-bg {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .aurora-bg::before,
+  .aurora-bg::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(110px);
+    mix-blend-mode: screen;
+    opacity: 0.55;
+  }
+  .aurora-bg::before {
+    width: 720px;
+    height: 720px;
+    left: -160px;
+    top: -200px;
+    background: radial-gradient(circle, oklch(0.62 0.16 250 / 0.55), transparent 65%);
+  }
+  .aurora-bg::after {
+    width: 640px;
+    height: 640px;
+    right: -120px;
+    bottom: -180px;
+    background: radial-gradient(circle, oklch(0.78 0.10 200 / 0.40), transparent 65%);
+  }
+
+  /* Hairline divider */
+  .hairline {
+    height: 1px;
+    background: linear-gradient(90deg, transparent, rgba(255,255,255,0.10), transparent);
   }
 
   .reading-content p {
