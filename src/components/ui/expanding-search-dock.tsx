@@ -1,14 +1,16 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { Search, X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useNavigate } from "@tanstack/react-router";
-import { NAV_LINKS, PUBLICATIONS, RESEARCH } from "@/lib/site";
+import { PUBLICATIONS, RESEARCH } from "@/lib/site";
 
 type Result = {
   key: string;
-  group: "Разделы" | "Исследования" | "Публикации";
+  group: "Исследования" | "Публикации";
   title: string;
   subtitle?: string;
+  snippet?: string; // matched fragment from full text
+  score: number;
   onSelect: () => void;
 };
 
