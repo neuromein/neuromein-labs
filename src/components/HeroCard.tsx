@@ -107,7 +107,7 @@ export function HeroCard({
               className="text-[13px] uppercase mb-4"
               style={{ color: "#7a7a8a", letterSpacing: "0.04em" }}
             >
-              Независимый AI-аналитик
+              AI-стратег · Аналитик · Основатель NEUROMEIN
             </motion.div>
 
             <motion.h1
