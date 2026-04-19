@@ -2,7 +2,7 @@ import { Link, useLocation } from "@tanstack/react-router";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { NAV_LINKS } from "@/lib/site";
-import { SearchDialog } from "./SearchDialog";
+import { ExpandingSearchDock } from "@/components/ui/expanding-search-dock";
 import logoUrl from "@/assets/logo.svg";
 
 export function Header() {
