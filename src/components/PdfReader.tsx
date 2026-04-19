@@ -80,12 +80,7 @@ export function PdfReader({ file, title }: PdfReaderProps) {
               Не удалось загрузить PDF
             </div>
           }
-          options={{
-            cMapUrl: "https://unpkg.com/pdfjs-dist@4.8.69/cmaps/",
-            cMapPacked: true,
-            standardFontDataUrl:
-              "https://unpkg.com/pdfjs-dist@4.8.69/standard_fonts/",
-          }}
+          options={pdfOptions}
         >
           {Array.from({ length: numPages }, (_, i) => (
             <div
