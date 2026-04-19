@@ -202,7 +202,7 @@ export function Header() {
         )}
       </AnimatePresence>
 
-      <SearchDialog open={searchOpen} onOpenChange={setSearchOpen} />
+      <ExpandingSearchDock open={searchOpen} onOpenChange={setSearchOpen} />
     </header>
   );
 }
