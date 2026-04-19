@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 import { motion } from "framer-motion";
-import { Link } from "@tanstack/react-router";
 import { InteractiveNeuralBg } from "./InteractiveNeuralBg";
-import { HeroNeuralSvg } from "./HeroNeuralSvg";
+import { SITE } from "@/lib/site";
+import avatarUrl from "@/assets/avatar.jpg";
 
 /**
  * Hero-секция:
