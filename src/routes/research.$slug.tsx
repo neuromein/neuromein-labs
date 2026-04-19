@@ -22,6 +22,7 @@ export const Route = createFileRoute("/research/$slug")({
         { property: "og:description", content: r.short },
         { property: "og:type", content: "article" },
         { property: "og:url", content: `https://neuromein.ru/research/${r.slug}` },
+        { property: "og:image", content: `https://neuromein.ru${r.cover}` },
       ],
       scripts: [
         {
@@ -58,8 +59,9 @@ function ResearchPage() {
   return (
     <Layout>
       <div className="max-w-[1320px] mx-auto pb-20">
-        <article className="rounded-[24px] border-[0.5px] border-border bg-bg-reading">
-          <div className="max-w-[760px] mx-auto px-6 lg:px-10 py-16 lg:py-24">
+        {/* HERO с обложкой и метаданными */}
+        <article className="rounded-[24px] border-[0.5px] border-border bg-bg-reading overflow-hidden">
+          <div className="px-6 lg:px-12 py-16 lg:py-20">
             <FadeIn>
               <nav className="text-[13px] text-text-tertiary flex items-center gap-2 flex-wrap">
                 <Link to="/" className="hover:text-text-secondary transition-colors">
@@ -74,73 +76,162 @@ function ResearchPage() {
               </nav>
             </FadeIn>
 
-            <FadeIn delay={0.05}>
-              <div className="mt-10 flex items-center gap-3 flex-wrap">
-                <span
-                  className="inline-block h-1.5 w-1.5 rounded-full"
-                  style={{ background: r.dotColor }}
-                  aria-hidden
-                />
-                <span className="label-eyebrow">{r.eyebrow} · {r.year}</span>
-              </div>
-              <h1 className="mt-4 text-[40px] sm:text-[56px] font-medium text-text-primary leading-[1.02] tracking-[-0.025em]">
-                {r.title}
-              </h1>
-            </FadeIn>
-
-            <FadeIn delay={0.12}>
-              <div className="mt-6 text-[13px] text-text-tertiary flex items-center gap-3 flex-wrap">
-                <span>{r.date}</span>
-                <span aria-hidden className="text-border-strong">·</span>
-                <span>Андрей Майнгардт</span>
-              </div>
-            </FadeIn>
-
-            <FadeIn delay={0.18}>
-              <div className="mt-12 rounded-[20px] bg-bg-card/70 p-7 lg:p-8 border-[0.5px] border-border">
-                <div className="label-eyebrow mb-3">Краткое содержание</div>
-                <p className="text-[15px] text-text-secondary leading-[1.7]">{r.summary}</p>
-              </div>
-            </FadeIn>
-
-            <Reveal delay={0.05}>
-              <div className="mt-14 grid grid-cols-1 lg:grid-cols-[200px_1fr] gap-10">
-                <aside className="lg:sticky lg:top-28 self-start">
-                  <div className="label-eyebrow mb-4">Оглавление</div>
-                  <ul className="space-y-2.5">
-                    {r.toc.map((t: { id: string; label: string }) => (
-                      <li key={t.id}>
-                        <a
-                          href={`#${t.id}`}
-                          className="text-[13px] text-text-secondary hover:text-brand transition-colors"
-                        >
-                          {t.label}
-                        </a>
-                      </li>
-                    ))}
-                  </ul>
-                </aside>
-
-                <div className="reading-content">
-                  {r.toc.map((t: { id: string; label: string }) => (
-                    <section key={t.id} id={t.id}>
-                      <h2>{t.label}</h2>
-                      <p>
-                        [Текст исследования будет добавлен позже] Этот раздел посвящён
-                        теме «{t.label.toLowerCase()}» и будет опубликован в полной
-                        версии материала.
-                      </p>
-                      <p>
-                        Здесь будут представлены данные, графики и аналитические
-                        выводы.
-                      </p>
-                    </section>
-                  ))}
+            <div className="mt-12 grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-10 lg:gap-14 items-start">
+              {/* Обложка */}
+              <FadeIn delay={0.05}>
+                <div
+                  className="overflow-hidden rounded-[12px] mx-auto lg:mx-0"
+                  style={{
+                    maxWidth: 280,
+                    aspectRatio: "1 / 1.414",
+                    border: "1px solid #1c1c28",
+                    background: "#0a0a10",
+                    boxShadow: "0 20px 60px rgba(0,0,0,0.4)",
+                  }}
+                >
+                  <img
+                    src={r.cover}
+                    alt={`Обложка: ${r.title}`}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
+              </FadeIn>
+
+              {/* Заголовок и метаданные */}
+              <div>
+                <FadeIn delay={0.08}>
+                  <span className="label-eyebrow">{r.eyebrow} · {r.year}</span>
+                  <h1 className="mt-4 text-[40px] sm:text-[52px] font-medium text-text-primary leading-[1.02] tracking-[-0.025em]">
+                    {r.title}
+                  </h1>
+                  {r.subtitle && (
+                    <p className="mt-4 text-[18px] text-text-secondary leading-[1.4] max-w-[560px]">
+                      {r.subtitle}
+                    </p>
+                  )}
+                </FadeIn>
+
+                <FadeIn delay={0.12}>
+                  <div className="mt-6 text-[13px] text-text-tertiary flex items-center gap-3 flex-wrap">
+                    <span>{r.date}</span>
+                    <span aria-hidden className="text-border-strong">·</span>
+                    <span>Андрей Майнгардт</span>
+                    <span aria-hidden className="text-border-strong">·</span>
+                    <span>{r.pages} стр.</span>
+                  </div>
+                </FadeIn>
+
+                {/* CTA */}
+                <FadeIn delay={0.16}>
+                  <div className="mt-8 flex flex-wrap gap-3">
+                    <a
+                      href="#read"
+                      className="inline-flex items-center gap-2 h-11 px-5 rounded-full text-[14px] font-medium transition-colors"
+                      style={{
+                        background: "var(--brand)",
+                        color: "#0a0a10",
+                      }}
+                    >
+                      Читать на сайте
+                      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
+                        <path d="M8 3v10M3 8l5 5 5-5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </a>
+                    <a
+                      href={r.pdf}
+                      download
+                      className="inline-flex items-center gap-2 h-11 px-5 rounded-full text-[14px] font-medium border-[0.5px] border-border-strong text-text-primary hover:bg-bg-card/60 transition-colors"
+                    >
+                      Скачать PDF
+                      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
+                        <path d="M8 2v9M4 7l4 4 4-4M3 14h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                      </svg>
+                    </a>
+                  </div>
+                </FadeIn>
+
+                {/* Краткое содержание */}
+                <FadeIn delay={0.2}>
+                  <div className="mt-10 rounded-[16px] bg-bg-card/60 p-6 lg:p-7 border-[0.5px] border-border">
+                    <div className="label-eyebrow mb-3">Краткое содержание</div>
+                    <p className="text-[15px] text-text-secondary leading-[1.7]">{r.summary}</p>
+                  </div>
+                </FadeIn>
+
+                {/* Оглавление */}
+                <FadeIn delay={0.24}>
+                  <div className="mt-8">
+                    <div className="label-eyebrow mb-4">Оглавление</div>
+                    <ol className="space-y-2.5 list-none">
+                      {r.toc.map((t: { id: string; label: string }, idx: number) => (
+                        <li
+                          key={t.id}
+                          className="text-[14px] text-text-secondary leading-[1.5] flex gap-3"
+                        >
+                          <span className="text-text-tertiary tabular-nums w-6 shrink-0">
+                            {String(idx + 1).padStart(2, "0")}
+                          </span>
+                          <span>{t.label}</span>
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                </FadeIn>
               </div>
-            </Reveal>
+            </div>
           </div>
         </article>
+
+        {/* PDF READER */}
+        <Reveal>
+          <section
+            id="read"
+            className="mt-4 rounded-[24px] border-[0.5px] border-border bg-bg-card/40 overflow-hidden scroll-mt-28"
+          >
+            <div className="flex items-center justify-between gap-4 px-6 lg:px-8 py-5 border-b border-border">
+              <div className="min-w-0">
+                <div className="label-eyebrow">Полный текст</div>
+                <h2 className="mt-1 text-[18px] text-text-primary truncate">
+                  {r.title} · {r.pages} стр.
+                </h2>
+              </div>
+              <div className="flex items-center gap-2 shrink-0">
+                <a
+                  href={r.pdf}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hidden sm:inline-flex items-center gap-1.5 h-9 px-4 rounded-full text-[13px] text-text-secondary hover:text-text-primary border-[0.5px] border-border-strong transition-colors"
+                >
+                  Открыть в новой вкладке
+                </a>
+                <a
+                  href={r.pdf}
+                  download
+                  className="inline-flex items-center gap-1.5 h-9 px-4 rounded-full text-[13px] font-medium"
+                  style={{ background: "var(--brand)", color: "#0a0a10" }}
+                >
+                  Скачать PDF
+                </a>
+              </div>
+            </div>
+
+            <div
+              className="bg-[#0a0a10]"
+              style={{ height: "min(85vh, 1100px)" }}
+            >
+              <iframe
+                src={`${r.pdf}#view=FitH&toolbar=1&navpanes=0`}
+                title={`${r.title} — полный текст`}
+                className="w-full h-full"
+                style={{ border: 0, background: "#0a0a10" }}
+              />
+            </div>
+
+            <div className="px-6 lg:px-8 py-4 border-t border-border text-[12px] text-text-tertiary">
+              Если PDF не отображается, воспользуйтесь кнопкой «Скачать PDF» выше.
+            </div>
+          </section>
+        </Reveal>
 
         {other && (
           <Reveal>
@@ -149,13 +240,33 @@ function ResearchPage() {
               params={{ slug: other.slug }}
               className="block group mt-4 rounded-[24px] border-[0.5px] border-border bg-bg-card/40 p-8 lg:p-10 hover:border-border-strong hover:bg-bg-card/60 transition-colors duration-300"
             >
-              <div className="label-eyebrow">Связанные материалы · {other.eyebrow}</div>
-              <h3 className="mt-3 text-[24px] font-medium text-text-primary tracking-tight">
-                {other.title}
-              </h3>
-              <p className="mt-2 text-[14px] text-text-secondary max-w-[640px]">{other.short}</p>
-              <div className="mt-5">
-                <ArrowLink>Читать</ArrowLink>
+              <div className="flex items-start gap-6">
+                <div
+                  className="shrink-0 overflow-hidden rounded-md hidden sm:block"
+                  style={{
+                    width: 72,
+                    height: 100,
+                    border: "1px solid #1c1c28",
+                    background: "#0a0a10",
+                  }}
+                >
+                  <img
+                    src={other.cover}
+                    alt={other.title}
+                    className="w-full h-full object-cover"
+                    loading="lazy"
+                  />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <div className="label-eyebrow">Связанные материалы · {other.eyebrow}</div>
+                  <h3 className="mt-3 text-[24px] font-medium text-text-primary tracking-tight">
+                    {other.title}
+                  </h3>
+                  <p className="mt-2 text-[14px] text-text-secondary max-w-[640px]">{other.short}</p>
+                  <div className="mt-5">
+                    <ArrowLink>Читать</ArrowLink>
+                  </div>
+                </div>
               </div>
             </Link>
           </Reveal>

@@ -24,12 +24,12 @@ export function ResearchShowcase() {
               transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
               className="relative overflow-hidden rounded-[28px] border-[0.5px] border-border bg-bg-deep h-full min-h-[340px] p-8 lg:p-10 flex flex-col justify-between"
             >
-              {/* Ambient glow that intensifies on hover */}
+              {/* Ambient brand glow that intensifies on hover */}
               <div
                 aria-hidden
                 className="absolute -top-32 -right-24 w-[420px] h-[420px] rounded-full opacity-50 group-hover:opacity-90 transition-opacity duration-700"
                 style={{
-                  background: `radial-gradient(circle at 50% 50%, ${r.dotColor} 0%, transparent 65%)`,
+                  background: `radial-gradient(circle at 50% 50%, var(--brand) 0%, transparent 65%)`,
                   filter: "blur(60px)",
                 }}
               />
@@ -60,17 +60,10 @@ export function ResearchShowcase() {
               />
 
               <div className="relative">
-                <div className="flex items-center gap-3">
-                  <span
-                    className="inline-block h-1.5 w-1.5 rounded-full"
-                    style={{ background: r.dotColor }}
-                    aria-hidden
-                  />
-                  <span className="label-eyebrow">
-                    {r.eyebrow} · {r.year}
-                  </span>
-                </div>
-                <h3 className="mt-7 text-[28px] lg:text-[32px] font-medium text-text-primary tracking-[-0.02em] leading-[1.1] max-w-[20ch]">
+                <span className="label-eyebrow">
+                  {r.eyebrow} · {r.year}
+                </span>
+                <h3 className="mt-5 text-[28px] lg:text-[32px] font-medium text-text-primary tracking-[-0.02em] leading-[1.1] max-w-[20ch]">
                   {r.title}
                 </h3>
                 <p className="mt-4 text-[14px] text-text-secondary leading-[1.6] max-w-[42ch]">
