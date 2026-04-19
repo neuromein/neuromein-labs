@@ -5,10 +5,7 @@ import { RESEARCH } from "@/lib/site";
 
 /**
  * Две богатые карточки исследований под hero на главной.
- * - min-height 280px
- * - тонкий голубой градиент в верхней части (40%)
- * - кнопка «Читать» прижата к низу через flex-grow на описании
- * - hover: borderColor → rgba(74,158,245,0.3) + box-shadow
+ * Без цветных «точек» — только лаконичная типографика и обложка работы.
  */
 export function HomeResearchCards() {
   return (
@@ -17,12 +14,12 @@ export function HomeResearchCards() {
         <Reveal key={r.slug} delay={i * 0.1}>
           <ResearchCard
             slug={r.slug}
-            dotColor={r.dotColor}
             eyebrow={r.eyebrow}
             year={r.year}
             title={r.title}
             short={r.short}
             date={r.date}
+            cover={r.cover}
           />
         </Reveal>
       ))}
@@ -32,20 +29,20 @@ export function HomeResearchCards() {
 
 function ResearchCard({
   slug,
-  dotColor,
   eyebrow,
   year,
   title,
   short,
   date,
+  cover,
 }: {
   slug: string;
-  dotColor: string;
   eyebrow: string;
   year: string;
   title: string;
   short: string;
   date: string;
+  cover: string;
 }) {
   return (
     <Link
@@ -87,28 +84,43 @@ function ResearchCard({
           }}
         />
 
-        <div className="relative flex items-center gap-2.5">
-          <span
-            className="inline-block h-1.5 w-1.5 rounded-full"
-            style={{ background: dotColor }}
-          />
-          <span
-            className="text-[11px] uppercase"
-            style={{ color: "#5a5a6a", letterSpacing: "0.06em" }}
+        <div className="relative flex items-start gap-5">
+          {/* Миниатюра обложки */}
+          <div
+            className="shrink-0 overflow-hidden rounded-md"
+            style={{
+              width: 64,
+              height: 88,
+              border: "1px solid #1c1c28",
+              background: "#0a0a10",
+            }}
           >
-            {eyebrow} · {year}
-          </span>
+            <img
+              src={cover}
+              alt={title}
+              className="w-full h-full object-cover"
+              loading="lazy"
+            />
+          </div>
+
+          <div className="flex flex-col min-w-0 flex-1">
+            <span
+              className="text-[11px] uppercase"
+              style={{ color: "#5a5a6a", letterSpacing: "0.06em" }}
+            >
+              {eyebrow} · {year}
+            </span>
+            <h3
+              className="mt-3 text-[24px] lg:text-[26px] font-medium leading-[1.15] tracking-[-0.02em]"
+              style={{ color: "#f0f0f5" }}
+            >
+              {title}
+            </h3>
+          </div>
         </div>
 
-        <h3
-          className="relative mt-5 text-[24px] lg:text-[26px] font-medium leading-[1.15] tracking-[-0.02em]"
-          style={{ color: "#f0f0f5" }}
-        >
-          {title}
-        </h3>
-
         <p
-          className="relative mt-3 text-[14px] leading-[1.55] max-w-[44ch] flex-grow"
+          className="relative mt-5 text-[14px] leading-[1.55] max-w-[44ch] flex-grow"
           style={{ color: "#9a9aaa" }}
         >
           {short}
