@@ -102,77 +102,63 @@ function PredictionsPage() {
     <Layout>
       <div className="max-w-[1320px] mx-auto pb-20">
         <PageHero
-          eyebrow="Prediction tracker"
           title="Прогнозы и их проверка"
-          description="Я фиксирую прогнозы с датой и возвращаюсь к ним, чтобы проверить — сбылось или нет. Это единственный способ проверить аналитика."
+          description="Я фиксирую прогнозы с датой и возвращаюсь к ним, чтобы проверить — сбылось или нет."
         />
 
-        {/* Stats */}
+        {/* Stats — large minimal tiles */}
         <Reveal>
-          <div className="mt-10 grid grid-cols-2 md:grid-cols-5 gap-3">
-            <StatCard label="Всего прогнозов" value={stats.total} />
-            <StatCard label="Сбылось" value={stats.byStatus.fulfilled} accent="#4AE88C" />
-            <StatCard label="Частично" value={stats.byStatus.partial} accent="#E8C84A" />
-            <StatCard label="В процессе" value={stats.byStatus.in_progress} accent="#4A9EF5" />
-            <StatCard
+          <div className="mt-12 grid grid-cols-2 md:grid-cols-5 gap-px rounded-[24px] overflow-hidden border-[0.5px] border-border bg-border">
+            <StatTile label="Всего" value={stats.total} />
+            <StatTile label="Сбылось" value={stats.byStatus.fulfilled} accent="#4AE88C" />
+            <StatTile label="Частично" value={stats.byStatus.partial} accent="#E8C84A" />
+            <StatTile label="В процессе" value={stats.byStatus.in_progress} accent="#4A9EF5" />
+            <StatTile
               label="Точность"
               value={stats.accuracy === null ? "—" : `${stats.accuracy}%`}
-              hint={stats.accuracy === null ? "пока нет завершённых" : `${stats.settled} завершённых`}
+              hint={
+                stats.accuracy === null
+                  ? "пока нет завершённых"
+                  : `${stats.settled} завершённых`
+              }
             />
           </div>
         </Reveal>
 
-        {/* Filters */}
+        {/* Filters — liquid-glass capsules in nav style */}
         <Reveal delay={0.05}>
-          <div className="mt-10 space-y-4">
-            <FilterRow label="Статус">
-              <FilterChip active={activeStatus === "all"} onClick={() => setActiveStatus("all")}>
-                Все
-              </FilterChip>
-              {STATUS_ORDER.map((s) => (
-                <FilterChip
-                  key={s}
-                  active={activeStatus === s}
-                  onClick={() => setActiveStatus(s)}
-                  count={stats.byStatus[s]}
-                >
-                  {STATUS_LABELS[s]}
-                </FilterChip>
-              ))}
-            </FilterRow>
-
-            <FilterRow label="Категория">
-              <FilterChip
-                active={activeCategory === "all"}
-                onClick={() => setActiveCategory("all")}
-              >
-                Все
-              </FilterChip>
-              {usedCategories.map((c) => (
-                <FilterChip
-                  key={c}
-                  active={activeCategory === c}
-                  onClick={() => setActiveCategory(c)}
-                >
-                  {CATEGORIES[c]}
-                </FilterChip>
-              ))}
-            </FilterRow>
-
-            <FilterRow label="Источник">
-              <FilterChip active={activeSource === "all"} onClick={() => setActiveSource("all")}>
-                Все
-              </FilterChip>
-              {usedSources.map((s) => (
-                <FilterChip
-                  key={s}
-                  active={activeSource === s}
-                  onClick={() => setActiveSource(s)}
-                >
-                  {SOURCE_LABELS[s]}
-                </FilterChip>
-              ))}
-            </FilterRow>
+          <div className="mt-10 space-y-3">
+            <FilterCapsule
+              label="Статус"
+              options={[
+                { key: "all", label: "Все" },
+                ...STATUS_ORDER.map((s) => ({
+                  key: s,
+                  label: STATUS_LABELS[s],
+                  count: stats.byStatus[s],
+                })),
+              ]}
+              active={activeStatus}
+              onChange={(k) => setActiveStatus(k as PredictionStatus | "all")}
+            />
+            <FilterCapsule
+              label="Категория"
+              options={[
+                { key: "all", label: "Все" },
+                ...usedCategories.map((c) => ({ key: c, label: CATEGORIES[c] })),
+              ]}
+              active={activeCategory}
+              onChange={(k) => setActiveCategory(k as CategoryKey | "all")}
+            />
+            <FilterCapsule
+              label="Источник"
+              options={[
+                { key: "all", label: "Все" },
+                ...usedSources.map((s) => ({ key: s, label: SOURCE_LABELS[s] })),
+              ]}
+              active={activeSource}
+              onChange={(k) => setActiveSource(k as SourceWork | "all")}
+            />
           </div>
         </Reveal>
 
