@@ -183,7 +183,142 @@ function StatTile({
 
 type FilterOption = { key: string; label: string; count?: number };
 
-function FilterCapsule({
+function FiltersPanel({
+  activeStatus,
+  setActiveStatus,
+  activeCategory,
+  setActiveCategory,
+  activeSource,
+  setActiveSource,
+  stats,
+  usedCategories,
+  usedSources,
+}: {
+  activeStatus: PredictionStatus | "all";
+  setActiveStatus: (v: PredictionStatus | "all") => void;
+  activeCategory: CategoryKey | "all";
+  setActiveCategory: (v: CategoryKey | "all") => void;
+  activeSource: SourceWork | "all";
+  setActiveSource: (v: SourceWork | "all") => void;
+  stats: ReturnType<typeof getStats>;
+  usedCategories: CategoryKey[];
+  usedSources: SourceWork[];
+}) {
+  const [open, setOpen] = useState(false);
+
+  const activeCount =
+    (activeStatus !== "all" ? 1 : 0) +
+    (activeCategory !== "all" ? 1 : 0) +
+    (activeSource !== "all" ? 1 : 0);
+
+  const reset = () => {
+    setActiveStatus("all");
+    setActiveCategory("all");
+    setActiveSource("all");
+  };
+
+  return (
+    <div
+      className="mt-10 rounded-[20px] overflow-hidden"
+      style={{
+        background: "rgba(12, 12, 18, 0.55)",
+        backdropFilter: "blur(22px) saturate(160%)",
+        WebkitBackdropFilter: "blur(22px) saturate(160%)",
+        border: "1px solid rgba(255,255,255,0.06)",
+        boxShadow:
+          "0 4px 16px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.04)",
+      }}
+    >
+      <button
+        onClick={() => setOpen((v) => !v)}
+        className="w-full flex items-center justify-between gap-4 px-5 py-4 text-left transition-colors hover:bg-white/[0.02]"
+      >
+        <div className="flex items-center gap-3">
+          <SlidersHorizontal size={16} className="text-text-tertiary" />
+          <span className="text-[14px] text-text-primary font-medium">Фильтры</span>
+          {activeCount > 0 && (
+            <span className="inline-flex items-center justify-center min-w-[20px] h-5 px-1.5 rounded-full bg-text-primary text-bg text-[11px] font-semibold">
+              {activeCount}
+            </span>
+          )}
+        </div>
+        <div className="flex items-center gap-3">
+          {activeCount > 0 && (
+            <span
+              role="button"
+              tabIndex={0}
+              onClick={(e) => {
+                e.stopPropagation();
+                reset();
+              }}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                  e.stopPropagation();
+                  reset();
+                }
+              }}
+              className="inline-flex items-center gap-1 text-[12px] text-text-tertiary hover:text-text-primary transition-colors cursor-pointer"
+            >
+              <X size={12} /> Сбросить
+            </span>
+          )}
+          <ChevronDown
+            size={16}
+            className={`text-text-tertiary transition-transform duration-300 ${open ? "rotate-180" : ""}`}
+          />
+        </div>
+      </button>
+
+      <AnimatePresence initial={false}>
+        {open && (
+          <motion.div
+            initial={{ height: 0, opacity: 0 }}
+            animate={{ height: "auto", opacity: 1 }}
+            exit={{ height: 0, opacity: 0 }}
+            transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+            className="overflow-hidden"
+          >
+            <div className="px-5 pb-5 pt-1 space-y-4 border-t border-white/[0.06]">
+              <FilterRow
+                label="Статус"
+                options={[
+                  { key: "all", label: "Все" },
+                  ...STATUS_ORDER.map((s) => ({
+                    key: s,
+                    label: STATUS_LABELS[s],
+                    count: stats.byStatus[s],
+                  })),
+                ]}
+                active={activeStatus}
+                onChange={(k) => setActiveStatus(k as PredictionStatus | "all")}
+              />
+              <FilterRow
+                label="Категория"
+                options={[
+                  { key: "all", label: "Все" },
+                  ...usedCategories.map((c) => ({ key: c, label: CATEGORIES[c] })),
+                ]}
+                active={activeCategory}
+                onChange={(k) => setActiveCategory(k as CategoryKey | "all")}
+              />
+              <FilterRow
+                label="Источник"
+                options={[
+                  { key: "all", label: "Все" },
+                  ...usedSources.map((s) => ({ key: s, label: SOURCE_LABELS[s] })),
+                ]}
+                active={activeSource}
+                onChange={(k) => setActiveSource(k as SourceWork | "all")}
+              />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+}
+
+function FilterRow({
   label,
   options,
   active,
@@ -195,52 +330,33 @@ function FilterCapsule({
   onChange: (key: string) => void;
 }) {
   return (
-    <div className="flex items-center gap-4 flex-wrap">
-      <span className="text-[11px] uppercase tracking-[0.08em] text-text-tertiary font-medium min-w-[88px]">
+    <div className="pt-4">
+      <div className="text-[10px] uppercase tracking-[0.1em] text-text-tertiary font-medium mb-2.5">
         {label}
-      </span>
-      <div
-        className="inline-flex items-center gap-0.5 p-1 rounded-full flex-wrap"
-        style={{
-          background: "rgba(12, 12, 18, 0.55)",
-          backdropFilter: "blur(22px) saturate(160%)",
-          WebkitBackdropFilter: "blur(22px) saturate(160%)",
-          border: "1px solid rgba(255,255,255,0.06)",
-          boxShadow:
-            "0 4px 16px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.04)",
-        }}
-      >
+      </div>
+      <div className="flex flex-wrap gap-1.5">
         {options.map((opt) => {
           const isActive = active === opt.key;
           return (
             <button
               key={opt.key}
               onClick={() => onChange(opt.key)}
-              className={`relative px-3.5 py-2 rounded-full text-[13px] whitespace-nowrap transition-colors duration-200 ${
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[12.5px] whitespace-nowrap border-[0.5px] transition-all duration-200 ${
                 isActive
-                  ? "text-text-primary"
-                  : "text-text-secondary hover:text-text-primary"
+                  ? "bg-text-primary text-bg border-text-primary"
+                  : "bg-transparent text-text-secondary border-border-strong hover:text-text-primary hover:border-text-tertiary"
               }`}
             >
-              {isActive && (
-                <motion.span
-                  layoutId={`filter-pill-${label}`}
-                  className="absolute inset-0 rounded-full bg-bg-deep"
-                  transition={{ type: "spring", stiffness: 380, damping: 32 }}
-                />
+              {opt.label}
+              {opt.count !== undefined && opt.count > 0 && (
+                <span
+                  className={`text-[10px] font-medium ${
+                    isActive ? "opacity-50" : "text-text-tertiary"
+                  }`}
+                >
+                  {opt.count}
+                </span>
               )}
-              <span className="relative inline-flex items-center gap-1.5">
-                {opt.label}
-                {opt.count !== undefined && opt.count > 0 && (
-                  <span
-                    className={`text-[10px] font-medium ${
-                      isActive ? "text-text-tertiary" : "text-text-tertiary/70"
-                    }`}
-                  >
-                    {opt.count}
-                  </span>
-                )}
-              </span>
             </button>
           );
         })}
