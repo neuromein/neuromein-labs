@@ -133,7 +133,7 @@ export function HomePublications() {
             className="mt-3 text-[14px] leading-[1.5]"
             style={{ color: "#7a7a8a" }}
           >
-            Прямо из Telegram-канала{" "}
+            Telegram-канал{" "}
             <a
               href={SITE.telegram}
               target="_blank"
