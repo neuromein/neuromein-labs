@@ -1,20 +1,129 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Reveal } from "./Reveal";
 import { PUBLICATIONS, SITE } from "@/lib/site";
 
 /**
  * Лента публикаций в стиле Telegram-канала.
- * Карточки оформлены как посты в TG: шапка канала, дата, текст, реакции/CTA.
+ * Горизонтальный слайдер с медленной авто-прокруткой в обратную сторону
+ * (как «Выступления и обучения», но в другую сторону).
  */
 export function HomePublications() {
-  const items = PUBLICATIONS.slice(0, 4);
+  const items = PUBLICATIONS;
+
+  const scrollerRef = useRef<HTMLDivElement>(null);
+  const [canPrev, setCanPrev] = useState(true);
+  const [canNext, setCanNext] = useState(true);
+
+  const updateButtons = () => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    setCanPrev(el.scrollLeft > 4);
+    setCanNext(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
+  };
+
+  // На монтировании — ставим скролл в конец дублированного списка,
+  // чтобы авто-прокрутка шла "влево" (в обратную сторону).
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const half = el.scrollWidth / 2;
+    el.scrollLeft = half;
+    updateButtons();
+    el.addEventListener("scroll", updateButtons, { passive: true });
+    window.addEventListener("resize", updateButtons);
+    return () => {
+      el.removeEventListener("scroll", updateButtons);
+      window.removeEventListener("resize", updateButtons);
+    };
+  }, []);
+
+  // Авто-прокрутка влево: непрерывный медленный скролл с бесшовным зацикливанием.
+  useEffect(() => {
+    const el = scrollerRef.current;
+    if (!el) return;
+
+    const reduceMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+    if (reduceMotion) return;
+
+    let paused = false;
+    let userInteracting = false;
+    let interactionTimer: number | null = null;
+    let raf = 0;
+    let last = performance.now();
+    const SPEED = 18; // px/sec
+
+    const onEnter = () => {
+      paused = true;
+    };
+    const onLeave = () => {
+      paused = false;
+    };
+    const onUserScroll = () => {
+      userInteracting = true;
+      if (interactionTimer) window.clearTimeout(interactionTimer);
+      interactionTimer = window.setTimeout(() => {
+        userInteracting = false;
+      }, 2500);
+    };
+    const onVisibility = () => {
+      paused = document.hidden;
+      last = performance.now();
+    };
+
+    const tick = (now: number) => {
+      const dt = (now - last) / 1000;
+      last = now;
+
+      if (!paused && !userInteracting) {
+        const half = el.scrollWidth / 2;
+        let next = el.scrollLeft - SPEED * dt;
+        // бесшовное зацикливание: если ушли в начало — прыгаем на середину
+        if (next <= 0) {
+          next += half;
+        }
+        el.scrollLeft = next;
+      }
+      raf = requestAnimationFrame(tick);
+    };
+
+    el.addEventListener("pointerenter", onEnter);
+    el.addEventListener("pointerleave", onLeave);
+    el.addEventListener("touchstart", onEnter, { passive: true });
+    el.addEventListener("touchend", onLeave, { passive: true });
+    el.addEventListener("wheel", onUserScroll, { passive: true });
+    document.addEventListener("visibilitychange", onVisibility);
+
+    raf = requestAnimationFrame(tick);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      if (interactionTimer) window.clearTimeout(interactionTimer);
+      el.removeEventListener("pointerenter", onEnter);
+      el.removeEventListener("pointerleave", onLeave);
+      el.removeEventListener("touchstart", onEnter);
+      el.removeEventListener("touchend", onLeave);
+      el.removeEventListener("wheel", onUserScroll);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
+  }, []);
+
+  const scrollByCard = (dir: 1 | -1) => {
+    const el = scrollerRef.current;
+    if (!el) return;
+    const card = el.querySelector<HTMLElement>("[data-card]");
+    const step = card ? card.offsetWidth + 20 : el.clientWidth * 0.8;
+    el.scrollBy({ left: step * dir, behavior: "smooth" });
+  };
 
   return (
     <div>
       <div className="flex items-end justify-between gap-4 mb-8">
         <div>
           <h2
-            className="mt-2 text-[26px] lg:text-[30px] font-medium leading-[1.15] tracking-[-0.02em]"
+            className="text-[26px] lg:text-[30px] font-medium leading-[1.15] tracking-[-0.02em]"
             style={{ color: "#f0f0f5" }}
           >
             Последние публикации
@@ -36,35 +145,76 @@ export function HomePublications() {
           </p>
         </div>
 
-        <a
-          href={SITE.telegram}
-          target="_blank"
-          rel="noreferrer"
-          className="hidden sm:inline-flex items-center gap-2 h-[40px] px-4 rounded-[10px] text-[13px] font-medium transition-all duration-200 hover:opacity-85 active:scale-[0.98]"
-          style={{
-            background: "rgba(74, 158, 245, 0.08)",
-            color: "#4A9EF5",
-            border: "1px solid rgba(74, 158, 245, 0.2)",
-          }}
-        >
-          <TelegramIcon />
-          Открыть канал
-        </a>
+        {/* Стрелки навигации */}
+        <div className="hidden md:flex items-center gap-2 shrink-0">
+          <button
+            type="button"
+            aria-label="Назад"
+            onClick={() => scrollByCard(-1)}
+            disabled={!canPrev}
+            className="h-10 w-10 rounded-full inline-flex items-center justify-center transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white/[0.04]"
+            style={{
+              border: "1px solid #2a2a35",
+              color: "#f0f0f5",
+              background: "rgba(255,255,255,0.02)",
+            }}
+          >
+            <ChevronLeft size={18} strokeWidth={1.75} />
+          </button>
+          <button
+            type="button"
+            aria-label="Вперёд"
+            onClick={() => scrollByCard(1)}
+            disabled={!canNext}
+            className="h-10 w-10 rounded-full inline-flex items-center justify-center transition-all duration-200 disabled:opacity-30 disabled:cursor-not-allowed hover:bg-white/[0.04]"
+            style={{
+              border: "1px solid #2a2a35",
+              color: "#f0f0f5",
+              background: "rgba(255,255,255,0.02)",
+            }}
+          >
+            <ChevronRight size={18} strokeWidth={1.75} />
+          </button>
+        </div>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        {items.map((p, i) => (
-          <Reveal key={p.slug} delay={i * 0.06}>
-            <TelegramPostCard
-              title={p.title}
-              body={p.body ?? p.excerpt}
-              dateLabel={p.dateLabel}
-              telegramUrl={p.telegramUrl ?? SITE.telegram}
-              tag={p.tag}
-            />
-          </Reveal>
-        ))}
-      </div>
+      <Reveal>
+        <div className="relative -mx-4 sm:-mx-6 lg:mx-0">
+          {/* Edge fade masks */}
+          <div
+            aria-hidden
+            className="absolute left-0 top-0 bottom-0 w-8 z-10 pointer-events-none lg:block hidden"
+            style={{
+              background: "linear-gradient(to right, #08080D, transparent)",
+            }}
+          />
+          <div
+            aria-hidden
+            className="absolute right-0 top-0 bottom-0 w-8 z-10 pointer-events-none lg:block hidden"
+            style={{
+              background: "linear-gradient(to left, #08080D, transparent)",
+            }}
+          />
+
+          <div
+            ref={scrollerRef}
+            className="flex gap-5 overflow-x-auto pb-4 px-4 sm:px-6 lg:px-0 no-scrollbar"
+            style={{
+              scrollbarWidth: "none",
+              msOverflowStyle: "none",
+            }}
+          >
+            {[...items, ...items].map((p, idx) => (
+              <TelegramPostCard
+                key={`${p.slug}-${idx}`}
+                title={p.title}
+                body={p.body ?? p.excerpt}
+                telegramUrl={p.telegramUrl ?? SITE.telegram}
+              />
+            ))}
+          </div>
+        </div>
+      </Reveal>
     </div>
   );
 }
@@ -76,28 +226,34 @@ export function HomePublications() {
 function TelegramPostCard({
   title,
   body,
-  dateLabel,
   telegramUrl,
-  tag,
 }: {
   title: string;
   body: string;
-  dateLabel: string;
   telegramUrl: string;
-  tag: string;
 }) {
-  const [expanded, setExpanded] = useState(false);
-  const COLLAPSED_LIMIT = 380;
+  const COLLAPSED_LIMIT = 220;
   const isLong = body.length > COLLAPSED_LIMIT;
-  const displayed =
-    expanded || !isLong ? body : body.slice(0, COLLAPSED_LIMIT).trimEnd() + "…";
+  const displayed = isLong
+    ? body.slice(0, COLLAPSED_LIMIT).trimEnd() + "…"
+    : body;
 
   return (
     <article
-      className="relative flex flex-col h-full rounded-[16px] overflow-hidden transition-all duration-300 hover:border-[#2a2a38]"
+      data-card
+      className="group relative shrink-0 snap-start overflow-hidden flex flex-col"
       style={{
+        width: "min(86vw, 360px)",
         background: "#0c0c12",
         border: "1px solid #1c1c28",
+        borderRadius: 16,
+        transition: "border-color 0.3s ease",
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.borderColor = "rgba(74,158,245,0.3)";
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.borderColor = "#1c1c28";
       }}
     >
       {/* Шапка канала */}
@@ -123,15 +279,6 @@ function TelegramPostCard({
             @neuromein
           </span>
         </div>
-        <span
-          className="shrink-0 inline-flex items-center h-[24px] px-2.5 rounded-full text-[11px] uppercase tracking-[0.04em]"
-          style={{
-            background: "rgba(74, 158, 245, 0.08)",
-            color: "#4A9EF5",
-          }}
-        >
-          {tag}
-        </span>
       </header>
 
       {/* Тело поста */}
@@ -143,34 +290,18 @@ function TelegramPostCard({
           {title}
         </h3>
         <p
-          className="text-[14px] leading-[1.6] whitespace-pre-line"
+          className="text-[13.5px] leading-[1.6] whitespace-pre-line"
           style={{ color: "#9a9aaa" }}
         >
           {displayed}
         </p>
-        {isLong && (
-          <button
-            onClick={() => setExpanded((v) => !v)}
-            className="mt-3 text-[13px] font-medium transition-colors hover:text-[#7eb8f8]"
-            style={{ color: "#4A9EF5" }}
-          >
-            {expanded ? "Свернуть" : "Показать полностью"}
-          </button>
-        )}
       </div>
 
-      {/* Футер: дата + ссылка на TG */}
+      {/* Футер: ссылка на TG */}
       <footer
-        className="flex items-center justify-between gap-3 px-5 py-3.5"
+        className="flex items-center justify-end px-5 py-3.5"
         style={{ borderTop: "1px solid #15151e" }}
       >
-        <span
-          className="inline-flex items-center gap-1.5 text-[12px]"
-          style={{ color: "#7a7a8a" }}
-        >
-          <ClockIcon />
-          {dateLabel}
-        </span>
         <a
           href={telegramUrl}
           target="_blank"
@@ -231,20 +362,6 @@ function VerifiedBadge() {
   );
 }
 
-function ClockIcon() {
-  return (
-    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
-      <circle cx="6" cy="6" r="5" stroke="currentColor" strokeWidth="1" />
-      <path
-        d="M6 3v3l2 1.5"
-        stroke="currentColor"
-        strokeWidth="1"
-        strokeLinecap="round"
-      />
-    </svg>
-  );
-}
-
 function ArrowIcon() {
   return (
     <svg width="11" height="11" viewBox="0 0 12 12" fill="none" aria-hidden>
@@ -255,14 +372,6 @@ function ArrowIcon() {
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-    </svg>
-  );
-}
-
-function TelegramIcon() {
-  return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-      <path d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.568 8.16l-1.86 8.78c-.14.62-.51.77-1.03.48l-2.85-2.1-1.37 1.32c-.15.15-.28.28-.57.28l.2-2.91 5.31-4.8c.23-.2-.05-.31-.36-.11l-6.56 4.13-2.83-.88c-.62-.19-.63-.62.13-.92l11.05-4.26c.51-.19.96.12.79.92z" />
     </svg>
   );
 }
