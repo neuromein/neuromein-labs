@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Reveal } from "./Reveal";
 import { PUBLICATIONS, SITE } from "@/lib/site";
+import neuromeinAvatar from "@/assets/neuromein-avatar.jpg";
 
 /**
  * Лента публикаций в стиле Telegram-канала.
