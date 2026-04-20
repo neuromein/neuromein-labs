@@ -189,7 +189,7 @@ function PredictionsPage() {
   );
 }
 
-function StatCard({
+function StatTile({
   label,
   value,
   accent,
@@ -201,57 +201,90 @@ function StatCard({
   hint?: string;
 }) {
   return (
-    <div className="rounded-[16px] border-[0.5px] border-border bg-bg-card/40 p-5">
-      <div
-        className="text-[28px] font-semibold tracking-[-0.02em] leading-none"
-        style={{ color: accent ?? "var(--color-text-primary)" }}
-      >
-        {value}
-      </div>
-      <div className="mt-2 text-[12px] text-text-tertiary uppercase tracking-[0.04em]">{label}</div>
-      {hint && <div className="mt-1 text-[11px] text-text-tertiary/80">{hint}</div>}
-    </div>
-  );
-}
-
-function FilterRow({ label, children }: { label: string; children: React.ReactNode }) {
-  return (
-    <div className="flex items-start gap-4 flex-wrap">
-      <span className="text-[12px] uppercase tracking-[0.06em] text-text-tertiary pt-1.5 min-w-[80px]">
+    <div className="bg-bg-card/60 backdrop-blur-md p-6 lg:p-7 flex flex-col justify-between min-h-[140px] transition-colors duration-300 hover:bg-bg-card/80">
+      <div className="text-[11px] text-text-tertiary uppercase tracking-[0.08em] font-medium">
         {label}
-      </span>
-      <div className="flex flex-wrap gap-2 flex-1">{children}</div>
+      </div>
+      <div className="mt-3">
+        <div
+          className="text-[44px] font-semibold tracking-[-0.03em] leading-[0.95]"
+          style={{ color: accent ?? "var(--color-text-primary)" }}
+        >
+          {value}
+        </div>
+        {hint && (
+          <div className="mt-2 text-[11px] text-text-tertiary/80">{hint}</div>
+        )}
+      </div>
     </div>
   );
 }
 
-function FilterChip({
+type FilterOption = { key: string; label: string; count?: number };
+
+function FilterCapsule({
+  label,
+  options,
   active,
-  onClick,
-  children,
-  count,
+  onChange,
 }: {
-  active: boolean;
-  onClick: () => void;
-  children: React.ReactNode;
-  count?: number;
+  label: string;
+  options: FilterOption[];
+  active: string;
+  onChange: (key: string) => void;
 }) {
   return (
-    <button
-      onClick={onClick}
-      className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[13px] border-[0.5px] transition-all duration-200 ${
-        active
-          ? "bg-text-primary text-bg border-text-primary"
-          : "bg-transparent text-text-secondary border-border-strong hover:text-text-primary hover:border-text-tertiary"
-      }`}
-    >
-      <span>{children}</span>
-      {count !== undefined && count > 0 && (
-        <span className={`text-[11px] ${active ? "opacity-60" : "text-text-tertiary"}`}>
-          {count}
-        </span>
-      )}
-    </button>
+    <div className="flex items-center gap-4 flex-wrap">
+      <span className="text-[11px] uppercase tracking-[0.08em] text-text-tertiary font-medium min-w-[88px]">
+        {label}
+      </span>
+      <div
+        className="inline-flex items-center gap-0.5 p-1 rounded-full flex-wrap"
+        style={{
+          background: "rgba(12, 12, 18, 0.55)",
+          backdropFilter: "blur(22px) saturate(160%)",
+          WebkitBackdropFilter: "blur(22px) saturate(160%)",
+          border: "1px solid rgba(255,255,255,0.06)",
+          boxShadow:
+            "0 4px 16px rgba(0,0,0,0.25), inset 0 1px 0 rgba(255,255,255,0.04)",
+        }}
+      >
+        {options.map((opt) => {
+          const isActive = active === opt.key;
+          return (
+            <button
+              key={opt.key}
+              onClick={() => onChange(opt.key)}
+              className={`relative px-3.5 py-2 rounded-full text-[13px] whitespace-nowrap transition-colors duration-200 ${
+                isActive
+                  ? "text-text-primary"
+                  : "text-text-secondary hover:text-text-primary"
+              }`}
+            >
+              {isActive && (
+                <motion.span
+                  layoutId={`filter-pill-${label}`}
+                  className="absolute inset-0 rounded-full bg-bg-deep"
+                  transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                />
+              )}
+              <span className="relative inline-flex items-center gap-1.5">
+                {opt.label}
+                {opt.count !== undefined && opt.count > 0 && (
+                  <span
+                    className={`text-[10px] font-medium ${
+                      isActive ? "text-text-tertiary" : "text-text-tertiary/70"
+                    }`}
+                  >
+                    {opt.count}
+                  </span>
+                )}
+              </span>
+            </button>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
