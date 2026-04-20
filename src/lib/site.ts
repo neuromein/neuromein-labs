@@ -146,69 +146,6 @@ export const PUBLICATIONS: Publication[] = [
 
 export const TAGS = ["Все", "ИИ и работа", "Прогнозы", "Разбор", "Мнение"] as const;
 
-export type Prediction = {
-  id: string;
-  statement: string;
-  madeOn: string;
-  checkBy: string;
-  status: "confirmed" | "partial" | "in_progress" | "not_confirmed";
-  source: string;
-  sourceUrl: string;
-};
-
-export const PREDICTIONS: Prediction[] = [
-  {
-    id: "p1",
-    statement:
-      "К концу 2025 года не менее трёх крупных российских компаний публично откажутся от найма копирайтеров начального уровня в пользу AI-инструментов.",
-    madeOn: "Январь 2025",
-    checkBy: "Декабрь 2025",
-    status: "confirmed",
-    source: "Telegram NEUROMEIN",
-    sourceUrl: "https://t.me/neuromein",
-  },
-  {
-    id: "p2",
-    statement:
-      "В 2026 году объём вакансий на позиции «AI-стратег» и «AI-интегратор» в РФ превысит число вакансий junior data analyst.",
-    madeOn: "Март 2025",
-    checkBy: "Декабрь 2026",
-    status: "in_progress",
-    source: "Исследование «Тихая замена»",
-    sourceUrl: "/research/silent-replacement",
-  },
-  {
-    id: "p3",
-    statement:
-      "К середине 2026 года стоимость inference моделей уровня GPT-4 упадёт минимум в 5 раз относительно начала 2025 года.",
-    madeOn: "Февраль 2025",
-    checkBy: "Июль 2026",
-    status: "partial",
-    source: "Отчёт «ИИ в 2025»",
-    sourceUrl: "/research/ai-2025-forecast",
-  },
-  {
-    id: "p4",
-    statement:
-      "Появится первый публичный кейс российского банка, где AI-агенты автономно ведут весь цикл клиентской поддержки физлиц.",
-    madeOn: "Май 2025",
-    checkBy: "Декабрь 2026",
-    status: "in_progress",
-    source: "Telegram NEUROMEIN",
-    sourceUrl: "https://t.me/neuromein",
-  },
-  {
-    id: "p5",
-    statement:
-      "В 2025 году появится единый отраслевой стандарт раскрытия использования генеративного ИИ в публикациях СМИ.",
-    madeOn: "Январь 2025",
-    checkBy: "Декабрь 2025",
-    status: "not_confirmed",
-    source: "Публичная заметка",
-    sourceUrl: "https://t.me/neuromein",
-  },
-];
-
 import coverSilent from "@/assets/cover-silent-replacement.png";
 import coverForecast from "@/assets/cover-ai-2025-forecast.png";
 
