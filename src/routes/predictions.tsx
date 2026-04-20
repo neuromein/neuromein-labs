@@ -106,60 +106,33 @@ function PredictionsPage() {
           description="Я фиксирую прогнозы с датой и возвращаюсь к ним, чтобы проверить — сбылось или нет."
         />
 
-        {/* Stats — large minimal tiles */}
+        {/* Stats — monochrome, equal-weight tiles */}
         <Reveal>
           <div className="mt-12 grid grid-cols-2 md:grid-cols-5 gap-px rounded-[24px] overflow-hidden border-[0.5px] border-border bg-border">
             <StatTile label="Всего" value={stats.total} />
-            <StatTile label="Сбылось" value={stats.byStatus.fulfilled} accent="#4AE88C" />
-            <StatTile label="Частично" value={stats.byStatus.partial} accent="#E8C84A" />
-            <StatTile label="В процессе" value={stats.byStatus.in_progress} accent="#4A9EF5" />
+            <StatTile label="Сбылось" value={stats.byStatus.fulfilled} />
+            <StatTile label="Частично" value={stats.byStatus.partial} />
+            <StatTile label="В процессе" value={stats.byStatus.in_progress} />
             <StatTile
               label="Точность"
               value={stats.accuracy === null ? "—" : `${stats.accuracy}%`}
-              hint={
-                stats.accuracy === null
-                  ? "пока нет завершённых"
-                  : `${stats.settled} завершённых`
-              }
             />
           </div>
         </Reveal>
 
-        {/* Filters — liquid-glass capsules in nav style */}
+        {/* Filters — collapsible panel */}
         <Reveal delay={0.05}>
-          <div className="mt-10 space-y-3">
-            <FilterCapsule
-              label="Статус"
-              options={[
-                { key: "all", label: "Все" },
-                ...STATUS_ORDER.map((s) => ({
-                  key: s,
-                  label: STATUS_LABELS[s],
-                  count: stats.byStatus[s],
-                })),
-              ]}
-              active={activeStatus}
-              onChange={(k) => setActiveStatus(k as PredictionStatus | "all")}
-            />
-            <FilterCapsule
-              label="Категория"
-              options={[
-                { key: "all", label: "Все" },
-                ...usedCategories.map((c) => ({ key: c, label: CATEGORIES[c] })),
-              ]}
-              active={activeCategory}
-              onChange={(k) => setActiveCategory(k as CategoryKey | "all")}
-            />
-            <FilterCapsule
-              label="Источник"
-              options={[
-                { key: "all", label: "Все" },
-                ...usedSources.map((s) => ({ key: s, label: SOURCE_LABELS[s] })),
-              ]}
-              active={activeSource}
-              onChange={(k) => setActiveSource(k as SourceWork | "all")}
-            />
-          </div>
+          <FiltersPanel
+            activeStatus={activeStatus}
+            setActiveStatus={setActiveStatus}
+            activeCategory={activeCategory}
+            setActiveCategory={setActiveCategory}
+            activeSource={activeSource}
+            setActiveSource={setActiveSource}
+            stats={stats}
+            usedCategories={usedCategories}
+            usedSources={usedSources}
+          />
         </Reveal>
 
         <p className="mt-8 text-[13px] text-text-tertiary">
