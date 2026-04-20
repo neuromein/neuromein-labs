@@ -1,7 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { motion, AnimatePresence } from "framer-motion";
 import { useMemo, useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { ChevronDown, SlidersHorizontal, X } from "lucide-react";
 import { Layout } from "@/components/Layout";
 import { PageHero } from "@/components/HeroCard";
 import { Pill } from "@/components/ui-bits";
