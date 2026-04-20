@@ -325,15 +325,18 @@ function TelegramPostCard({
 function ChannelAvatar() {
   return (
     <div
-      className="shrink-0 w-10 h-10 rounded-full flex items-center justify-center text-[14px] font-semibold"
+      className="shrink-0 w-10 h-10 rounded-full overflow-hidden"
       style={{
-        background: "linear-gradient(135deg, #4A9EF5 0%, #2D7AD4 100%)",
-        color: "#08080D",
         boxShadow: "0 2px 8px rgba(74, 158, 245, 0.25)",
       }}
       aria-hidden
     >
-      N
+      <img
+        src={neuromeinAvatar}
+        alt=""
+        className="w-full h-full object-cover"
+        loading="lazy"
+      />
     </div>
   );
 }
