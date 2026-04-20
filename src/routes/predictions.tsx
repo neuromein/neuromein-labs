@@ -59,9 +59,14 @@ function formatDate(iso: string): string {
     "января", "февраля", "марта", "апреля", "мая", "июня",
     "июля", "августа", "сентября", "октября", "ноября", "декабря",
   ];
-  const d = new Date(iso);
-  if (isNaN(d.getTime())) return iso;
-  return `${d.getDate()} ${months[d.getMonth()]} ${d.getFullYear()}`;
+  // Parse ISO date manually (YYYY-MM-DD) to avoid timezone-driven SSR/CSR mismatch
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(iso);
+  if (!m) return iso;
+  const year = Number(m[1]);
+  const monthIdx = Number(m[2]) - 1;
+  const day = Number(m[3]);
+  if (monthIdx < 0 || monthIdx > 11) return iso;
+  return `${day} ${months[monthIdx]} ${year}`;
 }
 
 function PredictionsPage() {
