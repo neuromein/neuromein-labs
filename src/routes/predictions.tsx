@@ -165,29 +165,17 @@ function PredictionsPage() {
 function StatTile({
   label,
   value,
-  accent,
-  hint,
 }: {
   label: string;
   value: string | number;
-  accent?: string;
-  hint?: string;
 }) {
   return (
-    <div className="bg-bg-card/60 backdrop-blur-md p-6 lg:p-7 flex flex-col justify-between min-h-[140px] transition-colors duration-300 hover:bg-bg-card/80">
+    <div className="bg-bg-card/60 backdrop-blur-md p-6 lg:p-7 h-[140px] flex flex-col justify-between transition-colors duration-300 hover:bg-bg-card/80">
       <div className="text-[11px] text-text-tertiary uppercase tracking-[0.08em] font-medium">
         {label}
       </div>
-      <div className="mt-3">
-        <div
-          className="text-[44px] font-semibold tracking-[-0.03em] leading-[0.95]"
-          style={{ color: accent ?? "var(--color-text-primary)" }}
-        >
-          {value}
-        </div>
-        {hint && (
-          <div className="mt-2 text-[11px] text-text-tertiary/80">{hint}</div>
-        )}
+      <div className="text-[40px] font-semibold tracking-[-0.03em] leading-none text-text-primary tabular-nums">
+        {value}
       </div>
     </div>
   );
