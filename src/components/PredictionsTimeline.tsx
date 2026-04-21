@@ -572,7 +572,7 @@ function ArcTimeline({
       {/* Контейнер-стекло */}
       <div
         ref={wrapperRef}
-        className="relative rounded-[28px] px-4 md:px-8 pt-8 pb-6 overflow-hidden"
+        className="relative rounded-[28px] px-4 md:px-8 pt-10 pb-10"
         style={{
           background:
             "linear-gradient(180deg, rgba(28,28,36,0.55) 0%, rgba(14,14,20,0.55) 100%)",
@@ -586,7 +586,7 @@ function ArcTimeline({
         {/* Подсветка-aurora за дугой */}
         <div
           aria-hidden
-          className="absolute pointer-events-none"
+          className="absolute pointer-events-none rounded-[28px]"
           style={{
             top: -100,
             left: "50%",
@@ -596,6 +596,7 @@ function ArcTimeline({
             background:
               "radial-gradient(ellipse at center, rgba(99,102,241,0.18) 0%, rgba(34,211,238,0.10) 35%, transparent 70%)",
             filter: "blur(40px)",
+            overflow: "hidden",
           }}
         />
 
