@@ -859,8 +859,8 @@ function ArcPopover({
   items: Array<{ curated: CuratedItem; full: Prediction }>;
   onOpen: (id: string) => void;
 }) {
-  const POPOVER_W = 340;
-  // Позиционирование, чтобы не вылетал
+  const POPOVER_W = 320;
+  // Позиционирование, чтобы не вылетал по горизонтали
   let leftPx = x - POPOVER_W / 2;
   if (leftPx < 16) leftPx = 16;
   if (leftPx + POPOVER_W > containerWidth - 16)
@@ -868,26 +868,26 @@ function ArcPopover({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: -6, scale: 0.96 }}
+      initial={{ opacity: 0, y: 6, scale: 0.96 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: -6, scale: 0.96 }}
+      exit={{ opacity: 0, y: 6, scale: 0.96 }}
       transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-      className="absolute z-30 pointer-events-auto"
+      className="absolute z-30 pointer-events-none"
       style={{
-        top: y + 64,
+        top: y + 70,
         left: leftPx,
         width: POPOVER_W,
       }}
     >
       <div
-        className="rounded-[20px] p-5"
+        className="rounded-[20px] p-5 pointer-events-auto"
         style={{
-          background: "rgba(20,20,28,0.78)",
+          background: "rgba(20,20,28,0.92)",
           border: "1px solid rgba(255,255,255,0.1)",
           backdropFilter: "blur(40px) saturate(180%)",
           WebkitBackdropFilter: "blur(40px) saturate(180%)",
           boxShadow:
-            "0 30px 60px -20px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.08)",
+            "0 30px 60px -20px rgba(0,0,0,0.85), 0 0 0 1px rgba(99,102,241,0.15), inset 0 1px 0 rgba(255,255,255,0.08)",
         }}
       >
         <div className="flex items-baseline justify-between mb-4">
