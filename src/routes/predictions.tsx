@@ -6,6 +6,7 @@ import { Layout } from "@/components/Layout";
 import { PageHero } from "@/components/HeroCard";
 import { Pill } from "@/components/ui-bits";
 import { Reveal } from "@/components/Reveal";
+import { PredictionsValidationBanner } from "@/components/PredictionsValidationBanner";
 import {
   predictions,
   getStats,
