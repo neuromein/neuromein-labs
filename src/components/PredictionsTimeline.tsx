@@ -328,9 +328,6 @@ export function PredictionsTimeline() {
     <section aria-labelledby="timeline-heading" className="mt-4">
       {/* Заголовок */}
       <header className="max-w-4xl pt-8">
-        <div className="text-[12px] text-text-tertiary mb-5 tracking-[0.04em]">
-          2026 — 2028 · Трекер прогнозов
-        </div>
         <h2
           id="timeline-heading"
           className="text-[36px] md:text-[52px] lg:text-[64px] font-medium leading-[0.98] tracking-[-0.035em] text-text-primary text-balance"
