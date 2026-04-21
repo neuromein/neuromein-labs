@@ -547,12 +547,15 @@ function Timeline({
 
       <div
         ref={trackRef}
-        className="relative pt-10 pb-14 px-2 select-none"
+        className="relative pt-12 pb-16 px-2 select-none"
       >
         {/* Базовая линия */}
         <div
-          className="absolute left-2 right-2 top-1/2 -translate-y-1/2 h-px"
-          style={{ background: "rgba(255,255,255,0.08)" }}
+          className="absolute left-2 right-2 top-1/2 -translate-y-1/2 h-[2px] rounded-full"
+          style={{
+            background:
+              "linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.18) 50%, rgba(255,255,255,0.04))",
+          }}
         />
 
         {/* Кризисные зоны */}
@@ -560,17 +563,42 @@ function Timeline({
           const left = (a / (QUARTERS.length - 1)) * 100;
           const width = ((b - a) / (QUARTERS.length - 1)) * 100;
           return (
-            <div
-              key={i}
-              className="absolute top-1/2 -translate-y-1/2 h-8 rounded-full pointer-events-none"
-              style={{
-                left: `calc(${left}% + 8px)`,
-                width: `calc(${width}% - 0px)`,
-                background: `linear-gradient(90deg, ${CRISIS_RED}00, ${CRISIS_RED}55, ${CRISIS_RED}00)`,
-                filter: "blur(4px)",
-              }}
-              aria-hidden
-            />
+            <div key={i} aria-hidden>
+              {/* Внешнее насыщенное свечение */}
+              <div
+                className="absolute top-1/2 -translate-y-1/2 h-20 rounded-full pointer-events-none"
+                style={{
+                  left: `calc(${left}% + 8px)`,
+                  width: `calc(${width}%)`,
+                  background: `radial-gradient(ellipse at center, #DC262655 0%, #B91C1C33 35%, transparent 75%)`,
+                  filter: "blur(12px)",
+                }}
+              />
+              {/* Чёткая полоса */}
+              <div
+                className="absolute top-1/2 -translate-y-1/2 h-9 rounded-full pointer-events-none"
+                style={{
+                  left: `calc(${left}% + 8px)`,
+                  width: `calc(${width}%)`,
+                  background: `linear-gradient(90deg, transparent 0%, #DC262633 15%, #EF444466 50%, #DC262633 85%, transparent 100%)`,
+                  border: `1px solid #DC262633`,
+                  boxShadow: `inset 0 0 24px #B91C1C44`,
+                }}
+              />
+              {/* Метка */}
+              <div
+                className="absolute pointer-events-none text-[9px] uppercase tracking-[0.18em] font-medium whitespace-nowrap"
+                style={{
+                  left: `calc(${left + width / 2}% + 8px)`,
+                  transform: "translate(-50%, 0)",
+                  top: "calc(50% - 38px)",
+                  color: "#FCA5A5",
+                  textShadow: "0 0 12px #DC262688",
+                }}
+              >
+                Зона кризиса
+              </div>
+            </div>
           );
         })}
 
@@ -587,7 +615,7 @@ function Timeline({
               : has
                 ? BLUE
                 : "rgba(255,255,255,0.2)";
-            const size = isActive ? 16 : has ? 12 : 8;
+            const size = isActive ? 18 : isHover && has ? 16 : has ? 13 : 7;
 
             return (
               <button
@@ -602,20 +630,34 @@ function Timeline({
                 style={{ width: 28, height: 28 }}
                 aria-label={`${q}: ${count} прогноз(ов)`}
               >
+                {/* Pulse при hover/active */}
+                {(isActive || (isHover && has)) && (
+                  <motion.span
+                    className="absolute rounded-full pointer-events-none"
+                    initial={{ opacity: 0.6, scale: 1 }}
+                    animate={{ opacity: 0, scale: 2.4 }}
+                    transition={{ duration: 1.2, repeat: Infinity, ease: "easeOut" }}
+                    style={{
+                      width: size,
+                      height: size,
+                      background: dotColor,
+                    }}
+                  />
+                )}
                 <motion.span
                   layout
-                  className="rounded-full"
+                  className="rounded-full relative"
                   animate={{
                     width: size,
                     height: size,
                     backgroundColor: dotColor,
                     boxShadow: isActive || isHover
-                      ? `0 0 0 4px ${dotColor}22, 0 0 16px ${dotColor}88`
+                      ? `0 0 0 5px ${dotColor}22, 0 0 0 1px ${dotColor}, 0 0 24px ${dotColor}cc`
                       : has
-                        ? `0 0 10px ${dotColor}44`
+                        ? `0 0 0 1px ${dotColor}88, 0 0 12px ${dotColor}55`
                         : "none",
                   }}
-                  transition={{ duration: 0.2 }}
+                  transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
                 />
                 {/* Подпись квартала */}
                 <span
@@ -624,7 +666,7 @@ function Timeline({
                     color: isActive
                       ? "#fff"
                       : crisis
-                        ? "rgba(255,180,180,0.7)"
+                        ? "#FCA5A5"
                         : "rgba(240,240,245,0.45)",
                   }}
                 >
