@@ -339,7 +339,7 @@ export function PredictionsTimeline() {
   return (
     <section
       aria-labelledby="timeline-heading"
-      className="mt-20 rounded-[28px] p-6 md:p-10 lg:p-12"
+      className="mt-6 rounded-[28px] p-6 md:p-10 lg:p-12"
       style={{
         background: "linear-gradient(180deg, rgba(15,17,21,0.85) 0%, rgba(8,8,13,0.85) 100%)",
         border: "1px solid rgba(255,255,255,0.06)",
