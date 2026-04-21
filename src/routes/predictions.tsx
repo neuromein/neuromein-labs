@@ -32,8 +32,6 @@ function PredictionsPage() {
   return (
     <Layout>
       <div className="max-w-[1320px] mx-auto pb-24 pt-4">
-        <PredictionsValidationBanner />
-
         {/* Main content — interactive timeline + filters + cards */}
         <PredictionsTimeline />
 
