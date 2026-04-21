@@ -471,13 +471,6 @@ export function PredictionsTimeline() {
         )}
       </div>
 
-      {/* Footnote */}
-      <p className="mt-12 text-[13px] leading-[1.65] text-text-tertiary max-w-2xl">
-        Все прогнозы основаны на исследованиях «Тихая замена» (март 2026) и «ИИ в
-        2025 и прогнозы на 2026» (январь 2026). Уровень уверенности отражает сочетание
-        данных, моделирования и экспертной оценки.
-      </p>
-
       {/* Modal */}
       <AnimatePresence>
         {openItem && (
@@ -546,11 +539,11 @@ function ArcTimeline({
   const PADDING_X = 90;
   const W = Math.max(width, 360);
   const arcWidth = W - PADDING_X * 2;
-  const ARC_HEIGHT = Math.min(140, arcWidth * 0.16); // плавная пологая дуга
+  const ARC_HEIGHT = Math.min(110, arcWidth * 0.13); // более плоская дуга
   const radius = (Math.pow(arcWidth / 2, 2) + Math.pow(ARC_HEIGHT, 2)) / (2 * ARC_HEIGHT);
   const cx = W / 2;
   const cy = ARC_HEIGHT + radius; // центр окружности ниже дуги
-  const totalH = ARC_HEIGHT + 110; // место для подписей
+  const totalH = ARC_HEIGHT + 90; // место для подписей
 
   const startAngle = Math.atan2(-(radius - ARC_HEIGHT), -arcWidth / 2);
   const endAngle = Math.atan2(-(radius - ARC_HEIGHT), arcWidth / 2);
@@ -588,7 +581,7 @@ function ArcTimeline({
       {/* Контейнер-стекло */}
       <div
         ref={wrapperRef}
-        className="relative rounded-[28px] px-4 md:px-8 pt-10 pb-10"
+        className="relative rounded-[28px] px-4 md:px-8 pt-6 pb-6"
         style={{
           background:
             "linear-gradient(180deg, rgba(28,28,36,0.55) 0%, rgba(14,14,20,0.55) 100%)",
@@ -598,7 +591,18 @@ function ArcTimeline({
           boxShadow:
             "0 30px 80px -30px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.05)",
         }}
+        onClick={(e) => {
+          // Клик по пустому пространству контейнера закрывает попровер
+          if (e.target === e.currentTarget && activeIdx !== null) {
+            onSelect(activeIdx);
+          }
+        }}
       >
+        {/* Подсказка сверху по центру */}
+        <div className="text-[12px] text-text-tertiary text-center mb-2">
+          Наведите или кликните на точку
+        </div>
+
         {/* Подсветка-aurora за дугой */}
         <div
           aria-hidden
@@ -847,11 +851,6 @@ function ArcTimeline({
         </AnimatePresence>
       </div>
 
-      {/* Подсказка снизу — теперь вне контейнера дуги */}
-      <div className="flex items-center justify-between text-[12px] text-text-tertiary mt-4 px-2">
-        <span>Наведите или кликните на точку</span>
-        <span className="tabular-nums">{QUARTERS.length} кварталов</span>
-      </div>
     </div>
   );
 }
@@ -1213,11 +1212,9 @@ function DetailModal({
           <div className="text-[12px] text-text-tertiary">
             Источник: {curated.sourceLabel}
           </div>
-          {curated.pdfUrl && (
+          {curated.researchSlug && (
             <a
-              href={curated.pdfUrl}
-              target="_blank"
-              rel="noreferrer"
+              href={`/research/${curated.researchSlug}`}
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-[13px] font-medium transition-all hover:scale-[1.02]"
               style={{
                 background: GRADIENT,
@@ -1226,7 +1223,7 @@ function DetailModal({
                   "0 12px 28px -10px rgba(99,102,241,0.5), inset 0 1px 0 rgba(255,255,255,0.2)",
               }}
             >
-              <FileText size={14} /> Открыть PDF исследования
+              <FileText size={14} /> Перейти к исследованию
             </a>
           )}
         </div>
