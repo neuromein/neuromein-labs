@@ -339,63 +339,53 @@ export function PredictionsTimeline() {
   return (
     <section
       aria-labelledby="timeline-heading"
-      className="mt-6 rounded-[28px] p-6 md:p-10 lg:p-12"
-      style={{
-        background: "linear-gradient(180deg, rgba(15,17,21,0.85) 0%, rgba(8,8,13,0.85) 100%)",
-        border: "1px solid rgba(255,255,255,0.06)",
-        backdropFilter: "blur(24px) saturate(160%)",
-        WebkitBackdropFilter: "blur(24px) saturate(160%)",
-        boxShadow:
-          "0 24px 60px -20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.04)",
-      }}
+      className="mt-4"
     >
-      {/* Заголовок */}
-      <header className="max-w-3xl">
-        <div
-          className="text-[11px] uppercase tracking-[0.18em] mb-3"
-          style={{ color: EMERALD }}
-        >
-          Интерактивная шкала
+      {/* Заголовок — editorial style */}
+      <header className="max-w-4xl border-t border-white/10 pt-8">
+        <div className="flex items-baseline gap-4 mb-6 text-[11px] uppercase tracking-[0.18em] text-text-tertiary font-mono">
+          <span>2026 — 2028</span>
+          <span className="text-white/20">/</span>
+          <span>Forecast Tracker</span>
         </div>
         <h2
           id="timeline-heading"
-          className="text-[28px] md:text-[36px] lg:text-[44px] font-semibold leading-[1.1] tracking-[-0.02em] text-text-primary"
+          className="text-[36px] md:text-[52px] lg:text-[64px] font-medium leading-[0.98] tracking-[-0.035em] text-text-primary text-balance"
         >
           Прогнозы 2026–2028 и их проверка
         </h2>
-        <p className="mt-4 text-[15px] md:text-[16px] text-text-secondary leading-[1.6]">
-          Интерактивная шкала на основе исследований «Тихая замена» и «ИИ в 2025».
+        <p className="mt-6 text-[15px] md:text-[17px] text-text-secondary leading-[1.55] max-w-[640px]">
+          Шкала на основе исследований «Тихая замена» и «ИИ в 2025». Каждый прогноз
+          привязан к кварталу и сопровождается уровнем уверенности.
         </p>
       </header>
 
-      {/* Фильтры */}
-      <div className="mt-8 flex flex-wrap gap-2">
-        {(Object.keys(THEME_LABELS) as ThemeKey[]).map((k) => {
-          const isActive = theme === k;
-          return (
-            <button
-              key={k}
-              onClick={() => setTheme(k)}
-              className="px-4 py-2 rounded-full text-[13px] transition-all duration-200 whitespace-nowrap border"
-              style={
-                isActive
-                  ? {
-                      background: `linear-gradient(135deg, ${EMERALD}22, ${BLUE}22)`,
-                      borderColor: `${EMERALD}66`,
-                      color: "#fff",
-                      boxShadow: `0 0 0 1px ${EMERALD}33, 0 8px 24px -12px ${EMERALD}55`,
-                    }
-                  : {
-                      background: "rgba(255,255,255,0.02)",
-                      borderColor: "rgba(255,255,255,0.08)",
-                      color: "rgba(240,240,245,0.65)",
-                    }
-              }
-            >
-              {THEME_LABELS[k]}
-            </button>
-          );
-        })}
+      {/* Фильтры — editorial tabs */}
+      <div className="mt-12 border-t border-white/10">
+        <div className="flex flex-wrap items-stretch -mb-px">
+          {(Object.keys(THEME_LABELS) as ThemeKey[]).map((k) => {
+            const isActive = theme === k;
+            return (
+              <button
+                key={k}
+                onClick={() => setTheme(k)}
+                className="relative px-5 py-4 text-[12px] uppercase tracking-[0.1em] font-medium transition-colors whitespace-nowrap"
+                style={{
+                  color: isActive ? "#fff" : "rgba(240,240,245,0.45)",
+                }}
+              >
+                {THEME_LABELS[k]}
+                {isActive && (
+                  <motion.span
+                    layoutId="theme-underline"
+                    className="absolute left-0 right-0 -top-px h-px bg-white"
+                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                  />
+                )}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Timeline */}
@@ -412,26 +402,31 @@ export function PredictionsTimeline() {
       />
 
       {/* Сетка карточек */}
-      <div className="mt-10">
-        <div className="flex items-end justify-between mb-5 gap-4 flex-wrap">
-          <div className="text-[12px] uppercase tracking-[0.12em] text-text-tertiary">
-            {activeQuarterIdx !== null
-              ? `Прогнозы на ${QUARTERS[activeQuarterIdx]}`
-              : `Прогнозы (${filtered.length})`}
+      <div className="mt-16 border-t border-white/10 pt-8">
+        <div className="flex items-end justify-between mb-8 gap-4 flex-wrap">
+          <div className="flex items-baseline gap-3">
+            <span className="text-[11px] uppercase tracking-[0.18em] text-text-tertiary font-mono">
+              {activeQuarterIdx !== null
+                ? QUARTERS[activeQuarterIdx]
+                : "All forecasts"}
+            </span>
+            <span className="text-[11px] tabular-nums text-text-tertiary">
+              ({filteredOnQuarter.length})
+            </span>
           </div>
           {activeQuarterIdx !== null && (
             <button
               onClick={() => setActiveQuarterIdx(null)}
-              className="text-[12px] text-text-tertiary hover:text-text-primary transition-colors inline-flex items-center gap-1"
+              className="text-[11px] uppercase tracking-[0.12em] text-text-tertiary hover:text-text-primary transition-colors inline-flex items-center gap-1.5"
             >
-              <X size={12} /> Сбросить квартал
+              <X size={11} /> Сбросить
             </button>
           )}
         </div>
 
         <motion.div
           layout
-          className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-stretch"
+          className="grid gap-px bg-white/10 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-stretch border border-white/10"
         >
           <AnimatePresence mode="popLayout">
             {filteredOnQuarter.map((m) => (
