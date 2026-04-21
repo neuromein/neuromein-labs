@@ -357,37 +357,57 @@ export function PredictionsTimeline() {
     ? merged.find((m) => m.curated.id === openId) ?? null
     : null;
 
-  return (
-    <section aria-labelledby="timeline-heading" className="mt-4">
-      {/* Заголовок */}
-      <header className="max-w-4xl pt-4 sm:pt-8">
-        <h2
-          id="timeline-heading"
-          className="text-[30px] sm:text-[40px] md:text-[52px] lg:text-[64px] font-medium leading-[1.02] sm:leading-[0.98] tracking-[-0.035em] text-text-primary text-balance"
-        >
-          Прогнозы 2026–2028 <br />
-          <span
-            className="bg-clip-text text-transparent"
-            style={{ backgroundImage: GRADIENT }}
-          >
-            и их проверка
-          </span>
-        </h2>
-        <p className="mt-5 sm:mt-6 text-[14.5px] sm:text-[15px] md:text-[17px] text-text-secondary leading-[1.55] max-w-[640px]">
-          Шкала на основе исследований «Тихая замена» и «ИИ в 2025». Каждый прогноз
-          привязан к кварталу и сопровождается уровнем уверенности.
-        </p>
-      </header>
+  // Распределение тем по кварталам — для stream-chart (стэкированные сегменты)
+  const quarterThemeBreakdown = useMemo(() => {
+    const arr: Record<ThemeKey, number>[] = QUARTERS.map(() => ({
+      all: 0,
+      labor: 0,
+      tech_ai: 0,
+      geo_crises: 0,
+      bio_health: 0,
+      society_edu: 0,
+    }));
+    filtered.forEach((m) => {
+      const i = quarterIndex(m.curated.quarter);
+      if (i < 0) return;
+      const t = dominantTheme(m.themes);
+      arr[i][t] = (arr[i][t] ?? 0) + 1;
+    });
+    return arr;
+  }, [filtered]);
 
-      {/* Фильтры — pill-кнопки в стиле Apple */}
-      <div className="mt-8 sm:mt-12 flex flex-wrap gap-2">
+  const accentColor = THEME_COLORS[theme];
+
+  return (
+    <section aria-labelledby="timeline-heading" className="mt-12 sm:mt-16">
+      {/* Section eyebrow + heading — editorial */}
+      <div className="flex items-end justify-between gap-4 flex-wrap mb-6 sm:mb-8">
+        <div>
+          <div
+            className="text-[10.5px] sm:text-[11px] tracking-[0.18em] uppercase text-text-tertiary"
+            style={{ fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace" }}
+          >
+            Timeline · 16 курируемых прогнозов
+          </div>
+          <h2
+            id="timeline-heading"
+            className="mt-3 text-[22px] sm:text-[26px] md:text-[30px] font-medium leading-[1.15] tracking-[-0.025em] text-text-primary text-balance max-w-[680px]"
+          >
+            Распределение прогнозов по кварталам и темам
+          </h2>
+        </div>
+      </div>
+
+      {/* Фильтры — pill-кнопки */}
+      <div className="flex flex-wrap gap-2">
         {(Object.keys(THEME_LABELS) as ThemeKey[]).map((k) => {
           const isActive = theme === k;
+          const pillColor = THEME_COLORS[k];
           return (
             <button
               key={k}
               onClick={() => setTheme(k)}
-              className="relative px-5 py-2.5 rounded-full text-[13px] font-medium transition-colors duration-200 whitespace-nowrap"
+              className="relative px-4 py-2 rounded-full text-[12.5px] font-medium transition-colors duration-200 whitespace-nowrap inline-flex items-center gap-2"
               style={{
                 color: isActive ? "#fff" : "rgba(240,240,245,0.6)",
               }}
@@ -397,9 +417,8 @@ export function PredictionsTimeline() {
                   layoutId="filter-bg"
                   className="absolute inset-0 rounded-full"
                   style={{
-                    background: GRADIENT,
-                    boxShadow:
-                      "0 8px 24px -8px rgba(99,102,241,0.45), inset 0 1px 0 rgba(255,255,255,0.2)",
+                    background: pillColor,
+                    boxShadow: `0 6px 20px -8px ${pillColor}80, inset 0 1px 0 rgba(255,255,255,0.18)`,
                   }}
                   transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
                 />
@@ -410,36 +429,42 @@ export function PredictionsTimeline() {
                   aria-hidden
                 />
               )}
+              {k !== "all" && (
+                <span
+                  aria-hidden
+                  className="relative z-10 w-1.5 h-1.5 rounded-full"
+                  style={{
+                    background: isActive ? "#fff" : pillColor,
+                    opacity: isActive ? 0.95 : 0.85,
+                  }}
+                />
+              )}
               <span className="relative z-10">{THEME_LABELS[k]}</span>
             </button>
           );
         })}
       </div>
 
-      {/* Arc Timeline */}
-      <ArcTimeline
+      {/* Stream chart timeline + crisis bands */}
+      <StreamChart
+        breakdown={quarterThemeBreakdown}
         counts={quarterCounts}
         activeIdx={activeQuarterIdx}
+        accentColor={accentColor}
         onSelect={(i) => setActiveQuarterIdx((cur) => (cur === i ? null : i))}
-        getItemsAt={(i) =>
-          filtered.filter((m) => quarterIndex(m.curated.quarter) === i)
-        }
-        onOpen={(id) => setOpenId(id)}
       />
 
       {/* Сетка карточек */}
-      <div className="mt-16">
+      <div className="mt-14 sm:mt-16">
         <div className="flex items-end justify-between mb-8 gap-4 flex-wrap">
           <div className="flex items-baseline gap-3">
-            <h3 className="text-[20px] font-medium text-text-primary tracking-[-0.01em]">
+            <h3 className="text-[18px] sm:text-[20px] font-medium text-text-primary tracking-[-0.01em]">
               {activeQuarterIdx !== null
                 ? `Прогнозы на ${QUARTERS[activeQuarterIdx]}`
                 : "Все прогнозы"}
             </h3>
-            <span className="text-[13px] tabular-nums text-text-tertiary">
-              {activeQuarterIdx === null && theme === "all"
-                ? predictions.length
-                : filteredOnQuarter.length}
+            <span className="text-[12.5px] tabular-nums text-text-tertiary">
+              {filteredOnQuarter.length}
             </span>
           </div>
           {activeQuarterIdx !== null && (
@@ -452,28 +477,10 @@ export function PredictionsTimeline() {
           )}
         </div>
 
-        <motion.div
-          layout
-          className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-stretch"
-        >
-          <AnimatePresence mode="popLayout">
-            {filteredOnQuarter.map((m) => (
-              <motion.div
-                key={m.curated.id}
-                layout
-                initial={{ opacity: 0, y: 12, scale: 0.98 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -8, scale: 0.98 }}
-                transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
-              >
-                <GlassCard
-                  item={m.curated}
-                  onOpen={() => setOpenId(m.curated.id)}
-                />
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+        <BentoGrid
+          items={filteredOnQuarter}
+          onOpen={(id) => setOpenId(id)}
+        />
 
         {filteredOnQuarter.length === 0 && (
           <div
