@@ -858,6 +858,8 @@ function ArcSvg({
                 cx={p.x}
                 cy={p.y}
                 fill={fill}
+                r={r}
+                initial={false}
                 animate={{ r }}
                 transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
               />
