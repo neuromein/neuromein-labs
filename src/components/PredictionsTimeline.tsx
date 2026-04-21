@@ -504,6 +504,7 @@ function ArcTimeline({
 }) {
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
+  const popoverRef = useRef<HTMLDivElement | null>(null);
   const [width, setWidth] = useState(900);
 
   useLayoutEffect(() => {
@@ -531,6 +532,25 @@ function ArcTimeline({
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
+  }, [activeIdx, onSelect]);
+
+  // Закрытие попровера по клику вне него
+  useEffect(() => {
+    if (activeIdx === null) return;
+    const onPointerDown = (e: PointerEvent) => {
+      const target = e.target as Node | null;
+      if (!target) return;
+      // Игнорируем клики внутри попровера
+      if (popoverRef.current && popoverRef.current.contains(target)) return;
+      // Игнорируем клики по точкам (SVG g внутри wrapperRef обрабатывает onSelect)
+      if (
+        target instanceof Element &&
+        target.closest("[data-arc-dot]")
+      ) return;
+      onSelect(activeIdx);
+    };
+    window.addEventListener("pointerdown", onPointerDown);
+    return () => window.removeEventListener("pointerdown", onPointerDown);
   }, [activeIdx, onSelect]);
 
   const popoverIdx = activeIdx ?? hoverIdx;
