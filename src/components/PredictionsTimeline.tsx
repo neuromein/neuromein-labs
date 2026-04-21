@@ -656,242 +656,293 @@ function ArcTimeline({
             onOpen={onOpen}
           />
         ) : (
-          <div className="relative">
-        {/* SVG дуга */}
-        <svg
-          width="100%"
-          height={totalH}
-          viewBox={`0 0 ${W} ${totalH}`}
-          className="relative block"
-          style={{ overflow: "visible" }}
-        >
-          <defs>
-            <linearGradient id="arcGradient" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor={INDIGO} stopOpacity="0.9" />
-              <stop offset="100%" stopColor={CYAN} stopOpacity="0.9" />
-            </linearGradient>
-            <linearGradient id="arcGradientSoft" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor={INDIGO} stopOpacity="0.25" />
-              <stop offset="100%" stopColor={CYAN} stopOpacity="0.25" />
-            </linearGradient>
-            <filter id="arcGlow" x="-20%" y="-50%" width="140%" height="200%">
-              <feGaussianBlur stdDeviation="6" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-            <filter id="dotGlow" x="-200%" y="-200%" width="500%" height="500%">
-              <feGaussianBlur stdDeviation="8" result="blur" />
-              <feMerge>
-                <feMergeNode in="blur" />
-                <feMergeNode in="SourceGraphic" />
-              </feMerge>
-            </filter>
-          </defs>
-
-          {/* Базовая дуга */}
-          <path
-            d={arcPath}
-            fill="none"
-            stroke="rgba(255,255,255,0.08)"
-            strokeWidth="1.5"
-            strokeLinecap="round"
+          <ArcSvg
+            W={W}
+            totalH={totalH}
+            arcPath={arcPath}
+            crisisSegments={crisisSegments}
+            dots={dots}
+            counts={counts}
+            activeIdx={activeIdx}
+            hoverIdx={hoverIdx}
+            popoverIdx={popoverIdx}
+            popoverRef={popoverRef}
+            getItemsAt={getItemsAt}
+            onOpen={onOpen}
+            onSelect={onSelect}
+            onHover={setHoverIdx}
+            pointAt={pointAt}
           />
+        )}
+      </div>
 
-          {/* Градиентная дуга поверх */}
-          <path
-            d={arcPath}
-            fill="none"
-            stroke="url(#arcGradient)"
-            strokeWidth="2"
-            strokeLinecap="round"
-            opacity="0.55"
-          />
+    </div>
+  );
+}
 
-          {/* Подсветка дуги (glow) */}
-          <path
-            d={arcPath}
-            fill="none"
-            stroke="url(#arcGradientSoft)"
-            strokeWidth="14"
-            strokeLinecap="round"
-            filter="url(#arcGlow)"
-            opacity="0.6"
-          />
+// ============================================================================
+// SVG-дуга (десктоп) — вынесено в отдельный компонент для читабельности
+// ============================================================================
 
-          {/* Кризисные сегменты — мягкий розовый glow на дуге */}
-          {crisisSegments.map((d, i) => (
-            <g key={`crisis-${i}`}>
-              <path
-                d={d}
-                fill="none"
-                stroke={ROSE}
-                strokeWidth="3"
-                strokeLinecap="round"
-                opacity="0.85"
-              />
-              <path
-                d={d}
-                fill="none"
-                stroke={ROSE}
-                strokeWidth="14"
-                strokeLinecap="round"
-                opacity="0.18"
-                filter="url(#arcGlow)"
-              />
-            </g>
-          ))}
+function ArcSvg({
+  W,
+  totalH,
+  arcPath,
+  crisisSegments,
+  dots,
+  counts,
+  activeIdx,
+  hoverIdx,
+  popoverIdx,
+  popoverRef,
+  getItemsAt,
+  onOpen,
+  onSelect,
+  onHover,
+  pointAt,
+}: {
+  W: number;
+  totalH: number;
+  arcPath: string;
+  crisisSegments: string[];
+  dots: Array<{ x: number; y: number; angle: number }>;
+  counts: number[];
+  activeIdx: number | null;
+  hoverIdx: number | null;
+  popoverIdx: number | null;
+  popoverRef: React.MutableRefObject<HTMLDivElement | null>;
+  getItemsAt: (i: number) => Array<{ curated: CuratedItem; full: Prediction }>;
+  onOpen: (id: string) => void;
+  onSelect: (i: number) => void;
+  onHover: (i: number | null) => void;
+  pointAt: (t: number) => { x: number; y: number; angle: number };
+}) {
+  return (
+    <div className="relative">
+      <svg
+        width="100%"
+        height={totalH}
+        viewBox={`0 0 ${W} ${totalH}`}
+        className="relative block"
+        style={{ overflow: "visible" }}
+      >
+        <defs>
+          <linearGradient id="arcGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor={INDIGO} stopOpacity="0.9" />
+            <stop offset="100%" stopColor={CYAN} stopOpacity="0.9" />
+          </linearGradient>
+          <linearGradient id="arcGradientSoft" x1="0%" y1="0%" x2="100%" y2="0%">
+            <stop offset="0%" stopColor={INDIGO} stopOpacity="0.25" />
+            <stop offset="100%" stopColor={CYAN} stopOpacity="0.25" />
+          </linearGradient>
+          <filter id="arcGlow" x="-20%" y="-50%" width="140%" height="200%">
+            <feGaussianBlur stdDeviation="6" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+          <filter id="dotGlow" x="-200%" y="-200%" width="500%" height="500%">
+            <feGaussianBlur stdDeviation="8" result="blur" />
+            <feMerge>
+              <feMergeNode in="blur" />
+              <feMergeNode in="SourceGraphic" />
+            </feMerge>
+          </filter>
+        </defs>
 
-          {/* Точки */}
-          {dots.map((p, i) => {
-            const isActive = activeIdx === i;
-            const isHover = hoverIdx === i;
-            const count = counts[i];
-            const has = count > 0;
-            const r = isActive ? 7 : isHover && has ? 6 : has ? 4.5 : 3;
-            const fill = has
-              ? isActive
-                ? "#FFFFFF"
-                : "rgba(255,255,255,0.92)"
-              : "rgba(255,255,255,0.3)";
+        {/* Базовая дуга */}
+        <path
+          d={arcPath}
+          fill="none"
+          stroke="rgba(255,255,255,0.08)"
+          strokeWidth="1.5"
+          strokeLinecap="round"
+        />
 
-            return (
-              <g
-                key={i}
-                data-arc-dot=""
-                style={{ cursor: "pointer" }}
-                onClick={() => onSelect(i)}
-                onMouseEnter={() => setHoverIdx(i)}
-                onMouseLeave={() => setHoverIdx(null)}
-              >
-                {/* hit area */}
-                <circle cx={p.x} cy={p.y} r={20} fill="transparent" />
+        {/* Градиентная дуга поверх */}
+        <path
+          d={arcPath}
+          fill="none"
+          stroke="url(#arcGradient)"
+          strokeWidth="2"
+          strokeLinecap="round"
+          opacity="0.55"
+        />
 
-                {/* Внешнее кольцо при active/hover */}
-                {(isActive || (isHover && has)) && (
-                  <motion.circle
-                    cx={p.x}
-                    cy={p.y}
-                    r={isActive ? 14 : 11}
-                    fill="none"
-                    stroke="url(#arcGradient)"
-                    strokeWidth="1.5"
-                    initial={{ opacity: 0, scale: 0.6 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-                    style={{ transformOrigin: `${p.x}px ${p.y}px` }}
-                  />
-                )}
+        {/* Подсветка дуги (glow) */}
+        <path
+          d={arcPath}
+          fill="none"
+          stroke="url(#arcGradientSoft)"
+          strokeWidth="14"
+          strokeLinecap="round"
+          filter="url(#arcGlow)"
+          opacity="0.6"
+        />
 
-                {/* Glow при active */}
-                {isActive && (
-                  <circle
-                    cx={p.x}
-                    cy={p.y}
-                    r={9}
-                    fill="url(#arcGradient)"
-                    opacity="0.35"
-                    filter="url(#dotGlow)"
-                  />
-                )}
+        {/* Кризисные сегменты */}
+        {crisisSegments.map((d, i) => (
+          <g key={`crisis-${i}`}>
+            <path
+              d={d}
+              fill="none"
+              stroke={ROSE}
+              strokeWidth="3"
+              strokeLinecap="round"
+              opacity="0.85"
+            />
+            <path
+              d={d}
+              fill="none"
+              stroke={ROSE}
+              strokeWidth="14"
+              strokeLinecap="round"
+              opacity="0.18"
+              filter="url(#arcGlow)"
+            />
+          </g>
+        ))}
 
-                {/* Сама точка */}
+        {/* Точки */}
+        {dots.map((p, i) => {
+          const isActive = activeIdx === i;
+          const isHover = hoverIdx === i;
+          const count = counts[i];
+          const has = count > 0;
+          const r = isActive ? 7 : isHover && has ? 6 : has ? 4.5 : 3;
+          const fill = has
+            ? isActive
+              ? "#FFFFFF"
+              : "rgba(255,255,255,0.92)"
+            : "rgba(255,255,255,0.3)";
+
+          return (
+            <g
+              key={i}
+              data-arc-dot=""
+              style={{ cursor: "pointer" }}
+              onClick={() => onSelect(i)}
+              onMouseEnter={() => onHover(i)}
+              onMouseLeave={() => onHover(null)}
+            >
+              <circle cx={p.x} cy={p.y} r={20} fill="transparent" />
+
+              {(isActive || (isHover && has)) && (
                 <motion.circle
                   cx={p.x}
                   cy={p.y}
-                  fill={fill}
-                  animate={{ r }}
-                  transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+                  r={isActive ? 14 : 11}
+                  fill="none"
+                  stroke="url(#arcGradient)"
+                  strokeWidth="1.5"
+                  initial={{ opacity: 0, scale: 0.6 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                  style={{ transformOrigin: `${p.x}px ${p.y}px` }}
                 />
+              )}
 
-                {/* Счётчик над точкой */}
-                {has && (
-                  <text
-                    x={p.x}
-                    y={p.y - 18}
-                    fill={isActive ? "#fff" : "rgba(255,255,255,0.55)"}
-                    fontSize="11"
-                    fontWeight="500"
-                    textAnchor="middle"
-                    style={{ fontFeatureSettings: '"tnum"' }}
-                  >
-                    {count}
-                  </text>
-                )}
+              {isActive && (
+                <circle
+                  cx={p.x}
+                  cy={p.y}
+                  r={9}
+                  fill="url(#arcGradient)"
+                  opacity="0.35"
+                  filter="url(#dotGlow)"
+                />
+              )}
 
-                {/* Подпись квартала под точкой, повёрнутая по углу касательной */}
+              <motion.circle
+                cx={p.x}
+                cy={p.y}
+                fill={fill}
+                animate={{ r }}
+                transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+              />
+
+              {has && (
                 <text
                   x={p.x}
-                    y={p.y + 24}
-                  fill={
-                    isActive
-                      ? "#fff"
-                      : isHover && has
-                        ? "rgba(255,255,255,0.85)"
-                        : "rgba(240,240,245,0.45)"
-                  }
+                  y={p.y - 18}
+                  fill={isActive ? "#fff" : "rgba(255,255,255,0.55)"}
                   fontSize="11"
                   fontWeight="500"
                   textAnchor="middle"
                   style={{ fontFeatureSettings: '"tnum"' }}
                 >
-                  {QUARTERS[i].split(" ")[0]}
+                  {count}
                 </text>
-                <text
-                  x={p.x}
-                    y={p.y + 38}
-                  fill="rgba(240,240,245,0.3)"
-                  fontSize="10"
-                  fontWeight="400"
-                  textAnchor="middle"
-                  style={{ fontFeatureSettings: '"tnum"' }}
-                >
-                  {QUARTERS[i].split(" ")[1]}
-                </text>
-              </g>
-            );
-          })}
+              )}
 
-          {/* Метка зоны кризиса */}
-          {CRISIS_RANGES.map(([a, b], i) => {
-            const tMid = (a + b) / 2 / (QUARTERS.length - 1);
-            const p = pointAt(tMid);
-            return (
               <text
-                key={`crisis-label-${i}`}
                 x={p.x}
-                y={p.y - 36}
-                fill="#FDA4AF"
-                fontSize="10"
+                y={p.y + 24}
+                fill={
+                  isActive
+                    ? "#fff"
+                    : isHover && has
+                      ? "rgba(255,255,255,0.85)"
+                      : "rgba(240,240,245,0.45)"
+                }
+                fontSize="11"
                 fontWeight="500"
                 textAnchor="middle"
-                opacity="0.85"
+                style={{ fontFeatureSettings: '"tnum"' }}
               >
-                Зона кризиса
+                {QUARTERS[i].split(" ")[0]}
               </text>
-            );
-          })}
-        </svg>
+              <text
+                x={p.x}
+                y={p.y + 38}
+                fill="rgba(240,240,245,0.3)"
+                fontSize="10"
+                fontWeight="400"
+                textAnchor="middle"
+                style={{ fontFeatureSettings: '"tnum"' }}
+              >
+                {QUARTERS[i].split(" ")[1]}
+              </text>
+            </g>
+          );
+        })}
 
-        {/* Поповер */}
-        <AnimatePresence>
-          {popoverIdx !== null && counts[popoverIdx] > 0 && (
-            <ArcPopover
-              popoverRef={popoverRef}
-              idx={popoverIdx}
-              x={dots[popoverIdx].x}
-              y={dots[popoverIdx].y}
-              containerWidth={W}
-              items={getItemsAt(popoverIdx)}
-              onOpen={onOpen}
-            />
-          )}
-        </AnimatePresence>
-          </div>
+        {/* Метка зоны кризиса */}
+        {CRISIS_RANGES.map(([a, b], i) => {
+          const tMid = (a + b) / 2 / (QUARTERS.length - 1);
+          const p = pointAt(tMid);
+          return (
+            <text
+              key={`crisis-label-${i}`}
+              x={p.x}
+              y={p.y - 36}
+              fill="#FDA4AF"
+              fontSize="10"
+              fontWeight="500"
+              textAnchor="middle"
+              opacity="0.85"
+            >
+              Зона кризиса
+            </text>
+          );
+        })}
+      </svg>
+
+      {/* Поповер */}
+      <AnimatePresence>
+        {popoverIdx !== null && counts[popoverIdx] > 0 && (
+          <ArcPopover
+            popoverRef={popoverRef}
+            idx={popoverIdx}
+            x={dots[popoverIdx].x}
+            y={dots[popoverIdx].y}
+            containerWidth={W}
+            items={getItemsAt(popoverIdx)}
+            onOpen={onOpen}
+          />
         )}
-      </div>
-
+      </AnimatePresence>
     </div>
   );
 }
