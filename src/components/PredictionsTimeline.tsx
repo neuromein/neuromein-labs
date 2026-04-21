@@ -420,7 +420,9 @@ export function PredictionsTimeline() {
                 : "Все прогнозы"}
             </h3>
             <span className="text-[13px] tabular-nums text-text-tertiary">
-              {filteredOnQuarter.length}
+              {activeQuarterIdx === null && theme === "all"
+                ? predictions.length
+                : filteredOnQuarter.length}
             </span>
           </div>
           {activeQuarterIdx !== null && (
@@ -559,11 +561,14 @@ function ArcTimeline({
   const PADDING_X = 90;
   const W = Math.max(width, 360);
   const arcWidth = W - PADDING_X * 2;
-  const ARC_HEIGHT = Math.min(110, arcWidth * 0.13); // более плоская дуга
+  const ARC_HEIGHT = Math.min(140, arcWidth * 0.16); // выразительная дуга
   const radius = (Math.pow(arcWidth / 2, 2) + Math.pow(ARC_HEIGHT, 2)) / (2 * ARC_HEIGHT);
   const cx = W / 2;
-  const cy = ARC_HEIGHT + radius; // центр окружности ниже дуги
-  const totalH = ARC_HEIGHT + 90; // место для подписей
+  // Сдвигаем всю дугу вниз на TOP_OFFSET, чтобы апекс не упирался в верх контейнера
+  const TOP_OFFSET = 28;
+  const cy = TOP_OFFSET + ARC_HEIGHT + radius; // центр окружности ниже дуги
+  const LABEL_SPACE = 70; // место для подписей под точками
+  const totalH = TOP_OFFSET + ARC_HEIGHT + LABEL_SPACE;
 
   const startAngle = Math.atan2(-(radius - ARC_HEIGHT), -arcWidth / 2);
   const endAngle = Math.atan2(-(radius - ARC_HEIGHT), arcWidth / 2);
@@ -601,7 +606,7 @@ function ArcTimeline({
       {/* Контейнер-стекло */}
       <div
         ref={wrapperRef}
-        className="relative rounded-[28px] px-4 md:px-8 pt-6 pb-6"
+        className="relative rounded-[28px] px-4 md:px-8 pt-6 pb-8"
         style={{
           background:
             "linear-gradient(180deg, rgba(28,28,36,0.55) 0%, rgba(14,14,20,0.55) 100%)",
@@ -646,7 +651,7 @@ function ArcTimeline({
           height={totalH}
           viewBox={`0 0 ${W} ${totalH}`}
           className="relative block"
-          style={{ overflow: "visible" }}
+          style={{ overflow: "hidden" }}
         >
           <defs>
             <linearGradient id="arcGradient" x1="0%" y1="0%" x2="100%" y2="0%">
