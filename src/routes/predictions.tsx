@@ -6,6 +6,7 @@ import { Layout } from "@/components/Layout";
 import { PageHero } from "@/components/HeroCard";
 import { Pill } from "@/components/ui-bits";
 import { Reveal } from "@/components/Reveal";
+import { PredictionsValidationBanner } from "@/components/PredictionsValidationBanner";
 import {
   predictions,
   getStats,
@@ -105,6 +106,8 @@ function PredictionsPage() {
           title="Прогнозы и их проверка"
           description="Я фиксирую прогнозы с датой и возвращаюсь к ним, чтобы проверить — сбылось или нет."
         />
+
+        <PredictionsValidationBanner />
 
         {/* Stats — monochrome, equal-weight tiles */}
         <Reveal>
