@@ -30,7 +30,7 @@ function PredictionsPage() {
 
   return (
     <Layout>
-      <div className="max-w-[1320px] mx-auto pb-24 pt-4">
+      <div className="max-w-[1320px] mx-auto pb-24 pt-4 px-4 sm:px-6 lg:px-8">
         {/* Main content — interactive timeline + filters + cards */}
         <PredictionsTimeline />
 
