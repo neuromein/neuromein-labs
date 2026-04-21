@@ -565,7 +565,7 @@ function ArcTimeline({
   const radius = (Math.pow(arcWidth / 2, 2) + Math.pow(ARC_HEIGHT, 2)) / (2 * ARC_HEIGHT);
   const cx = W / 2;
   // Небольшой верхний отступ, чтобы дуга визуально сидела по центру блока
-  const TOP_OFFSET = 12;
+  const TOP_OFFSET = 6;
   const cy = TOP_OFFSET + ARC_HEIGHT + radius; // центр окружности ниже дуги
   const LABEL_SPACE = 56; // компактнее, чтобы блок не тянул дугу вниз
   const totalH = TOP_OFFSET + ARC_HEIGHT + LABEL_SPACE;
