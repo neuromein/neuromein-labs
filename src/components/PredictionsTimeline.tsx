@@ -606,7 +606,7 @@ function ArcTimeline({
       {/* Контейнер-стекло */}
       <div
         ref={wrapperRef}
-        className="relative rounded-[28px] px-4 md:px-8 pt-5 pb-8"
+        className="relative rounded-[28px] px-4 md:px-8 pt-5 pb-8 py-[29px]"
         style={{
           background:
             "linear-gradient(180deg, rgba(28,28,36,0.55) 0%, rgba(14,14,20,0.55) 100%)",
