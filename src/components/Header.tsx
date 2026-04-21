@@ -48,7 +48,14 @@ export function Header() {
     };
   }, [open]);
 
-  const items = [{ to: "/", label: "Главная", exact: true }, ...NAV_LINKS.map((l) => ({ ...l, exact: false }))];
+  const items = [
+    { to: "/", label: "Главная", exact: true, fullReload: false },
+    ...NAV_LINKS.map((l) => ({
+      ...l,
+      exact: false,
+      fullReload: l.to === "/predictions",
+    })),
+  ];
 
   // Pill background — liquid glass: very translucent, strong blur, subtle saturation boost
   const pillBg = scrolled
@@ -98,7 +105,7 @@ export function Header() {
                 transition={{ type: "spring", stiffness: 320, damping: 28 }}
                 onMouseEnter={() => setHovered(l.to)}
               >
-                <NavPill to={l.to} exact={l.exact}>
+                 <NavPill to={l.to} exact={l.exact} fullReload={l.fullReload}>
                   {l.label}
                 </NavPill>
               </motion.div>
@@ -188,17 +195,26 @@ export function Header() {
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: 0.08 + i * 0.05, duration: 0.3 }}
                   >
-                    <Link
-                      to={l.to}
-                      activeOptions={{ exact: l.exact }}
-                      className="text-[18px] font-medium text-text-secondary hover:text-text-primary transition-colors whitespace-nowrap"
-                      activeProps={{
-                        className:
-                          "text-[18px] font-medium text-brand whitespace-nowrap",
-                      }}
-                    >
-                      {l.label}
-                    </Link>
+                    {l.fullReload ? (
+                      <a
+                        href={l.to}
+                        className={`text-[18px] font-medium transition-colors whitespace-nowrap ${location.pathname === l.to ? "text-brand" : "text-text-secondary hover:text-text-primary"}`}
+                      >
+                        {l.label}
+                      </a>
+                    ) : (
+                      <Link
+                        to={l.to}
+                        activeOptions={{ exact: l.exact }}
+                        className="text-[18px] font-medium text-text-secondary hover:text-text-primary transition-colors whitespace-nowrap"
+                        activeProps={{
+                          className:
+                            "text-[18px] font-medium text-brand whitespace-nowrap",
+                        }}
+                      >
+                        {l.label}
+                      </Link>
+                    )}
                   </motion.div>
                 ))}
               </nav>
@@ -216,11 +232,30 @@ function NavPill({
   to,
   children,
   exact,
+  fullReload,
 }: {
   to: string;
   children: React.ReactNode;
   exact?: boolean;
+  fullReload?: boolean;
 }) {
+  const location = useLocation();
+
+  if (fullReload) {
+    const isActive = exact ? location.pathname === to : location.pathname.startsWith(to);
+
+    return (
+      <a
+        href={to}
+        className={isActive
+          ? "px-3.5 py-2.5 rounded-full text-[14px] text-text-primary bg-bg-deep whitespace-nowrap"
+          : "px-3.5 py-2.5 rounded-full text-[14px] text-text-secondary hover:text-text-primary transition-colors whitespace-nowrap"}
+      >
+        {children}
+      </a>
+    );
+  }
+
   return (
     <Link
       to={to}
