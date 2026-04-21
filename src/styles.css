@@ -76,6 +76,14 @@
   --brand-hover: oklch(0.56 0.16 255);      /* #2D7AD4 */
   --brand-soft: oklch(0.30 0.07 250);       /* #1a3a5c */
 
+  /* Indigo → Cyan accent (Linear/Arc style) */
+  --accent-indigo: #6366F1;
+  --accent-cyan: #22D3EE;
+  --accent-gradient: linear-gradient(135deg, #6366F1 0%, #22D3EE 100%);
+  --accent-gradient-soft: linear-gradient(135deg, rgba(99,102,241,0.18) 0%, rgba(34,211,238,0.18) 100%);
+  --accent-glow-indigo: 0 0 32px rgba(99,102,241,0.45);
+  --accent-glow-cyan: 0 0 32px rgba(34,211,238,0.4);
+
   /* Borders */
   --border: oklch(0.22 0.012 270);          /* #1c1c28 */
   --border-strong: oklch(0.28 0.012 270);   /* #2a2a35 */

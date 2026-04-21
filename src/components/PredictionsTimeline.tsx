@@ -1,6 +1,6 @@
-import { useMemo, useState, useRef, useEffect } from "react";
+import { useMemo, useState, useEffect, useRef, useLayoutEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, ExternalLink, FileText } from "lucide-react";
+import { X, ExternalLink, FileText, ArrowUpRight } from "lucide-react";
 import {
   predictions,
   type Prediction,
@@ -8,15 +8,16 @@ import {
 } from "@/data/predictions";
 
 // ============================================================================
-// Конфиг визуального стиля (emerald + blue, на тёмном фоне сайта)
+// Палитра — Indigo → Cyan градиент (Linear / Arc style)
 // ============================================================================
 
-const EMERALD = "#10B981";
-const BLUE = "#3B82F6";
-const CRISIS_RED = "#7F1D1D";
+const INDIGO = "#6366F1";
+const CYAN = "#22D3EE";
+const ROSE = "#F43F5E"; // для зон кризисов (мягкий, не кричащий)
+const GRADIENT = "linear-gradient(135deg, #6366F1 0%, #22D3EE 100%)";
 
 // ============================================================================
-// Тематические группы (фильтры для timeline)
+// Тематические группы
 // ============================================================================
 
 type ThemeKey =
@@ -63,21 +64,20 @@ function predictionThemes(p: Prediction): ThemeKey[] {
 }
 
 // ============================================================================
-// Курируемая выборка 12–15 «самых сильных» прогнозов
-// + краткое описание + горизонт + уверенность + квартал на шкале
+// Курируемая выборка
 // ============================================================================
 
 type Quarter = `Q${1 | 2 | 3 | 4} ${2026 | 2027 | 2028}`;
 
 interface CuratedItem {
-  id: string; // id из predictions.ts
+  id: string;
   shortTitle: string;
   shortDescription: string;
   horizon: string;
-  confidence: number; // 0–100
+  confidence: number;
   sourceLabel: string;
   pdfUrl?: string;
-  quarter: Quarter; // позиция на шкале
+  quarter: Quarter;
 }
 
 const PDF_SILENT = "/research/tihaya-zamena.pdf";
@@ -252,7 +252,7 @@ const CURATED: CuratedItem[] = [
 ];
 
 // ============================================================================
-// Шкала кварталов: Q1 2026 → Q4 2028 (12 точек)
+// Шкала кварталов
 // ============================================================================
 
 const QUARTERS: Quarter[] = [
@@ -261,7 +261,6 @@ const QUARTERS: Quarter[] = [
   "Q1 2028", "Q2 2028", "Q3 2028", "Q4 2028",
 ];
 
-// «Пиковые кризисы» по тексту работ: Q2 2026 — середина 2027 и Q4 2027 — Q1 2028
 const CRISIS_RANGES: Array<[number, number]> = [
   [1, 5], // Q2 2026 → Q2 2027
   [7, 9], // Q4 2027 → Q2 2028
@@ -273,16 +272,6 @@ function quarterIndex(q: Quarter): number {
 
 function isCrisisIndex(i: number): boolean {
   return CRISIS_RANGES.some(([a, b]) => i >= a && i <= b);
-}
-
-// ============================================================================
-// Утилиты для уверенности
-// ============================================================================
-
-function confidenceColor(c: number): string {
-  if (c >= 75) return EMERALD;
-  if (c >= 55) return "#F59E0B";
-  return "#EF4444";
 }
 
 function confidenceLabel(c: number): string {
@@ -300,7 +289,6 @@ export function PredictionsTimeline() {
   const [activeQuarterIdx, setActiveQuarterIdx] = useState<number | null>(null);
   const [openId, setOpenId] = useState<string | null>(null);
 
-  // соединяем curated с полным prediction по id
   const merged = useMemo(() => {
     const byId = new Map(predictions.map((p) => [p.id, p]));
     return CURATED
@@ -312,9 +300,10 @@ export function PredictionsTimeline() {
       .filter((x): x is { curated: CuratedItem; full: Prediction; themes: ThemeKey[] } => !!x);
   }, []);
 
-  const filtered = useMemo(() => {
-    return merged.filter((m) => theme === "all" || m.themes.includes(theme));
-  }, [merged, theme]);
+  const filtered = useMemo(
+    () => merged.filter((m) => theme === "all" || m.themes.includes(theme)),
+    [merged, theme],
+  );
 
   const filteredOnQuarter = useMemo(() => {
     if (activeQuarterIdx === null) return filtered;
@@ -322,7 +311,6 @@ export function PredictionsTimeline() {
     return filtered.filter((m) => m.curated.quarter === q);
   }, [filtered, activeQuarterIdx]);
 
-  // Подсчёт точек на каждом квартале (для текущего фильтра по теме)
   const quarterCounts = useMemo(() => {
     const arr = new Array(QUARTERS.length).fill(0) as number[];
     filtered.forEach((m) => {
@@ -337,22 +325,23 @@ export function PredictionsTimeline() {
     : null;
 
   return (
-    <section
-      aria-labelledby="timeline-heading"
-      className="mt-4"
-    >
-      {/* Заголовок — editorial style */}
-      <header className="max-w-4xl border-t border-white/10 pt-8">
-        <div className="flex items-baseline gap-4 mb-6 text-[11px] uppercase tracking-[0.18em] text-text-tertiary font-mono">
-          <span>2026 — 2028</span>
-          <span className="text-white/20">/</span>
-          <span>Forecast Tracker</span>
+    <section aria-labelledby="timeline-heading" className="mt-4">
+      {/* Заголовок */}
+      <header className="max-w-4xl pt-8">
+        <div className="text-[12px] text-text-tertiary mb-5 tracking-[0.04em]">
+          2026 — 2028 · Трекер прогнозов
         </div>
         <h2
           id="timeline-heading"
           className="text-[36px] md:text-[52px] lg:text-[64px] font-medium leading-[0.98] tracking-[-0.035em] text-text-primary text-balance"
         >
-          Прогнозы 2026–2028 и их проверка
+          Прогнозы 2026–2028 <br />
+          <span
+            className="bg-clip-text text-transparent"
+            style={{ backgroundImage: GRADIENT }}
+          >
+            и их проверка
+          </span>
         </h2>
         <p className="mt-6 text-[15px] md:text-[17px] text-text-secondary leading-[1.55] max-w-[640px]">
           Шкала на основе исследований «Тихая замена» и «ИИ в 2025». Каждый прогноз
@@ -360,41 +349,48 @@ export function PredictionsTimeline() {
         </p>
       </header>
 
-      {/* Фильтры — editorial tabs */}
-      <div className="mt-12 border-t border-white/10">
-        <div className="flex flex-wrap items-stretch -mb-px">
-          {(Object.keys(THEME_LABELS) as ThemeKey[]).map((k) => {
-            const isActive = theme === k;
-            return (
-              <button
-                key={k}
-                onClick={() => setTheme(k)}
-                className="relative px-5 py-4 text-[12px] uppercase tracking-[0.1em] font-medium transition-colors whitespace-nowrap"
-                style={{
-                  color: isActive ? "#fff" : "rgba(240,240,245,0.45)",
-                }}
-              >
-                {THEME_LABELS[k]}
-                {isActive && (
-                  <motion.span
-                    layoutId="theme-underline"
-                    className="absolute left-0 right-0 -top-px h-px bg-white"
-                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                  />
-                )}
-              </button>
-            );
-          })}
-        </div>
+      {/* Фильтры — pill-кнопки в стиле Apple */}
+      <div className="mt-12 flex flex-wrap gap-2">
+        {(Object.keys(THEME_LABELS) as ThemeKey[]).map((k) => {
+          const isActive = theme === k;
+          return (
+            <button
+              key={k}
+              onClick={() => setTheme(k)}
+              className="relative px-5 py-2.5 rounded-full text-[13px] font-medium transition-colors duration-200 whitespace-nowrap"
+              style={{
+                color: isActive ? "#fff" : "rgba(240,240,245,0.6)",
+              }}
+            >
+              {isActive && (
+                <motion.span
+                  layoutId="filter-bg"
+                  className="absolute inset-0 rounded-full"
+                  style={{
+                    background: GRADIENT,
+                    boxShadow:
+                      "0 8px 24px -8px rgba(99,102,241,0.45), inset 0 1px 0 rgba(255,255,255,0.2)",
+                  }}
+                  transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                />
+              )}
+              {!isActive && (
+                <span
+                  className="absolute inset-0 rounded-full border border-white/8 hover:border-white/15 transition-colors"
+                  aria-hidden
+                />
+              )}
+              <span className="relative z-10">{THEME_LABELS[k]}</span>
+            </button>
+          );
+        })}
       </div>
 
-      {/* Timeline */}
-      <Timeline
+      {/* Arc Timeline */}
+      <ArcTimeline
         counts={quarterCounts}
         activeIdx={activeQuarterIdx}
-        onSelect={(i) =>
-          setActiveQuarterIdx((cur) => (cur === i ? null : i))
-        }
+        onSelect={(i) => setActiveQuarterIdx((cur) => (cur === i ? null : i))}
         getItemsAt={(i) =>
           filtered.filter((m) => quarterIndex(m.curated.quarter) === i)
         }
@@ -402,31 +398,31 @@ export function PredictionsTimeline() {
       />
 
       {/* Сетка карточек */}
-      <div className="mt-16 border-t border-white/10 pt-8">
+      <div className="mt-16">
         <div className="flex items-end justify-between mb-8 gap-4 flex-wrap">
           <div className="flex items-baseline gap-3">
-            <span className="text-[11px] uppercase tracking-[0.18em] text-text-tertiary font-mono">
+            <h3 className="text-[20px] font-medium text-text-primary tracking-[-0.01em]">
               {activeQuarterIdx !== null
-                ? QUARTERS[activeQuarterIdx]
-                : "All forecasts"}
-            </span>
-            <span className="text-[11px] tabular-nums text-text-tertiary">
-              ({filteredOnQuarter.length})
+                ? `Прогнозы на ${QUARTERS[activeQuarterIdx]}`
+                : "Все прогнозы"}
+            </h3>
+            <span className="text-[13px] tabular-nums text-text-tertiary">
+              {filteredOnQuarter.length}
             </span>
           </div>
           {activeQuarterIdx !== null && (
             <button
               onClick={() => setActiveQuarterIdx(null)}
-              className="text-[11px] uppercase tracking-[0.12em] text-text-tertiary hover:text-text-primary transition-colors inline-flex items-center gap-1.5"
+              className="text-[13px] text-text-tertiary hover:text-text-primary transition-colors inline-flex items-center gap-1.5"
             >
-              <X size={11} /> Сбросить
+              <X size={13} /> Сбросить квартал
             </button>
           )}
         </div>
 
         <motion.div
           layout
-          className="grid gap-px bg-white/10 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-stretch border border-white/10"
+          className="grid gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-stretch"
         >
           <AnimatePresence mode="popLayout">
             {filteredOnQuarter.map((m) => (
@@ -436,9 +432,9 @@ export function PredictionsTimeline() {
                 initial={{ opacity: 0, y: 12, scale: 0.98 }}
                 animate={{ opacity: 1, y: 0, scale: 1 }}
                 exit={{ opacity: 0, y: -8, scale: 0.98 }}
-                transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+                transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
               >
-                <PredictionMiniCard
+                <GlassCard
                   item={m.curated}
                   onOpen={() => setOpenId(m.curated.id)}
                 />
@@ -449,11 +445,12 @@ export function PredictionsTimeline() {
 
         {filteredOnQuarter.length === 0 && (
           <div
-            className="rounded-[16px] p-8 text-center text-[13px]"
+            className="rounded-[24px] p-10 text-center text-[14px] text-text-tertiary"
             style={{
               background: "rgba(255,255,255,0.02)",
               border: "1px solid rgba(255,255,255,0.06)",
-              color: "rgba(240,240,245,0.5)",
+              backdropFilter: "blur(20px)",
+              WebkitBackdropFilter: "blur(20px)",
             }}
           >
             По выбранным фильтрам ничего не найдено
@@ -462,7 +459,7 @@ export function PredictionsTimeline() {
       </div>
 
       {/* Footnote */}
-      <p className="mt-10 text-[12px] leading-[1.6] text-text-tertiary max-w-3xl">
+      <p className="mt-12 text-[13px] leading-[1.65] text-text-tertiary max-w-2xl">
         Все прогнозы основаны на исследованиях «Тихая замена» (март 2026) и «ИИ в
         2025 и прогнозы на 2026» (январь 2026). Уровень уверенности отражает сочетание
         данных, моделирования и экспертной оценки.
@@ -483,10 +480,10 @@ export function PredictionsTimeline() {
 }
 
 // ============================================================================
-// Timeline — горизонтальная шкала
+// Arc Timeline — Linear / Arc style
 // ============================================================================
 
-function Timeline({
+function ArcTimeline({
   counts,
   activeIdx,
   onSelect,
@@ -500,9 +497,19 @@ function Timeline({
   onOpen: (id: string) => void;
 }) {
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
-  const trackRef = useRef<HTMLDivElement | null>(null);
+  const wrapperRef = useRef<HTMLDivElement | null>(null);
+  const [width, setWidth] = useState(900);
 
-  // Клавиатурная навигация по точкам
+  useLayoutEffect(() => {
+    if (!wrapperRef.current) return;
+    const ro = new ResizeObserver((entries) => {
+      for (const e of entries) setWidth(e.contentRect.width);
+    });
+    ro.observe(wrapperRef.current);
+    return () => ro.disconnect();
+  }, []);
+
+  // Клавиатура
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (activeIdx === null) return;
@@ -513,7 +520,7 @@ function Timeline({
         e.preventDefault();
         onSelect(Math.max(0, activeIdx - 1));
       } else if (e.key === "Escape") {
-        onSelect(activeIdx); // toggle off
+        onSelect(activeIdx);
       }
     };
     window.addEventListener("keydown", onKey);
@@ -522,273 +529,401 @@ function Timeline({
 
   const popoverIdx = activeIdx ?? hoverIdx;
 
-  return (
-    <div className="mt-12">
-      {/* Шкала — editorial / Swiss style */}
-      <div
-        ref={trackRef}
-        className="relative pt-16 pb-20 select-none"
-      >
-        {/* Годовые маркеры — крупные служебные подписи */}
-        <div className="absolute inset-x-0 top-0 flex justify-between pointer-events-none">
-          {[2026, 2027, 2028].map((year, i) => (
-            <div
-              key={year}
-              className="absolute text-[11px] uppercase tracking-[0.22em] font-mono text-text-tertiary"
-              style={{
-                left: `${(i * 4 + 1.5) / (QUARTERS.length - 1) * 100}%`,
-                transform: "translateX(-50%)",
-                top: 0,
-              }}
-            >
-              {year}
-            </div>
-          ))}
-        </div>
+  // ---- Геометрия дуги ----
+  const PADDING_X = 60;
+  const W = Math.max(width, 360);
+  const arcWidth = W - PADDING_X * 2;
+  const ARC_HEIGHT = Math.min(140, arcWidth * 0.16); // плавная пологая дуга
+  const radius = (Math.pow(arcWidth / 2, 2) + Math.pow(ARC_HEIGHT, 2)) / (2 * ARC_HEIGHT);
+  const cx = W / 2;
+  const cy = ARC_HEIGHT + radius; // центр окружности ниже дуги
+  const totalH = ARC_HEIGHT + 140; // место для подписей
 
-        {/* Основная горизонтальная линия — тонкая */}
+  const startAngle = Math.atan2(-(radius - ARC_HEIGHT), -arcWidth / 2);
+  const endAngle = Math.atan2(-(radius - ARC_HEIGHT), arcWidth / 2);
+
+  function pointAt(t: number): { x: number; y: number; angle: number } {
+    const angle = startAngle + (endAngle - startAngle) * t;
+    return {
+      x: cx + radius * Math.cos(angle),
+      y: cy + radius * Math.sin(angle),
+      angle,
+    };
+  }
+
+  const dots = QUARTERS.map((_, i) => {
+    const t = i / (QUARTERS.length - 1);
+    return pointAt(t);
+  });
+
+  // SVG path для дуги
+  const startPt = pointAt(0);
+  const endPt = pointAt(1);
+  const arcPath = `M ${startPt.x} ${startPt.y} A ${radius} ${radius} 0 0 1 ${endPt.x} ${endPt.y}`;
+
+  // Сегменты для кризисных зон
+  const crisisSegments = CRISIS_RANGES.map(([a, b]) => {
+    const tA = a / (QUARTERS.length - 1);
+    const tB = b / (QUARTERS.length - 1);
+    const pA = pointAt(tA);
+    const pB = pointAt(tB);
+    return `M ${pA.x} ${pA.y} A ${radius} ${radius} 0 0 1 ${pB.x} ${pB.y}`;
+  });
+
+  return (
+    <div className="mt-14">
+      {/* Контейнер-стекло */}
+      <div
+        ref={wrapperRef}
+        className="relative rounded-[28px] px-4 md:px-8 pt-8 pb-6 overflow-hidden"
+        style={{
+          background:
+            "linear-gradient(180deg, rgba(28,28,36,0.55) 0%, rgba(14,14,20,0.55) 100%)",
+          border: "1px solid rgba(255,255,255,0.07)",
+          backdropFilter: "blur(28px) saturate(180%)",
+          WebkitBackdropFilter: "blur(28px) saturate(180%)",
+          boxShadow:
+            "0 30px 80px -30px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.05)",
+        }}
+      >
+        {/* Подсветка-aurora за дугой */}
         <div
-          className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-px bg-white/15"
+          aria-hidden
+          className="absolute pointer-events-none"
+          style={{
+            top: -100,
+            left: "50%",
+            transform: "translateX(-50%)",
+            width: 800,
+            height: 400,
+            background:
+              "radial-gradient(ellipse at center, rgba(99,102,241,0.18) 0%, rgba(34,211,238,0.10) 35%, transparent 70%)",
+            filter: "blur(40px)",
+          }}
         />
 
-        {/* Тики между кварталами (короткие штрихи вверх/вниз) */}
-        {QUARTERS.map((_, i) => {
-          const left = (i / (QUARTERS.length - 1)) * 100;
-          const isYearStart = i % 4 === 0;
-          return (
-            <div
-              key={`tick-${i}`}
-              className="absolute top-1/2 w-px bg-white/15 pointer-events-none"
-              style={{
-                left: `${left}%`,
-                height: isYearStart ? 14 : 6,
-                transform: "translate(-0.5px, -50%)",
-                opacity: isYearStart ? 0.4 : 0.2,
-              }}
-            />
-          );
-        })}
+        {/* SVG дуга */}
+        <svg
+          width="100%"
+          height={totalH}
+          viewBox={`0 0 ${W} ${totalH}`}
+          className="relative block"
+          style={{ overflow: "visible" }}
+        >
+          <defs>
+            <linearGradient id="arcGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor={INDIGO} stopOpacity="0.9" />
+              <stop offset="100%" stopColor={CYAN} stopOpacity="0.9" />
+            </linearGradient>
+            <linearGradient id="arcGradientSoft" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor={INDIGO} stopOpacity="0.25" />
+              <stop offset="100%" stopColor={CYAN} stopOpacity="0.25" />
+            </linearGradient>
+            <filter id="arcGlow" x="-20%" y="-50%" width="140%" height="200%">
+              <feGaussianBlur stdDeviation="6" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+            <filter id="dotGlow" x="-200%" y="-200%" width="500%" height="500%">
+              <feGaussianBlur stdDeviation="8" result="blur" />
+              <feMerge>
+                <feMergeNode in="blur" />
+                <feMergeNode in="SourceGraphic" />
+              </feMerge>
+            </filter>
+          </defs>
 
-        {/* Кризисные зоны — тонкие, editorial */}
-        {CRISIS_RANGES.map(([a, b], i) => {
-          const left = (a / (QUARTERS.length - 1)) * 100;
-          const width = ((b - a) / (QUARTERS.length - 1)) * 100;
-          return (
-            <div key={i} aria-hidden className="pointer-events-none">
-              {/* Diagonal-stripe полоса под линией */}
-              <div
-                className="absolute top-1/2 h-[3px]"
-                style={{
-                  left: `${left}%`,
-                  width: `${width}%`,
-                  background: CRISIS_RED,
-                  transform: "translateY(-50%)",
-                  opacity: 0.85,
-                }}
+          {/* Базовая дуга */}
+          <path
+            d={arcPath}
+            fill="none"
+            stroke="rgba(255,255,255,0.08)"
+            strokeWidth="1.5"
+            strokeLinecap="round"
+          />
+
+          {/* Градиентная дуга поверх */}
+          <path
+            d={arcPath}
+            fill="none"
+            stroke="url(#arcGradient)"
+            strokeWidth="2"
+            strokeLinecap="round"
+            opacity="0.55"
+          />
+
+          {/* Подсветка дуги (glow) */}
+          <path
+            d={arcPath}
+            fill="none"
+            stroke="url(#arcGradientSoft)"
+            strokeWidth="14"
+            strokeLinecap="round"
+            filter="url(#arcGlow)"
+            opacity="0.6"
+          />
+
+          {/* Кризисные сегменты — мягкий розовый glow на дуге */}
+          {crisisSegments.map((d, i) => (
+            <g key={`crisis-${i}`}>
+              <path
+                d={d}
+                fill="none"
+                stroke={ROSE}
+                strokeWidth="3"
+                strokeLinecap="round"
+                opacity="0.85"
               />
-              {/* Скобка-индикатор сверху */}
-              <div
-                className="absolute"
-                style={{
-                  left: `${left}%`,
-                  width: `${width}%`,
-                  top: "calc(50% - 36px)",
-                }}
-              >
-                <div className="relative h-3">
-                  <div
-                    className="absolute left-0 top-0 w-px h-full"
-                    style={{ background: CRISIS_RED }}
-                  />
-                  <div
-                    className="absolute right-0 top-0 w-px h-full"
-                    style={{ background: CRISIS_RED }}
-                  />
-                  <div
-                    className="absolute left-0 right-0 bottom-0 h-px"
-                    style={{ background: CRISIS_RED }}
-                  />
-                </div>
-                <div
-                  className="text-[9px] uppercase tracking-[0.22em] font-mono text-center mt-1"
-                  style={{ color: "#FCA5A5" }}
-                >
-                  Crisis window
-                </div>
-              </div>
-            </div>
-          );
-        })}
+              <path
+                d={d}
+                fill="none"
+                stroke={ROSE}
+                strokeWidth="14"
+                strokeLinecap="round"
+                opacity="0.18"
+                filter="url(#arcGlow)"
+              />
+            </g>
+          ))}
 
-        {/* Точки */}
-        <div className="relative flex items-center justify-between h-10">
-          {QUARTERS.map((q, i) => {
+          {/* Точки */}
+          {dots.map((p, i) => {
             const isActive = activeIdx === i;
             const isHover = hoverIdx === i;
             const count = counts[i];
             const has = count > 0;
+            const r = isActive ? 7 : isHover && has ? 6 : has ? 4.5 : 3;
+            const fill = has
+              ? isActive
+                ? "#FFFFFF"
+                : "rgba(255,255,255,0.92)"
+              : "rgba(255,255,255,0.3)";
 
             return (
-              <button
-                key={q}
-                type="button"
+              <g
+                key={i}
+                style={{ cursor: "pointer" }}
                 onClick={() => onSelect(i)}
                 onMouseEnter={() => setHoverIdx(i)}
                 onMouseLeave={() => setHoverIdx(null)}
-                onFocus={() => setHoverIdx(i)}
-                onBlur={() => setHoverIdx(null)}
-                className="relative flex flex-col items-center justify-center group focus:outline-none"
-                style={{ width: 32, height: 32 }}
-                aria-label={`${q}: ${count} прогноз(ов)`}
               >
-                {/* Точка — концентрические круги, editorial */}
-                <span className="relative flex items-center justify-center">
-                  {/* Внешнее кольцо при active/hover */}
-                  <motion.span
-                    className="absolute rounded-full border"
-                    animate={{
-                      width: isActive ? 22 : isHover && has ? 18 : 0,
-                      height: isActive ? 22 : isHover && has ? 18 : 0,
-                      opacity: isActive || (isHover && has) ? 1 : 0,
-                      borderColor: "rgba(255,255,255,0.5)",
-                    }}
-                    transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                  />
-                  {/* Сама точка */}
-                  <motion.span
-                    className="rounded-full"
-                    animate={{
-                      width: has ? (isActive ? 8 : 6) : 4,
-                      height: has ? (isActive ? 8 : 6) : 4,
-                      backgroundColor: has
-                        ? isActive
-                          ? "#ffffff"
-                          : "rgba(255,255,255,0.85)"
-                        : "rgba(255,255,255,0.25)",
-                    }}
-                    transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
-                  />
-                </span>
+                {/* hit area */}
+                <circle cx={p.x} cy={p.y} r={20} fill="transparent" />
 
-                {/* Подпись квартала под точкой — mono */}
-                <span
-                  className="absolute top-full mt-4 text-[10px] tabular-nums whitespace-nowrap font-mono uppercase tracking-[0.1em] transition-colors"
-                  style={{
-                    color: isActive
-                      ? "#fff"
-                      : isHover && has
-                        ? "rgba(255,255,255,0.85)"
-                        : "rgba(240,240,245,0.35)",
-                  }}
-                >
-                  {q.split(" ")[0]}
-                </span>
+                {/* Внешнее кольцо при active/hover */}
+                {(isActive || (isHover && has)) && (
+                  <motion.circle
+                    cx={p.x}
+                    cy={p.y}
+                    r={isActive ? 14 : 11}
+                    fill="none"
+                    stroke="url(#arcGradient)"
+                    strokeWidth="1.5"
+                    initial={{ opacity: 0, scale: 0.6 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+                    style={{ transformOrigin: `${p.x}px ${p.y}px` }}
+                  />
+                )}
+
+                {/* Glow при active */}
+                {isActive && (
+                  <circle
+                    cx={p.x}
+                    cy={p.y}
+                    r={9}
+                    fill="url(#arcGradient)"
+                    opacity="0.35"
+                    filter="url(#dotGlow)"
+                  />
+                )}
+
+                {/* Сама точка */}
+                <motion.circle
+                  cx={p.x}
+                  cy={p.y}
+                  fill={fill}
+                  animate={{ r }}
+                  transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+                />
 
                 {/* Счётчик над точкой */}
                 {has && (
-                  <span
-                    className="absolute bottom-full mb-3 text-[10px] font-medium tabular-nums font-mono"
-                    style={{
-                      color: isActive
-                        ? "#fff"
-                        : "rgba(255,255,255,0.55)",
-                    }}
+                  <text
+                    x={p.x}
+                    y={p.y - 18}
+                    fill={isActive ? "#fff" : "rgba(255,255,255,0.55)"}
+                    fontSize="11"
+                    fontWeight="500"
+                    textAnchor="middle"
+                    style={{ fontFeatureSettings: '"tnum"' }}
                   >
-                    {String(count).padStart(2, "0")}
-                  </span>
+                    {count}
+                  </text>
                 )}
-              </button>
+
+                {/* Подпись квартала под точкой, повёрнутая по углу касательной */}
+                <text
+                  x={p.x}
+                  y={p.y + 28}
+                  fill={
+                    isActive
+                      ? "#fff"
+                      : isHover && has
+                        ? "rgba(255,255,255,0.85)"
+                        : "rgba(240,240,245,0.45)"
+                  }
+                  fontSize="11"
+                  fontWeight="500"
+                  textAnchor="middle"
+                  style={{ fontFeatureSettings: '"tnum"' }}
+                >
+                  {QUARTERS[i].split(" ")[0]}
+                </text>
+                <text
+                  x={p.x}
+                  y={p.y + 44}
+                  fill="rgba(240,240,245,0.3)"
+                  fontSize="10"
+                  fontWeight="400"
+                  textAnchor="middle"
+                  style={{ fontFeatureSettings: '"tnum"' }}
+                >
+                  {QUARTERS[i].split(" ")[1]}
+                </text>
+              </g>
             );
           })}
-        </div>
+
+          {/* Метка зоны кризиса */}
+          {CRISIS_RANGES.map(([a, b], i) => {
+            const tMid = (a + b) / 2 / (QUARTERS.length - 1);
+            const p = pointAt(tMid);
+            return (
+              <text
+                key={`crisis-label-${i}`}
+                x={p.x}
+                y={p.y - 36}
+                fill="#FDA4AF"
+                fontSize="10"
+                fontWeight="500"
+                textAnchor="middle"
+                opacity="0.85"
+              >
+                Зона кризиса
+              </text>
+            );
+          })}
+        </svg>
 
         {/* Поповер */}
         <AnimatePresence>
           {popoverIdx !== null && counts[popoverIdx] > 0 && (
-            <TimelinePopover
+            <ArcPopover
               idx={popoverIdx}
+              x={dots[popoverIdx].x}
+              y={dots[popoverIdx].y}
+              containerWidth={W}
               items={getItemsAt(popoverIdx)}
               onOpen={onOpen}
             />
           )}
         </AnimatePresence>
-      </div>
 
-      {/* Минималистичная подсказка */}
-      <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.18em] text-text-tertiary font-mono mt-2">
-        <span>← наведите или кликните на точку</span>
-        <span>{QUARTERS.length} кварталов</span>
+        {/* Подсказка снизу */}
+        <div className="flex items-center justify-between text-[12px] text-text-tertiary mt-2 px-2">
+          <span>Наведите или кликните на точку</span>
+          <span className="tabular-nums">{QUARTERS.length} кварталов</span>
+        </div>
       </div>
     </div>
   );
 }
 
-
 // ============================================================================
-// Поповер над активной/наведённой точкой
+// Поповер — frosted glass карточка
 // ============================================================================
 
-function TimelinePopover({
+function ArcPopover({
   idx,
+  x,
+  y,
+  containerWidth,
   items,
   onOpen,
 }: {
   idx: number;
+  x: number;
+  y: number;
+  containerWidth: number;
   items: Array<{ curated: CuratedItem; full: Prediction }>;
   onOpen: (id: string) => void;
 }) {
-  const leftPct = (idx / (QUARTERS.length - 1)) * 100;
-  // Прижимаем к краю, чтобы не вылетал
-  const align =
-    idx <= 1 ? "left-0 translate-x-0" : idx >= QUARTERS.length - 2 ? "right-0 left-auto translate-x-0" : "-translate-x-1/2";
-  const positionStyle: React.CSSProperties =
-    idx <= 1
-      ? { left: 0 }
-      : idx >= QUARTERS.length - 2
-        ? { right: 0 }
-        : { left: `calc(${leftPct}% + 8px)` };
+  const POPOVER_W = 340;
+  // Позиционирование, чтобы не вылетал
+  let leftPx = x - POPOVER_W / 2;
+  if (leftPx < 16) leftPx = 16;
+  if (leftPx + POPOVER_W > containerWidth - 16)
+    leftPx = containerWidth - POPOVER_W - 16;
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 6 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 6 }}
-      transition={{ duration: 0.18 }}
-      className={`absolute z-20 top-[calc(50%+44px)] ${align} w-[min(360px,calc(100vw-48px))]`}
-      style={positionStyle}
+      initial={{ opacity: 0, y: -6, scale: 0.96 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      exit={{ opacity: 0, y: -6, scale: 0.96 }}
+      transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+      className="absolute z-30 pointer-events-auto"
+      style={{
+        top: y + 64,
+        left: leftPx,
+        width: POPOVER_W,
+      }}
     >
       <div
-        className="p-5"
+        className="rounded-[20px] p-5"
         style={{
-          background: "#0a0a0f",
-          border: "1px solid rgba(255,255,255,0.12)",
-          boxShadow: "0 30px 60px -20px rgba(0,0,0,0.8)",
+          background: "rgba(20,20,28,0.78)",
+          border: "1px solid rgba(255,255,255,0.1)",
+          backdropFilter: "blur(40px) saturate(180%)",
+          WebkitBackdropFilter: "blur(40px) saturate(180%)",
+          boxShadow:
+            "0 30px 60px -20px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.08)",
         }}
       >
-        <div className="flex items-baseline justify-between mb-3 pb-3 border-b border-white/10">
-          <div className="text-[10px] uppercase tracking-[0.18em] font-mono text-white">
+        <div className="flex items-baseline justify-between mb-4">
+          <div
+            className="text-[12px] font-semibold tracking-[-0.01em] bg-clip-text text-transparent"
+            style={{ backgroundImage: GRADIENT }}
+          >
             {QUARTERS[idx]}
           </div>
-          <div className="text-[10px] tabular-nums font-mono text-text-tertiary">
-            {String(items.length).padStart(2, "0")} {items.length === 1 ? "прогноз" : "прогнозов"}
+          <div className="text-[11px] tabular-nums text-text-tertiary">
+            {items.length} {items.length === 1 ? "прогноз" : "прогнозов"}
           </div>
         </div>
-        <ul className="space-y-3">
-          {items.slice(0, 3).map((m, i) => (
-            <li key={m.curated.id} className="flex items-start gap-3">
-              <span className="text-[10px] tabular-nums text-text-tertiary font-mono mt-[3px] shrink-0">
-                {String(i + 1).padStart(2, "0")}
-              </span>
+        <ul className="space-y-2.5">
+          {items.slice(0, 3).map((m) => (
+            <li key={m.curated.id}>
               <button
                 onClick={() => onOpen(m.curated.id)}
-                className="text-left flex-1 text-[13px] leading-[1.4] text-text-secondary hover:text-white transition-colors"
+                className="text-left w-full text-[13px] leading-[1.4] text-text-secondary hover:text-white transition-colors flex items-start gap-2.5 group"
               >
-                {m.curated.shortTitle}
+                <span
+                  className="mt-1.5 inline-block w-1 h-1 rounded-full shrink-0"
+                  style={{ background: GRADIENT }}
+                />
+                <span className="flex-1">{m.curated.shortTitle}</span>
+                <ArrowUpRight
+                  size={13}
+                  className="text-text-tertiary group-hover:text-white transition-colors mt-0.5 shrink-0"
+                />
               </button>
             </li>
           ))}
           {items.length > 3 && (
-            <li className="text-[10px] uppercase tracking-[0.12em] text-text-tertiary font-mono pl-7">
+            <li className="text-[11px] text-text-tertiary pl-4">
               +{items.length - 3} ещё
             </li>
           )}
@@ -799,73 +934,135 @@ function TimelinePopover({
 }
 
 // ============================================================================
-// Карточка прогноза
+// Карточка — Glassmorphism v2
 // ============================================================================
 
-function PredictionMiniCard({
+function GlassCard({
   item,
   onOpen,
 }: {
   item: CuratedItem;
   onOpen: () => void;
 }) {
-  const cColor = confidenceColor(item.confidence);
   const [hover, setHover] = useState(false);
+  const crisisHorizon = isCrisisIndex(quarterIndex(item.quarter));
+
   return (
-    <div
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
+    <motion.div
+      onHoverStart={() => setHover(true)}
+      onHoverEnd={() => setHover(false)}
+      whileHover={{ y: -4 }}
+      transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
       onClick={onOpen}
-      className="group relative h-full min-h-[260px] p-6 flex flex-col cursor-pointer transition-colors duration-300"
+      className="group relative h-full min-h-[260px] rounded-[24px] p-6 flex flex-col cursor-pointer overflow-hidden"
       style={{
-        background: hover ? "#101015" : "#0a0a0f",
+        background:
+          "linear-gradient(180deg, rgba(255,255,255,0.04) 0%, rgba(255,255,255,0.02) 100%)",
+        border: "1px solid rgba(255,255,255,0.08)",
+        backdropFilter: "blur(24px) saturate(160%)",
+        WebkitBackdropFilter: "blur(24px) saturate(160%)",
+        boxShadow: hover
+          ? "0 24px 50px -20px rgba(0,0,0,0.6), 0 0 0 1px rgba(99,102,241,0.25), 0 0 40px -8px rgba(34,211,238,0.18)"
+          : "0 12px 30px -16px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.05)",
+        transition: "box-shadow 0.35s ease, border-color 0.35s ease",
       }}
     >
-      {/* Confidence bar — тонкая полоса сверху */}
+      {/* Внутренний highlight сверху (как iOS widget) */}
       <div
-        className="absolute top-0 left-0 h-px transition-all duration-500"
+        aria-hidden
+        className="absolute inset-x-0 top-0 h-px"
         style={{
-          width: hover ? "100%" : `${item.confidence}%`,
-          background: cColor,
+          background:
+            "linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.16) 50%, transparent 100%)",
         }}
       />
 
-      {/* Метаданные — mono, разнесены по углам */}
-      <div className="flex items-baseline justify-between text-[10px] font-mono uppercase tracking-[0.14em]">
-        <span className="text-text-tertiary">{item.horizon}</span>
-        <span className="tabular-nums text-text-secondary">
-          {item.confidence}<span className="text-text-tertiary">/100</span>
+      {/* Aurora glow при hover */}
+      <motion.div
+        aria-hidden
+        className="absolute pointer-events-none"
+        animate={{ opacity: hover ? 1 : 0 }}
+        transition={{ duration: 0.4 }}
+        style={{
+          top: -80,
+          right: -80,
+          width: 240,
+          height: 240,
+          background:
+            "radial-gradient(circle, rgba(99,102,241,0.35) 0%, rgba(34,211,238,0.15) 40%, transparent 70%)",
+          filter: "blur(30px)",
+        }}
+      />
+
+      {/* Метаданные */}
+      <div className="relative flex items-center justify-between text-[12px]">
+        <span
+          className="font-medium tracking-[-0.005em]"
+          style={{
+            color: crisisHorizon ? "#FDA4AF" : "rgba(240,240,245,0.7)",
+          }}
+        >
+          {item.horizon}
         </span>
+        <ConfidencePill confidence={item.confidence} />
       </div>
 
-      {/* Заголовок — крупная типографика */}
-      <h3 className="mt-6 text-[18px] font-medium leading-[1.2] tracking-[-0.015em] text-text-primary text-balance">
+      {/* Заголовок */}
+      <h3 className="relative mt-5 text-[18px] font-semibold leading-[1.25] tracking-[-0.02em] text-text-primary text-balance">
         {item.shortTitle}
       </h3>
 
       {/* Описание */}
-      <p className="mt-3 text-[13px] text-text-secondary leading-[1.6] flex-1">
+      <p className="relative mt-3 text-[13.5px] text-text-secondary leading-[1.6] flex-1">
         {item.shortDescription}
       </p>
 
-      {/* Footer — источник + arrow */}
-      <div className="mt-6 pt-5 border-t border-white/8 flex items-center justify-between gap-3">
-        <span className="text-[10px] uppercase tracking-[0.12em] font-mono text-text-tertiary truncate">
+      {/* Footer */}
+      <div className="relative mt-6 pt-5 border-t border-white/8 flex items-center justify-between gap-3">
+        <span className="text-[11.5px] text-text-tertiary truncate">
           {item.sourceLabel}
         </span>
-        <span
-          className="text-[18px] leading-none text-text-tertiary transition-all duration-300 group-hover:text-white group-hover:translate-x-1"
-          aria-hidden
+        <motion.span
+          className="inline-flex items-center justify-center rounded-full w-8 h-8 shrink-0"
+          animate={{
+            background: hover
+              ? GRADIENT
+              : "rgba(255,255,255,0.06)",
+          }}
+          transition={{ duration: 0.3 }}
         >
-          →
-        </span>
+          <ArrowUpRight
+            size={15}
+            className="text-white"
+            style={{ opacity: hover ? 1 : 0.7 }}
+          />
+        </motion.span>
       </div>
+    </motion.div>
+  );
+}
+
+function ConfidencePill({ confidence }: { confidence: number }) {
+  return (
+    <div
+      className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full text-[11px] font-medium tabular-nums"
+      style={{
+        background: "rgba(255,255,255,0.04)",
+        border: "1px solid rgba(255,255,255,0.08)",
+        color: "rgba(255,255,255,0.85)",
+      }}
+    >
+      <span
+        className="inline-block w-1.5 h-1.5 rounded-full"
+        style={{ background: GRADIENT }}
+      />
+      {confidence}%
     </div>
   );
 }
 
 // ============================================================================
-// Модалка с полным текстом прогноза
+// Модалка
 // ============================================================================
 
 function DetailModal({
@@ -889,38 +1086,40 @@ function DetailModal({
     };
   }, [onClose]);
 
-  const cColor = confidenceColor(curated.confidence);
-
   return (
     <motion.div
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       exit={{ opacity: 0 }}
-      transition={{ duration: 0.2 }}
+      transition={{ duration: 0.25 }}
       className="fixed inset-0 z-50 flex items-center justify-center p-4 md:p-8"
-      style={{ background: "rgba(0,0,0,0.7)", backdropFilter: "blur(8px)" }}
+      style={{ background: "rgba(0,0,0,0.6)", backdropFilter: "blur(12px)" }}
       onClick={onClose}
       role="dialog"
       aria-modal="true"
       aria-labelledby="modal-title"
     >
       <motion.div
-        initial={{ opacity: 0, y: 16, scale: 0.98 }}
+        initial={{ opacity: 0, y: 24, scale: 0.96 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
-        exit={{ opacity: 0, y: 16, scale: 0.98 }}
-        transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-        className="relative w-full max-w-[720px] max-h-[88vh] overflow-y-auto rounded-[20px] p-6 md:p-8"
+        exit={{ opacity: 0, y: 24, scale: 0.96 }}
+        transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        className="relative w-full max-w-[720px] max-h-[88vh] overflow-y-auto rounded-[28px] p-7 md:p-9"
         style={{
-          background: "linear-gradient(180deg, rgba(20,22,28,0.98), rgba(12,14,18,0.98))",
-          border: `1px solid ${EMERALD}22`,
-          boxShadow: `0 40px 80px -20px rgba(0,0,0,0.8), 0 0 0 1px rgba(255,255,255,0.04)`,
+          background:
+            "linear-gradient(180deg, rgba(28,28,36,0.92) 0%, rgba(14,14,20,0.92) 100%)",
+          border: "1px solid rgba(255,255,255,0.1)",
+          backdropFilter: "blur(40px) saturate(180%)",
+          WebkitBackdropFilter: "blur(40px) saturate(180%)",
+          boxShadow:
+            "0 60px 100px -30px rgba(0,0,0,0.8), inset 0 1px 0 rgba(255,255,255,0.08)",
         }}
         onClick={(e) => e.stopPropagation()}
       >
         <button
           onClick={onClose}
           aria-label="Закрыть"
-          className="absolute top-4 right-4 w-9 h-9 rounded-full flex items-center justify-center transition-colors"
+          className="absolute top-5 right-5 w-9 h-9 rounded-full flex items-center justify-center transition-all hover:bg-white/8"
           style={{
             background: "rgba(255,255,255,0.04)",
             border: "1px solid rgba(255,255,255,0.08)",
@@ -930,17 +1129,22 @@ function DetailModal({
           <X size={16} />
         </button>
 
-        <div className="flex items-center gap-3 text-[10px] uppercase tracking-[0.14em]">
-          <span style={{ color: BLUE }}>{curated.horizon}</span>
+        <div className="flex items-center gap-3 text-[12px] font-medium">
+          <span
+            className="bg-clip-text text-transparent"
+            style={{ backgroundImage: GRADIENT }}
+          >
+            {curated.horizon}
+          </span>
           <span className="text-text-tertiary">·</span>
-          <span style={{ color: cColor }}>
+          <span className="text-text-secondary">
             Уверенность: {curated.confidence}% — {confidenceLabel(curated.confidence)}
           </span>
         </div>
 
         <h3
           id="modal-title"
-          className="mt-3 text-[22px] md:text-[26px] font-semibold leading-[1.2] tracking-[-0.02em] text-text-primary"
+          className="mt-4 text-[24px] md:text-[28px] font-semibold leading-[1.2] tracking-[-0.025em] text-text-primary text-balance"
         >
           {full.title}
         </h3>
@@ -950,21 +1154,21 @@ function DetailModal({
         </p>
 
         {full.evidence.length > 0 && (
-          <div className="mt-6">
-            <div className="text-[11px] uppercase tracking-[0.1em] text-text-tertiary mb-3">
+          <div className="mt-7">
+            <div className="text-[12px] font-medium text-text-tertiary mb-3">
               Свидетельства
             </div>
             <ul className="space-y-2.5">
               {full.evidence.map((ev, i) => (
                 <li
                   key={i}
-                  className="rounded-[10px] p-3 text-[13px] text-text-secondary leading-[1.55]"
+                  className="rounded-[14px] p-4 text-[13.5px] text-text-secondary leading-[1.55]"
                   style={{
-                    background: "rgba(255,255,255,0.02)",
-                    border: "1px solid rgba(255,255,255,0.05)",
+                    background: "rgba(255,255,255,0.025)",
+                    border: "1px solid rgba(255,255,255,0.06)",
                   }}
                 >
-                  <div className="text-[11px] text-text-tertiary mb-1">
+                  <div className="text-[11.5px] text-text-tertiary mb-1.5">
                     {ev.date}
                   </div>
                   {ev.note}
@@ -973,8 +1177,8 @@ function DetailModal({
                       href={ev.source_url}
                       target="_blank"
                       rel="noreferrer"
-                      className="ml-2 inline-flex items-center gap-1 text-[12px]"
-                      style={{ color: BLUE }}
+                      className="ml-2 inline-flex items-center gap-1 text-[12px] hover:underline"
+                      style={{ color: CYAN }}
                     >
                       Источник <ExternalLink size={11} />
                     </a>
@@ -986,12 +1190,12 @@ function DetailModal({
         )}
 
         {full.notes && (
-          <p className="mt-5 text-[13px] italic text-text-tertiary leading-[1.6]">
+          <p className="mt-5 text-[13.5px] italic text-text-tertiary leading-[1.6]">
             {full.notes}
           </p>
         )}
 
-        <div className="mt-7 pt-5 border-t border-white/5 flex items-center justify-between gap-4 flex-wrap">
+        <div className="mt-8 pt-6 border-t border-white/8 flex items-center justify-between gap-4 flex-wrap">
           <div className="text-[12px] text-text-tertiary">
             Источник: {curated.sourceLabel}
           </div>
@@ -1000,12 +1204,12 @@ function DetailModal({
               href={curated.pdfUrl}
               target="_blank"
               rel="noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-[13px] transition-all"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-[13px] font-medium transition-all hover:scale-[1.02]"
               style={{
-                background: `linear-gradient(135deg, ${EMERALD}22, ${BLUE}22)`,
-                border: `1px solid ${EMERALD}55`,
+                background: GRADIENT,
                 color: "#fff",
-                boxShadow: `0 8px 24px -12px ${EMERALD}66`,
+                boxShadow:
+                  "0 12px 28px -10px rgba(99,102,241,0.5), inset 0 1px 0 rgba(255,255,255,0.2)",
               }}
             >
               <FileText size={14} /> Открыть PDF исследования
