@@ -606,7 +606,7 @@ function ArcTimeline({
       {/* Контейнер-стекло */}
       <div
         ref={wrapperRef}
-        className="relative rounded-[28px] px-4 md:px-8 pt-5 pb-6"
+        className="relative rounded-[28px] px-4 md:px-8 pt-5 pb-8"
         style={{
           background:
             "linear-gradient(180deg, rgba(28,28,36,0.55) 0%, rgba(14,14,20,0.55) 100%)",
@@ -651,7 +651,7 @@ function ArcTimeline({
           height={totalH}
           viewBox={`0 0 ${W} ${totalH}`}
           className="relative block"
-          style={{ overflow: "hidden" }}
+          style={{ overflow: "visible" }}
         >
           <defs>
             <linearGradient id="arcGradient" x1="0%" y1="0%" x2="100%" y2="0%">
