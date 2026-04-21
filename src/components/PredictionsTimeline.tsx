@@ -656,7 +656,7 @@ function ArcTimeline({
             onOpen={onOpen}
           />
         ) : (
-          <>
+          <div className="relative">
         {/* SVG дуга */}
         <svg
           width="100%"
@@ -888,7 +888,7 @@ function ArcTimeline({
             />
           )}
         </AnimatePresence>
-          </>
+          </div>
         )}
       </div>
 
