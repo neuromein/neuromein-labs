@@ -561,15 +561,13 @@ function ArcTimeline({
   const PADDING_X = 90;
   const W = Math.max(width, 360);
   const arcWidth = W - PADDING_X * 2;
-  const ARC_HEIGHT = Math.min(112, arcWidth * 0.125); // более собранная дуга выше по центру
+  const ARC_HEIGHT = Math.min(112, arcWidth * 0.125);
   const radius = (Math.pow(arcWidth / 2, 2) + Math.pow(ARC_HEIGHT, 2)) / (2 * ARC_HEIGHT);
   const cx = W / 2;
-  // Небольшой верхний отступ, чтобы дуга визуально сидела по центру блока
-  // Дуга центрируется вертикально: сверху небольшой запас, снизу место для подписей
-  const TOP_OFFSET = 24;
-  const cy = TOP_OFFSET + ARC_HEIGHT + radius; // центр окружности ниже дуги
-  const LABEL_SPACE = 56; // место под подписи Q.. и год под крайними точками
-  const totalH = TOP_OFFSET + ARC_HEIGHT + LABEL_SPACE;
+  const TOP_SAFE_SPACE = 68;
+  const BOTTOM_SAFE_SPACE = 58;
+  const cy = TOP_SAFE_SPACE + radius;
+  const totalH = TOP_SAFE_SPACE + ARC_HEIGHT + BOTTOM_SAFE_SPACE;
 
   const startAngle = Math.atan2(-(radius - ARC_HEIGHT), -arcWidth / 2);
   const endAngle = Math.atan2(-(radius - ARC_HEIGHT), arcWidth / 2);
