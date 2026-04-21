@@ -900,6 +900,129 @@ function ArcTimeline({
 // Поповер — frosted glass карточка
 // ============================================================================
 
+function MobileQuarterList({
+  counts,
+  activeIdx,
+  onSelect,
+  getItemsAt,
+  onOpen,
+}: {
+  counts: number[];
+  activeIdx: number | null;
+  onSelect: (i: number) => void;
+  getItemsAt: (i: number) => Array<{ curated: CuratedItem; full: Prediction }>;
+  onOpen: (id: string) => void;
+}) {
+  return (
+    <div className="relative space-y-1.5">
+      {QUARTERS.map((q, i) => {
+        const count = counts[i];
+        const has = count > 0;
+        const crisis = isCrisisIndex(i);
+        const isActive = activeIdx === i;
+        const items = isActive && has ? getItemsAt(i) : [];
+        return (
+          <div key={q}>
+            <button
+              onClick={() => onSelect(i)}
+              className="w-full flex items-center gap-3 px-3 py-3 rounded-[14px] transition-colors text-left"
+              style={{
+                background: isActive
+                  ? "rgba(255,255,255,0.06)"
+                  : "rgba(255,255,255,0.02)",
+                border: `1px solid ${
+                  isActive
+                    ? "rgba(255,255,255,0.14)"
+                    : "rgba(255,255,255,0.06)"
+                }`,
+              }}
+            >
+              <span
+                className="inline-block w-2 h-2 rounded-full shrink-0"
+                style={{
+                  background: has
+                    ? crisis
+                      ? ROSE
+                      : GRADIENT
+                    : "rgba(255,255,255,0.2)",
+                  boxShadow: has
+                    ? `0 0 10px ${crisis ? "rgba(244,63,94,0.5)" : "rgba(99,102,241,0.5)"}`
+                    : "none",
+                }}
+              />
+              <span className="text-[13px] font-medium text-text-primary tabular-nums w-[58px] shrink-0">
+                {q}
+              </span>
+              {crisis && (
+                <span
+                  className="text-[10px] font-medium uppercase tracking-[0.06em] px-1.5 py-0.5 rounded"
+                  style={{
+                    color: "#FDA4AF",
+                    background: "rgba(244,63,94,0.1)",
+                    border: "1px solid rgba(244,63,94,0.25)",
+                  }}
+                >
+                  Кризис
+                </span>
+              )}
+              <span className="ml-auto flex items-center gap-2 text-[12px] text-text-tertiary tabular-nums">
+                {has ? `${count} прогн.` : "—"}
+                {has && (
+                  <ArrowUpRight
+                    size={13}
+                    className={`transition-transform ${
+                      isActive ? "rotate-90" : ""
+                    }`}
+                  />
+                )}
+              </span>
+            </button>
+
+            <AnimatePresence initial={false}>
+              {isActive && has && (
+                <motion.ul
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+                  className="overflow-hidden"
+                >
+                  <div className="pt-2 pb-1 pl-5 pr-2 space-y-1.5">
+                    {items.map((m) => (
+                      <li key={m.curated.id} className="list-none">
+                        <button
+                          onClick={() => onOpen(m.curated.id)}
+                          className="w-full text-left flex items-start gap-2 py-2 group"
+                        >
+                          <span
+                            className="mt-1.5 inline-block w-1 h-1 rounded-full shrink-0"
+                            style={{ background: GRADIENT }}
+                          />
+                          <span className="flex-1 text-[13px] leading-[1.45] text-text-secondary group-hover:text-white transition-colors">
+                            {m.curated.shortTitle}
+                          </span>
+                          <ArrowUpRight
+                            size={13}
+                            className="text-text-tertiary mt-0.5 shrink-0"
+                          />
+                        </button>
+                      </li>
+                    ))}
+                  </div>
+                </motion.ul>
+              )}
+            </AnimatePresence>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ============================================================================
+// Поповер — desktop only
+// ============================================================================
+
 function ArcPopover({
   popoverRef,
   idx,
