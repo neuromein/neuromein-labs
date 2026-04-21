@@ -1477,3 +1477,392 @@ function DetailModal({
     </motion.div>
   );
 }
+
+// ============================================================================
+// StreamChart — горизонтальный bar-chart по кварталам со стэкингом тем
+// ============================================================================
+
+function StreamChart({
+  breakdown,
+  counts,
+  activeIdx,
+  accentColor,
+  onSelect,
+}: {
+  breakdown: Record<ThemeKey, number>[];
+  counts: number[];
+  activeIdx: number | null;
+  accentColor: string;
+  onSelect: (i: number) => void;
+}) {
+  const maxCount = Math.max(1, ...counts);
+  const themeOrder: ThemeKey[] = [
+    "labor",
+    "tech_ai",
+    "geo_crises",
+    "bio_health",
+    "society_edu",
+  ];
+
+  return (
+    <div className="mt-8 sm:mt-10">
+      {/* Crisis-band объяснение */}
+      <div className="flex items-center gap-2 text-[11.5px] text-text-tertiary mb-4">
+        <span
+          aria-hidden
+          className="inline-block w-3 h-2 rounded-[2px]"
+          style={{ background: "rgba(244,63,94,0.18)" }}
+        />
+        <span>
+          Затенённая область — зона предсказанного кризиса (по «Тихой замене»,
+          гл. 6.3)
+        </span>
+      </div>
+
+      <div className="relative">
+        {/* Crisis bands — затенение под графиком */}
+        <div className="absolute inset-0 grid pointer-events-none" style={{ gridTemplateColumns: `repeat(${QUARTERS.length}, minmax(0,1fr))` }}>
+          {QUARTERS.map((_, i) => (
+            <div
+              key={`band-${i}`}
+              className="h-full"
+              style={{
+                background: isCrisisIndex(i)
+                  ? "linear-gradient(180deg, rgba(244,63,94,0.08) 0%, rgba(244,63,94,0.02) 100%)"
+                  : "transparent",
+                borderRight: i < QUARTERS.length - 1 ? "1px dashed rgba(255,255,255,0.04)" : "none",
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Y-axis grid lines */}
+        <div className="absolute inset-0 flex flex-col justify-between pointer-events-none" aria-hidden>
+          {[0, 1, 2, 3].map((i) => (
+            <div key={i} className="h-px bg-white/4" />
+          ))}
+        </div>
+
+        {/* Bars */}
+        <ol
+          className="relative grid items-end h-[180px] sm:h-[210px]"
+          style={{ gridTemplateColumns: `repeat(${QUARTERS.length}, minmax(0,1fr))` }}
+          role="list"
+          aria-label="Распределение прогнозов по кварталам"
+        >
+          {QUARTERS.map((q, i) => {
+            const count = counts[i];
+            const heightPct = (count / maxCount) * 100;
+            const isActive = activeIdx === i;
+            const dimmed = activeIdx !== null && !isActive;
+            return (
+              <li key={q} className="relative h-full flex items-end px-1 sm:px-1.5">
+                <button
+                  onClick={() => onSelect(i)}
+                  className="relative w-full flex flex-col-reverse rounded-t-[6px] overflow-hidden group"
+                  style={{
+                    height: count > 0 ? `${heightPct}%` : "4px",
+                    minHeight: count > 0 ? 12 : 4,
+                    opacity: dimmed ? 0.35 : 1,
+                    transition: "opacity 0.25s ease",
+                  }}
+                  aria-label={`${q}: ${count} прогноз${count === 1 ? "" : count < 5 ? "а" : "ов"}`}
+                  aria-pressed={isActive}
+                >
+                  {count === 0 ? (
+                    <span
+                      className="absolute inset-0 rounded-t-[6px]"
+                      style={{ background: "rgba(255,255,255,0.06)" }}
+                    />
+                  ) : (
+                    <>
+                      {themeOrder.map((t) => {
+                        const seg = breakdown[i][t] ?? 0;
+                        if (seg === 0) return null;
+                        const segPct = (seg / count) * 100;
+                        return (
+                          <motion.span
+                            key={t}
+                            layout
+                            initial={{ scaleY: 0 }}
+                            whileInView={{ scaleY: 1 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
+                            style={{
+                              height: `${segPct}%`,
+                              background: THEME_COLORS[t],
+                              transformOrigin: "bottom",
+                            }}
+                          />
+                        );
+                      })}
+                      {/* Top highlight */}
+                      <span
+                        className="absolute top-0 inset-x-0 h-px"
+                        style={{ background: "rgba(255,255,255,0.25)" }}
+                        aria-hidden
+                      />
+                    </>
+                  )}
+                </button>
+
+                {/* Active indicator */}
+                {isActive && (
+                  <motion.span
+                    layoutId="stream-active-cap"
+                    aria-hidden
+                    className="absolute left-1 right-1 sm:left-1.5 sm:right-1.5 -top-2 h-[3px] rounded-full"
+                    style={{ background: accentColor }}
+                  />
+                )}
+
+                {/* Count label on hover/active */}
+                {count > 0 && (
+                  <span
+                    className="absolute left-0 right-0 text-center text-[10.5px] tabular-nums font-medium pointer-events-none"
+                    style={{
+                      bottom: `calc(${heightPct}% + 6px)`,
+                      color: isActive ? accentColor : "rgba(255,255,255,0.7)",
+                      opacity: isActive ? 1 : 0,
+                      transition: "opacity 0.2s ease",
+                    }}
+                    aria-hidden
+                  >
+                    {count}
+                  </span>
+                )}
+              </li>
+            );
+          })}
+        </ol>
+
+        {/* X-axis labels */}
+        <ol
+          className="mt-3 grid"
+          style={{ gridTemplateColumns: `repeat(${QUARTERS.length}, minmax(0,1fr))` }}
+          aria-hidden
+        >
+          {QUARTERS.map((q, i) => {
+            const [qt, yr] = q.split(" ");
+            const isActive = activeIdx === i;
+            return (
+              <li
+                key={q}
+                className="text-center px-1 select-none cursor-pointer"
+                onClick={() => onSelect(i)}
+              >
+                <div
+                  className="text-[10.5px] sm:text-[11px] tabular-nums font-medium transition-colors"
+                  style={{
+                    color: isActive ? "#fff" : "rgba(255,255,255,0.55)",
+                  }}
+                >
+                  {qt}
+                </div>
+                {/* Show year only on Q1 to reduce noise */}
+                {qt === "Q1" && (
+                  <time
+                    dateTime={yr}
+                    className="text-[10px] tabular-nums text-text-tertiary"
+                  >
+                    {yr}
+                  </time>
+                )}
+              </li>
+            );
+          })}
+        </ol>
+      </div>
+    </div>
+  );
+}
+
+// ============================================================================
+// BentoGrid — editorial layout с hero / standard / connection карточками
+// ============================================================================
+
+function BentoGrid({
+  items,
+  onOpen,
+}: {
+  items: Array<{ curated: CuratedItem; full: Prediction; themes: ThemeKey[] }>;
+  onOpen: (id: string) => void;
+}) {
+  if (items.length === 0) {
+    return (
+      <div
+        className="rounded-[20px] p-10 text-center text-[14px] text-text-tertiary"
+        style={{
+          background: "rgba(255,255,255,0.02)",
+          border: "1px solid rgba(255,255,255,0.06)",
+        }}
+      >
+        По выбранным фильтрам ничего не найдено
+      </div>
+    );
+  }
+
+  // Первая карточка с самой высокой confidence — hero (2×2 на больших экранах)
+  const sorted = [...items].sort(
+    (a, b) => b.curated.confidence - a.curated.confidence,
+  );
+  const heroId = sorted[0]?.curated.id;
+
+  return (
+    <motion.div
+      layout
+      className="grid gap-4 sm:gap-5 grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 auto-rows-[minmax(0,1fr)]"
+    >
+      <AnimatePresence mode="popLayout">
+        {items.map((m) => {
+          const isHero = m.curated.id === heroId && items.length > 3;
+          return (
+            <motion.div
+              key={m.curated.id}
+              layout
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -8 }}
+              transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
+              className={
+                isHero
+                  ? "sm:col-span-2 lg:col-span-2 lg:row-span-2"
+                  : ""
+              }
+            >
+              <BentoCard
+                item={m.curated}
+                themes={m.themes}
+                isHero={isHero}
+                onOpen={() => onOpen(m.curated.id)}
+              />
+            </motion.div>
+          );
+        })}
+      </AnimatePresence>
+    </motion.div>
+  );
+}
+
+// ============================================================================
+// BentoCard — карточка прогноза c theme color-coding и ConfidenceGauge
+// ============================================================================
+
+function BentoCard({
+  item,
+  themes,
+  isHero,
+  onOpen,
+}: {
+  item: CuratedItem;
+  themes: ThemeKey[];
+  isHero: boolean;
+  onOpen: () => void;
+}) {
+  const theme = dominantTheme(themes);
+  const themeColor = THEME_COLORS[theme];
+  const themeLabel = THEME_LABELS[theme];
+  const crisisHorizon = isCrisisIndex(quarterIndex(item.quarter));
+
+  return (
+    <motion.article
+      whileHover={{ y: -2 }}
+      transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
+      onClick={onOpen}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          onOpen();
+        }
+      }}
+      tabIndex={0}
+      role="button"
+      aria-label={`Открыть прогноз: ${item.shortTitle}`}
+      itemScope
+      itemType="https://schema.org/ClaimReview"
+      id={item.id}
+      className={`group relative h-full rounded-[18px] cursor-pointer flex flex-col bg-bg-card/40 border border-white/8 hover:border-white/15 transition-colors duration-300 ${
+        isHero
+          ? "p-7 sm:p-8 md:p-9 min-h-[300px]"
+          : "p-5 sm:p-6 min-h-[240px]"
+      }`}
+      style={{
+        // Тонкая верхняя полоска цвета темы — единственный цветовой акцент
+        boxShadow: `inset 0 2px 0 ${themeColor}`,
+      }}
+    >
+      {/* SEO микроразметка */}
+      <meta itemProp="url" content={`https://neuromein.ru/predictions#${item.id}`} />
+      <meta itemProp="datePublished" content="2026-01-12" />
+      <meta itemProp="claimReviewed" content={item.shortTitle} />
+
+      {/* Eyebrow: тема цветом + горизонт */}
+      <div className="flex items-center justify-between gap-3 text-[11px]">
+        <span
+          className="font-medium tracking-[0.06em] uppercase"
+          style={{
+            color: themeColor,
+            fontFamily: "ui-monospace, SFMono-Regular, Menlo, monospace",
+          }}
+        >
+          {themeLabel}
+        </span>
+        <time
+          dateTime={quarterToISO(item.quarter)}
+          className="tabular-nums font-medium"
+          style={{
+            color: crisisHorizon ? "#FDA4AF" : "rgba(240,240,245,0.55)",
+          }}
+        >
+          {item.horizon}
+        </time>
+      </div>
+
+      {/* Заголовок — крупнее для hero */}
+      <h3
+        className={`mt-4 font-medium leading-[1.2] tracking-[-0.02em] text-text-primary text-balance ${
+          isHero
+            ? "text-[22px] sm:text-[26px] md:text-[28px]"
+            : "text-[16.5px] sm:text-[17.5px]"
+        }`}
+        itemProp="name"
+      >
+        {item.shortTitle}
+      </h3>
+
+      {/* Описание */}
+      <p
+        className={`mt-3 text-text-secondary leading-[1.55] flex-1 ${
+          isHero ? "text-[14.5px] sm:text-[15px]" : "text-[13px]"
+        }`}
+      >
+        {item.shortDescription}
+      </p>
+
+      {/* Confidence gauge */}
+      <div className="mt-5">
+        <ConfidenceGauge confidence={item.confidence} color={themeColor} />
+      </div>
+
+      {/* Footer: source + arrow */}
+      <div className="mt-5 pt-4 border-t border-white/6 flex items-center justify-between gap-3">
+        <span className="text-[11px] text-text-tertiary truncate">
+          {item.sourceLabel}
+        </span>
+        <span
+          className="inline-flex items-center justify-center rounded-full w-7 h-7 shrink-0 transition-colors group-hover:bg-white/8"
+          style={{ background: "rgba(255,255,255,0.04)" }}
+          aria-hidden
+        >
+          <ArrowUpRight size={13} className="text-text-secondary" />
+        </span>
+      </div>
+    </motion.article>
+  );
+}
+
+function quarterToISO(q: Quarter): string {
+  // "Q1 2026" -> "2026-Q1" (ISO 8601 year-quarter notation)
+  const [qt, yr] = q.split(" ");
+  return `${yr}-${qt}`;
+}
