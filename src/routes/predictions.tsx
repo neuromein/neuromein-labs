@@ -31,12 +31,12 @@ function PredictionsPage() {
 
   return (
     <Layout>
-      <div className="max-w-[1320px] mx-auto pb-20 pt-6">
+      <div className="max-w-[1320px] mx-auto pb-24 pt-4">
         <PredictionsValidationBanner />
 
         {/* Summary stats — moved above the interactive timeline */}
         <Reveal>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-px rounded-[24px] overflow-hidden border-[0.5px] border-border bg-border">
+          <div className="grid grid-cols-2 md:grid-cols-5 gap-px rounded-[24px] overflow-hidden border-[0.5px] border-border bg-border mb-3">
             <StatTile label="Всего" value={stats.total} />
             <StatTile label="Сбылось" value={stats.byStatus.fulfilled} />
             <StatTile label="Частично" value={stats.byStatus.partial} />
@@ -57,11 +57,11 @@ function PredictionsPage() {
 
 function StatTile({ label, value }: { label: string; value: string | number }) {
   return (
-    <div className="bg-bg-card/60 backdrop-blur-md p-6 lg:p-7 h-[140px] flex flex-col justify-between transition-colors duration-300 hover:bg-bg-card/80">
+    <div className="bg-bg-card/60 backdrop-blur-md p-5 lg:p-6 h-[120px] flex flex-col justify-between transition-colors duration-300 hover:bg-bg-card/80">
       <div className="text-[11px] text-text-tertiary uppercase tracking-[0.08em] font-medium">
         {label}
       </div>
-      <div className="text-[40px] font-semibold tracking-[-0.03em] leading-none text-text-primary tabular-nums">
+      <div className="text-[36px] font-semibold tracking-[-0.03em] leading-none text-text-primary tabular-nums">
         {value}
       </div>
     </div>
