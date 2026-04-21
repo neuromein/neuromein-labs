@@ -328,9 +328,6 @@ export function PredictionsTimeline() {
     <section aria-labelledby="timeline-heading" className="mt-4">
       {/* Заголовок */}
       <header className="max-w-4xl pt-8">
-        <div className="text-[12px] text-text-tertiary mb-5 tracking-[0.04em]">
-          2026 — 2028 · Трекер прогнозов
-        </div>
         <h2
           id="timeline-heading"
           className="text-[36px] md:text-[52px] lg:text-[64px] font-medium leading-[0.98] tracking-[-0.035em] text-text-primary text-balance"
@@ -530,14 +527,14 @@ function ArcTimeline({
   const popoverIdx = activeIdx ?? hoverIdx;
 
   // ---- Геометрия дуги ----
-  const PADDING_X = 60;
+  const PADDING_X = 90;
   const W = Math.max(width, 360);
   const arcWidth = W - PADDING_X * 2;
   const ARC_HEIGHT = Math.min(140, arcWidth * 0.16); // плавная пологая дуга
   const radius = (Math.pow(arcWidth / 2, 2) + Math.pow(ARC_HEIGHT, 2)) / (2 * ARC_HEIGHT);
   const cx = W / 2;
   const cy = ARC_HEIGHT + radius; // центр окружности ниже дуги
-  const totalH = ARC_HEIGHT + 140; // место для подписей
+  const totalH = ARC_HEIGHT + 110; // место для подписей
 
   const startAngle = Math.atan2(-(radius - ARC_HEIGHT), -arcWidth / 2);
   const endAngle = Math.atan2(-(radius - ARC_HEIGHT), arcWidth / 2);
@@ -575,7 +572,7 @@ function ArcTimeline({
       {/* Контейнер-стекло */}
       <div
         ref={wrapperRef}
-        className="relative rounded-[28px] px-4 md:px-8 pt-8 pb-6 overflow-hidden"
+        className="relative rounded-[28px] px-4 md:px-8 pt-10 pb-10"
         style={{
           background:
             "linear-gradient(180deg, rgba(28,28,36,0.55) 0%, rgba(14,14,20,0.55) 100%)",
@@ -589,7 +586,7 @@ function ArcTimeline({
         {/* Подсветка-aurora за дугой */}
         <div
           aria-hidden
-          className="absolute pointer-events-none"
+          className="absolute pointer-events-none rounded-[28px]"
           style={{
             top: -100,
             left: "50%",
@@ -599,6 +596,7 @@ function ArcTimeline({
             background:
               "radial-gradient(ellipse at center, rgba(99,102,241,0.18) 0%, rgba(34,211,238,0.10) 35%, transparent 70%)",
             filter: "blur(40px)",
+            overflow: "hidden",
           }}
         />
 
@@ -831,12 +829,12 @@ function ArcTimeline({
             />
           )}
         </AnimatePresence>
+      </div>
 
-        {/* Подсказка снизу */}
-        <div className="flex items-center justify-between text-[12px] text-text-tertiary mt-2 px-2">
-          <span>Наведите или кликните на точку</span>
-          <span className="tabular-nums">{QUARTERS.length} кварталов</span>
-        </div>
+      {/* Подсказка снизу — теперь вне контейнера дуги */}
+      <div className="flex items-center justify-between text-[12px] text-text-tertiary mt-4 px-2">
+        <span>Наведите или кликните на точку</span>
+        <span className="tabular-nums">{QUARTERS.length} кварталов</span>
       </div>
     </div>
   );
@@ -861,8 +859,8 @@ function ArcPopover({
   items: Array<{ curated: CuratedItem; full: Prediction }>;
   onOpen: (id: string) => void;
 }) {
-  const POPOVER_W = 340;
-  // Позиционирование, чтобы не вылетал
+  const POPOVER_W = 320;
+  // Позиционирование, чтобы не вылетал по горизонтали
   let leftPx = x - POPOVER_W / 2;
   if (leftPx < 16) leftPx = 16;
   if (leftPx + POPOVER_W > containerWidth - 16)
@@ -870,26 +868,26 @@ function ArcPopover({
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: -6, scale: 0.96 }}
+      initial={{ opacity: 0, y: 6, scale: 0.96 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
-      exit={{ opacity: 0, y: -6, scale: 0.96 }}
+      exit={{ opacity: 0, y: 6, scale: 0.96 }}
       transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
-      className="absolute z-30 pointer-events-auto"
+      className="absolute z-30 pointer-events-none"
       style={{
-        top: y + 64,
+        top: y + 70,
         left: leftPx,
         width: POPOVER_W,
       }}
     >
       <div
-        className="rounded-[20px] p-5"
+        className="rounded-[20px] p-5 pointer-events-auto"
         style={{
-          background: "rgba(20,20,28,0.78)",
+          background: "rgba(20,20,28,0.92)",
           border: "1px solid rgba(255,255,255,0.1)",
           backdropFilter: "blur(40px) saturate(180%)",
           WebkitBackdropFilter: "blur(40px) saturate(180%)",
           boxShadow:
-            "0 30px 60px -20px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.08)",
+            "0 30px 60px -20px rgba(0,0,0,0.85), 0 0 0 1px rgba(99,102,241,0.15), inset 0 1px 0 rgba(255,255,255,0.08)",
         }}
       >
         <div className="flex items-baseline justify-between mb-4">

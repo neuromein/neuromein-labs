@@ -2,7 +2,6 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useMemo } from "react";
 import { Layout } from "@/components/Layout";
 import { Reveal } from "@/components/Reveal";
-import { PredictionsValidationBanner } from "@/components/PredictionsValidationBanner";
 import { PredictionsTimeline } from "@/components/PredictionsTimeline";
 import { predictions, getStats } from "@/data/predictions";
 
@@ -32,8 +31,6 @@ function PredictionsPage() {
   return (
     <Layout>
       <div className="max-w-[1320px] mx-auto pb-24 pt-4">
-        <PredictionsValidationBanner />
-
         {/* Main content — interactive timeline + filters + cards */}
         <PredictionsTimeline />
 
