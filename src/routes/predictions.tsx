@@ -30,13 +30,13 @@ function PredictionsPage() {
 
   return (
     <Layout>
-      <div className="max-w-[1320px] mx-auto pb-24 pt-4">
+      <div className="max-w-[1320px] mx-auto pb-24 pt-4 px-4 sm:px-6 lg:px-8">
         {/* Main content — interactive timeline + filters + cards */}
         <PredictionsTimeline />
 
         {/* Summary stats — under the interactive timeline */}
         <Reveal>
-          <div className="mt-10 grid grid-cols-2 md:grid-cols-6 gap-px rounded-[24px] overflow-hidden border-[0.5px] border-border bg-border">
+          <div className="mt-8 sm:mt-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-px rounded-[20px] sm:rounded-[24px] overflow-hidden border-[0.5px] border-border bg-border">
             <StatTile label="Всего" value={stats.total} />
             <StatTile label="Сбылось" value={stats.byStatus.fulfilled} />
             <StatTile label="Частично" value={stats.byStatus.partial} />
@@ -63,11 +63,11 @@ function PredictionsPage() {
 
 function StatTile({ label, value }: { label: string; value: string | number }) {
   return (
-    <div className="bg-bg-card/60 backdrop-blur-md p-5 lg:p-6 h-[120px] flex flex-col justify-between transition-colors duration-300 hover:bg-bg-card/80">
-      <div className="text-[11px] text-text-tertiary uppercase tracking-[0.08em] font-medium">
+    <div className="bg-bg-card/60 backdrop-blur-md p-4 sm:p-5 lg:p-6 h-[100px] sm:h-[120px] flex flex-col justify-between transition-colors duration-300 hover:bg-bg-card/80">
+      <div className="text-[10px] sm:text-[11px] text-text-tertiary uppercase tracking-[0.08em] font-medium">
         {label}
       </div>
-      <div className="text-[36px] font-semibold tracking-[-0.03em] leading-none text-text-primary tabular-nums">
+      <div className="text-[28px] sm:text-[36px] font-semibold tracking-[-0.03em] leading-none text-text-primary tabular-nums">
         {value}
       </div>
     </div>

@@ -343,10 +343,10 @@ export function PredictionsTimeline() {
   return (
     <section aria-labelledby="timeline-heading" className="mt-4">
       {/* Заголовок */}
-      <header className="max-w-4xl pt-8">
+      <header className="max-w-4xl pt-4 sm:pt-8">
         <h2
           id="timeline-heading"
-          className="text-[36px] md:text-[52px] lg:text-[64px] font-medium leading-[0.98] tracking-[-0.035em] text-text-primary text-balance"
+          className="text-[30px] sm:text-[40px] md:text-[52px] lg:text-[64px] font-medium leading-[1.02] sm:leading-[0.98] tracking-[-0.035em] text-text-primary text-balance"
         >
           Прогнозы 2026–2028 <br />
           <span
@@ -356,14 +356,14 @@ export function PredictionsTimeline() {
             и их проверка
           </span>
         </h2>
-        <p className="mt-6 text-[15px] md:text-[17px] text-text-secondary leading-[1.55] max-w-[640px]">
+        <p className="mt-5 sm:mt-6 text-[14.5px] sm:text-[15px] md:text-[17px] text-text-secondary leading-[1.55] max-w-[640px]">
           Шкала на основе исследований «Тихая замена» и «ИИ в 2025». Каждый прогноз
           привязан к кварталу и сопровождается уровнем уверенности.
         </p>
       </header>
 
       {/* Фильтры — pill-кнопки в стиле Apple */}
-      <div className="mt-12 flex flex-wrap gap-2">
+      <div className="mt-8 sm:mt-12 flex flex-wrap gap-2">
         {(Object.keys(THEME_LABELS) as ThemeKey[]).map((k) => {
           const isActive = theme === k;
           return (
@@ -557,6 +557,8 @@ function ArcTimeline({
 
   const popoverIdx = activeIdx ?? hoverIdx;
 
+  const isMobile = width > 0 && width < 560;
+
   // ---- Геометрия дуги ----
   const PADDING_X = 90;
   const W = Math.max(width, 360);
@@ -601,11 +603,11 @@ function ArcTimeline({
   });
 
   return (
-    <div className="mt-14">
+    <div className="mt-10 md:mt-14">
       {/* Контейнер-стекло */}
       <div
         ref={wrapperRef}
-        className="relative rounded-[28px] px-4 md:px-8 pt-5 pb-6"
+        className="relative rounded-[24px] sm:rounded-[28px] px-3 sm:px-4 md:px-8 pt-4 sm:pt-5 pb-5 sm:pb-6"
         style={{
           background:
             "linear-gradient(180deg, rgba(28,28,36,0.55) 0%, rgba(14,14,20,0.55) 100%)",
@@ -624,7 +626,7 @@ function ArcTimeline({
       >
         {/* Подсказка сверху по центру */}
         <div className="text-[12px] text-text-tertiary text-center mb-2">
-          Наведите или кликните на точку
+          {isMobile ? "Нажмите на квартал" : "Наведите или кликните на точку"}
         </div>
 
         {/* Подсветка-aurora за дугой */}
@@ -644,6 +646,17 @@ function ArcTimeline({
           }}
         />
 
+        {/* Мобильный список кварталов */}
+        {isMobile ? (
+          <MobileQuarterList
+            counts={counts}
+            activeIdx={activeIdx}
+            onSelect={onSelect}
+            getItemsAt={getItemsAt}
+            onOpen={onOpen}
+          />
+        ) : (
+          <>
         {/* SVG дуга */}
         <svg
           width="100%"
@@ -875,6 +888,8 @@ function ArcTimeline({
             />
           )}
         </AnimatePresence>
+          </>
+        )}
       </div>
 
     </div>
@@ -883,6 +898,129 @@ function ArcTimeline({
 
 // ============================================================================
 // Поповер — frosted glass карточка
+// ============================================================================
+
+function MobileQuarterList({
+  counts,
+  activeIdx,
+  onSelect,
+  getItemsAt,
+  onOpen,
+}: {
+  counts: number[];
+  activeIdx: number | null;
+  onSelect: (i: number) => void;
+  getItemsAt: (i: number) => Array<{ curated: CuratedItem; full: Prediction }>;
+  onOpen: (id: string) => void;
+}) {
+  return (
+    <div className="relative space-y-1.5">
+      {QUARTERS.map((q, i) => {
+        const count = counts[i];
+        const has = count > 0;
+        const crisis = isCrisisIndex(i);
+        const isActive = activeIdx === i;
+        const items = isActive && has ? getItemsAt(i) : [];
+        return (
+          <div key={q}>
+            <button
+              onClick={() => onSelect(i)}
+              className="w-full flex items-center gap-3 px-3 py-3 rounded-[14px] transition-colors text-left"
+              style={{
+                background: isActive
+                  ? "rgba(255,255,255,0.06)"
+                  : "rgba(255,255,255,0.02)",
+                border: `1px solid ${
+                  isActive
+                    ? "rgba(255,255,255,0.14)"
+                    : "rgba(255,255,255,0.06)"
+                }`,
+              }}
+            >
+              <span
+                className="inline-block w-2 h-2 rounded-full shrink-0"
+                style={{
+                  background: has
+                    ? crisis
+                      ? ROSE
+                      : GRADIENT
+                    : "rgba(255,255,255,0.2)",
+                  boxShadow: has
+                    ? `0 0 10px ${crisis ? "rgba(244,63,94,0.5)" : "rgba(99,102,241,0.5)"}`
+                    : "none",
+                }}
+              />
+              <span className="text-[13px] font-medium text-text-primary tabular-nums w-[58px] shrink-0">
+                {q}
+              </span>
+              {crisis && (
+                <span
+                  className="text-[10px] font-medium uppercase tracking-[0.06em] px-1.5 py-0.5 rounded"
+                  style={{
+                    color: "#FDA4AF",
+                    background: "rgba(244,63,94,0.1)",
+                    border: "1px solid rgba(244,63,94,0.25)",
+                  }}
+                >
+                  Кризис
+                </span>
+              )}
+              <span className="ml-auto flex items-center gap-2 text-[12px] text-text-tertiary tabular-nums">
+                {has ? `${count} прогн.` : "—"}
+                {has && (
+                  <ArrowUpRight
+                    size={13}
+                    className={`transition-transform ${
+                      isActive ? "rotate-90" : ""
+                    }`}
+                  />
+                )}
+              </span>
+            </button>
+
+            <AnimatePresence initial={false}>
+              {isActive && has && (
+                <motion.ul
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.22, ease: [0.22, 1, 0.36, 1] }}
+                  className="overflow-hidden"
+                >
+                  <div className="pt-2 pb-1 pl-5 pr-2 space-y-1.5">
+                    {items.map((m) => (
+                      <li key={m.curated.id} className="list-none">
+                        <button
+                          onClick={() => onOpen(m.curated.id)}
+                          className="w-full text-left flex items-start gap-2 py-2 group"
+                        >
+                          <span
+                            className="mt-1.5 inline-block w-1 h-1 rounded-full shrink-0"
+                            style={{ background: GRADIENT }}
+                          />
+                          <span className="flex-1 text-[13px] leading-[1.45] text-text-secondary group-hover:text-white transition-colors">
+                            {m.curated.shortTitle}
+                          </span>
+                          <ArrowUpRight
+                            size={13}
+                            className="text-text-tertiary mt-0.5 shrink-0"
+                          />
+                        </button>
+                      </li>
+                    ))}
+                  </div>
+                </motion.ul>
+              )}
+            </AnimatePresence>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ============================================================================
+// Поповер — desktop only
 // ============================================================================
 
 function ArcPopover({
@@ -1146,7 +1284,7 @@ function DetailModal({
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 24, scale: 0.96 }}
         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-        className="relative w-full max-w-[720px] max-h-[88vh] overflow-y-auto rounded-[28px] p-7 md:p-9"
+        className="relative w-full max-w-[720px] max-h-[92vh] sm:max-h-[88vh] overflow-y-auto rounded-[24px] sm:rounded-[28px] p-5 pt-12 sm:pt-7 sm:p-7 md:p-9"
         style={{
           background:
             "linear-gradient(180deg, rgba(28,28,36,0.92) 0%, rgba(14,14,20,0.92) 100%)",
