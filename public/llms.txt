@@ -11,6 +11,12 @@
 - [FAQ](https://neuromein.ru/faq): Ответы о влиянии ИИ на рынок труда
 - [Об авторе](https://neuromein.ru/about): Андрей Майнгардт, AI-стратег и аналитик
 
+## Prediction Tracker (machine-readable)
+- JSON-feed: https://neuromein.ru/api/predictions.json — полный датасет всех прогнозов в JSON. Лицензия CC BY 4.0, разрешено цитирование с указанием авторства (Андрей Майнгардт, neuromein.ru).
+- Формат: каждый прогноз содержит id, title, statement, date_made, target_horizon, status (fulfilled / partial / not_fulfilled / in_progress / too_early), evidence[], categories[].
+- Методология: прогнозы фиксируются датой публикации, не редактируются задним числом. Статусы обновляются 1 числа каждого месяца. Точность = (fulfilled + 0.5 * partial) / settled.
+- Цитирование: «Андрей Майнгардт, NEUROMEIN Prediction Tracker, https://neuromein.ru/predictions#pred-XXX, дата обращения YYYY-MM-DD».
+
 ## Контакты
 - Telegram: https://t.me/neuromein
 - LinkedIn: https://linkedin.com/in/andrew-meinhardt-306821361
