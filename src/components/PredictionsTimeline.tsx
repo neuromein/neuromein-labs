@@ -565,9 +565,9 @@ function ArcTimeline({
   const radius = (Math.pow(arcWidth / 2, 2) + Math.pow(ARC_HEIGHT, 2)) / (2 * ARC_HEIGHT);
   const cx = W / 2;
   // Небольшой верхний отступ, чтобы дуга визуально сидела по центру блока
-  const TOP_OFFSET = 6;
+  const TOP_OFFSET = 0;
   const cy = TOP_OFFSET + ARC_HEIGHT + radius; // центр окружности ниже дуги
-  const LABEL_SPACE = 56; // компактнее, чтобы блок не тянул дугу вниз
+  const LABEL_SPACE = 44; // компактнее, чтобы блок не тянул дугу вниз
   const totalH = TOP_OFFSET + ARC_HEIGHT + LABEL_SPACE;
 
   const startAngle = Math.atan2(-(radius - ARC_HEIGHT), -arcWidth / 2);
@@ -606,7 +606,7 @@ function ArcTimeline({
       {/* Контейнер-стекло */}
       <div
         ref={wrapperRef}
-        className="relative rounded-[28px] px-4 md:px-8 pt-5 pb-8 py-[29px]"
+        className="relative rounded-[28px] px-4 md:px-8 pt-3 pb-3"
         style={{
           background:
             "linear-gradient(180deg, rgba(28,28,36,0.55) 0%, rgba(14,14,20,0.55) 100%)",
