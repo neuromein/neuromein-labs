@@ -1284,7 +1284,7 @@ function DetailModal({
         animate={{ opacity: 1, y: 0, scale: 1 }}
         exit={{ opacity: 0, y: 24, scale: 0.96 }}
         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-        className="relative w-full max-w-[720px] max-h-[92vh] sm:max-h-[88vh] overflow-y-auto rounded-[24px] sm:rounded-[28px] p-5 sm:p-7 md:p-9"
+        className="relative w-full max-w-[720px] max-h-[92vh] sm:max-h-[88vh] overflow-y-auto rounded-[24px] sm:rounded-[28px] p-5 pt-12 sm:pt-7 sm:p-7 md:p-9"
         style={{
           background:
             "linear-gradient(180deg, rgba(28,28,36,0.92) 0%, rgba(14,14,20,0.92) 100%)",
