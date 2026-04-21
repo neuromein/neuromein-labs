@@ -17,17 +17,6 @@ const CYAN = "#22D3EE";
 const ROSE = "#F43F5E"; // для зон кризисов (мягкий, не кричащий)
 const GRADIENT = "linear-gradient(135deg, #6366F1 0%, #22D3EE 100%)";
 
-// Editorial color-coding по темам (5 цветов, каждый используется только в своём
-// контексте — в eyebrow карточки и в столбце stream-chart)
-const THEME_COLORS: Record<ThemeKey, string> = {
-  all: INDIGO, // используется как fallback / для всех
-  labor: "#6366F1", // indigo
-  tech_ai: "#22D3EE", // cyan
-  geo_crises: "#F43F5E", // rose
-  bio_health: "#10B981", // emerald
-  society_edu: "#F59E0B", // amber
-};
-
 // ============================================================================
 // Тематические группы
 // ============================================================================
@@ -48,6 +37,22 @@ const THEME_LABELS: Record<ThemeKey, string> = {
   bio_health: "Био и здоровье",
   society_edu: "Общество и образование",
 };
+
+// Editorial color-coding по темам (5 цветов; используются скупо: только
+// в eyebrow карточки и в сегментах stream-chart)
+const THEME_COLORS: Record<ThemeKey, string> = {
+  all: INDIGO,
+  labor: "#6366F1",
+  tech_ai: "#22D3EE",
+  geo_crises: "#F43F5E",
+  bio_health: "#10B981",
+  society_edu: "#F59E0B",
+};
+
+// Доминирующая тема прогноза (первая из найденных) — для color-coding карточки
+function dominantTheme(themes: ThemeKey[]): ThemeKey {
+  return themes[0] ?? "all";
+}
 
 const CATEGORY_TO_THEME: Partial<Record<CategoryKey, ThemeKey>> = {
   labor_market: "labor",
