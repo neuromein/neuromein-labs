@@ -343,10 +343,10 @@ export function PredictionsTimeline() {
   return (
     <section aria-labelledby="timeline-heading" className="mt-4">
       {/* Заголовок */}
-      <header className="max-w-4xl pt-8">
+      <header className="max-w-4xl pt-4 sm:pt-8">
         <h2
           id="timeline-heading"
-          className="text-[36px] md:text-[52px] lg:text-[64px] font-medium leading-[0.98] tracking-[-0.035em] text-text-primary text-balance"
+          className="text-[30px] sm:text-[40px] md:text-[52px] lg:text-[64px] font-medium leading-[1.02] sm:leading-[0.98] tracking-[-0.035em] text-text-primary text-balance"
         >
           Прогнозы 2026–2028 <br />
           <span
@@ -356,14 +356,14 @@ export function PredictionsTimeline() {
             и их проверка
           </span>
         </h2>
-        <p className="mt-6 text-[15px] md:text-[17px] text-text-secondary leading-[1.55] max-w-[640px]">
+        <p className="mt-5 sm:mt-6 text-[14.5px] sm:text-[15px] md:text-[17px] text-text-secondary leading-[1.55] max-w-[640px]">
           Шкала на основе исследований «Тихая замена» и «ИИ в 2025». Каждый прогноз
           привязан к кварталу и сопровождается уровнем уверенности.
         </p>
       </header>
 
       {/* Фильтры — pill-кнопки в стиле Apple */}
-      <div className="mt-12 flex flex-wrap gap-2">
+      <div className="mt-8 sm:mt-12 flex flex-wrap gap-2">
         {(Object.keys(THEME_LABELS) as ThemeKey[]).map((k) => {
           const isActive = theme === k;
           return (
