@@ -6,15 +6,27 @@ import {
   type Prediction,
   type CategoryKey,
 } from "@/data/predictions";
+import { ConfidenceGauge } from "@/components/ConfidenceGauge";
 
 // ============================================================================
-// Палитра — Indigo → Cyan градиент (Linear / Arc style)
+// Палитра — скупой акцент Indigo → Cyan + тематический color-coding
 // ============================================================================
 
 const INDIGO = "#6366F1";
 const CYAN = "#22D3EE";
 const ROSE = "#F43F5E"; // для зон кризисов (мягкий, не кричащий)
 const GRADIENT = "linear-gradient(135deg, #6366F1 0%, #22D3EE 100%)";
+
+// Editorial color-coding по темам (5 цветов, каждый используется только в своём
+// контексте — в eyebrow карточки и в столбце stream-chart)
+const THEME_COLORS: Record<ThemeKey, string> = {
+  all: INDIGO, // используется как fallback / для всех
+  labor: "#6366F1", // indigo
+  tech_ai: "#22D3EE", // cyan
+  geo_crises: "#F43F5E", // rose
+  bio_health: "#10B981", // emerald
+  society_edu: "#F59E0B", // amber
+};
 
 // ============================================================================
 // Тематические группы
