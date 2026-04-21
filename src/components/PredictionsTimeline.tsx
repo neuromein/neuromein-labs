@@ -451,7 +451,9 @@ export function PredictionsTimeline() {
         counts={quarterCounts}
         activeIdx={activeQuarterIdx}
         accentColor={accentColor}
-        onSelect={(i) => setActiveQuarterIdx((cur) => (cur === i ? null : i))}
+        onSelect={(i: number) =>
+          setActiveQuarterIdx((cur) => (cur === i ? null : i))
+        }
       />
 
       {/* Сетка карточек */}
@@ -479,7 +481,7 @@ export function PredictionsTimeline() {
 
         <BentoGrid
           items={filteredOnQuarter}
-          onOpen={(id) => setOpenId(id)}
+          onOpen={(id: string) => setOpenId(id)}
         />
 
         {filteredOnQuarter.length === 0 && (
