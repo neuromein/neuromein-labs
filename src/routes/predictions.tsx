@@ -107,6 +107,8 @@ function PredictionsPage() {
           description="Я фиксирую прогнозы с датой и возвращаюсь к ним, чтобы проверить — сбылось или нет."
         />
 
+        <PredictionsValidationBanner />
+
         {/* Stats — monochrome, equal-weight tiles */}
         <Reveal>
           <div className="mt-12 grid grid-cols-2 md:grid-cols-5 gap-px rounded-[24px] overflow-hidden border-[0.5px] border-border bg-border">
