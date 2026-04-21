@@ -557,6 +557,8 @@ function ArcTimeline({
 
   const popoverIdx = activeIdx ?? hoverIdx;
 
+  const isMobile = width > 0 && width < 560;
+
   // ---- Геометрия дуги ----
   const PADDING_X = 90;
   const W = Math.max(width, 360);
