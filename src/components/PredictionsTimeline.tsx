@@ -527,14 +527,14 @@ function ArcTimeline({
   const popoverIdx = activeIdx ?? hoverIdx;
 
   // ---- Геометрия дуги ----
-  const PADDING_X = 60;
+  const PADDING_X = 90;
   const W = Math.max(width, 360);
   const arcWidth = W - PADDING_X * 2;
   const ARC_HEIGHT = Math.min(140, arcWidth * 0.16); // плавная пологая дуга
   const radius = (Math.pow(arcWidth / 2, 2) + Math.pow(ARC_HEIGHT, 2)) / (2 * ARC_HEIGHT);
   const cx = W / 2;
   const cy = ARC_HEIGHT + radius; // центр окружности ниже дуги
-  const totalH = ARC_HEIGHT + 140; // место для подписей
+  const totalH = ARC_HEIGHT + 110; // место для подписей
 
   const startAngle = Math.atan2(-(radius - ARC_HEIGHT), -arcWidth / 2);
   const endAngle = Math.atan2(-(radius - ARC_HEIGHT), arcWidth / 2);
