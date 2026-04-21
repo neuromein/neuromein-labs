@@ -812,62 +812,55 @@ function PredictionMiniCard({
   const cColor = confidenceColor(item.confidence);
   const [hover, setHover] = useState(false);
   return (
-    <motion.div
-      onHoverStart={() => setHover(true)}
-      onHoverEnd={() => setHover(false)}
-      whileHover={{ y: -4 }}
-      transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-      className="h-full min-h-[240px] rounded-[16px] p-5 flex flex-col cursor-pointer"
+    <div
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
       onClick={onOpen}
+      className="group relative h-full min-h-[260px] p-6 flex flex-col cursor-pointer transition-colors duration-300"
       style={{
-        background: hover
-          ? "rgba(255,255,255,0.045)"
-          : "rgba(255,255,255,0.025)",
-        border: hover
-          ? `1px solid ${EMERALD}55`
-          : "1px solid rgba(255,255,255,0.06)",
-        backdropFilter: "blur(20px) saturate(160%)",
-        WebkitBackdropFilter: "blur(20px) saturate(160%)",
-        boxShadow: hover
-          ? `0 18px 40px -16px rgba(0,0,0,0.55), 0 0 0 1px ${EMERALD}22, 0 0 30px -6px ${EMERALD}33`
-          : "0 6px 16px -10px rgba(0,0,0,0.4)",
-        transition: "background 0.25s, border-color 0.25s, box-shadow 0.25s",
+        background: hover ? "#101015" : "#0a0a0f",
       }}
     >
-      <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.12em]">
-        <span style={{ color: BLUE }}>{item.horizon}</span>
-        <span
-          className="inline-flex items-center gap-1.5"
-          style={{ color: cColor }}
-        >
-          <span
-            className="inline-block w-1.5 h-1.5 rounded-full"
-            style={{ background: cColor, boxShadow: `0 0 6px ${cColor}88` }}
-          />
-          {item.confidence}%
+      {/* Confidence bar — тонкая полоса сверху */}
+      <div
+        className="absolute top-0 left-0 h-px transition-all duration-500"
+        style={{
+          width: hover ? "100%" : `${item.confidence}%`,
+          background: cColor,
+        }}
+      />
+
+      {/* Метаданные — mono, разнесены по углам */}
+      <div className="flex items-baseline justify-between text-[10px] font-mono uppercase tracking-[0.14em]">
+        <span className="text-text-tertiary">{item.horizon}</span>
+        <span className="tabular-nums text-text-secondary">
+          {item.confidence}<span className="text-text-tertiary">/100</span>
         </span>
       </div>
-      <h3 className="mt-3 text-[15px] font-medium leading-[1.35] tracking-[-0.01em] text-text-primary [text-wrap:balance]">
+
+      {/* Заголовок — крупная типографика */}
+      <h3 className="mt-6 text-[18px] font-medium leading-[1.2] tracking-[-0.015em] text-text-primary text-balance">
         {item.shortTitle}
       </h3>
-      <p className="mt-2 text-[13px] text-text-secondary leading-[1.55] flex-1">
+
+      {/* Описание */}
+      <p className="mt-3 text-[13px] text-text-secondary leading-[1.6] flex-1">
         {item.shortDescription}
       </p>
-      <div className="mt-4 pt-4 border-t border-white/5 flex items-center justify-between gap-3">
-        <span className="text-[11px] text-text-tertiary truncate">
+
+      {/* Footer — источник + arrow */}
+      <div className="mt-6 pt-5 border-t border-white/8 flex items-center justify-between gap-3">
+        <span className="text-[10px] uppercase tracking-[0.12em] font-mono text-text-tertiary truncate">
           {item.sourceLabel}
         </span>
         <span
-          className="text-[12px] inline-flex items-center gap-1 transition-transform whitespace-nowrap"
-          style={{
-            color: EMERALD,
-            transform: hover ? "translateX(2px)" : "translateX(0)",
-          }}
+          className="text-[18px] leading-none text-text-tertiary transition-all duration-300 group-hover:text-white group-hover:translate-x-1"
+          aria-hidden
         >
-          Подробнее →
+          →
         </span>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
