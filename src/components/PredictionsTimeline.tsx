@@ -339,63 +339,53 @@ export function PredictionsTimeline() {
   return (
     <section
       aria-labelledby="timeline-heading"
-      className="mt-6 rounded-[28px] p-6 md:p-10 lg:p-12"
-      style={{
-        background: "linear-gradient(180deg, rgba(15,17,21,0.85) 0%, rgba(8,8,13,0.85) 100%)",
-        border: "1px solid rgba(255,255,255,0.06)",
-        backdropFilter: "blur(24px) saturate(160%)",
-        WebkitBackdropFilter: "blur(24px) saturate(160%)",
-        boxShadow:
-          "0 24px 60px -20px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.04)",
-      }}
+      className="mt-4"
     >
-      {/* Заголовок */}
-      <header className="max-w-3xl">
-        <div
-          className="text-[11px] uppercase tracking-[0.18em] mb-3"
-          style={{ color: EMERALD }}
-        >
-          Интерактивная шкала
+      {/* Заголовок — editorial style */}
+      <header className="max-w-4xl border-t border-white/10 pt-8">
+        <div className="flex items-baseline gap-4 mb-6 text-[11px] uppercase tracking-[0.18em] text-text-tertiary font-mono">
+          <span>2026 — 2028</span>
+          <span className="text-white/20">/</span>
+          <span>Forecast Tracker</span>
         </div>
         <h2
           id="timeline-heading"
-          className="text-[28px] md:text-[36px] lg:text-[44px] font-semibold leading-[1.1] tracking-[-0.02em] text-text-primary"
+          className="text-[36px] md:text-[52px] lg:text-[64px] font-medium leading-[0.98] tracking-[-0.035em] text-text-primary text-balance"
         >
           Прогнозы 2026–2028 и их проверка
         </h2>
-        <p className="mt-4 text-[15px] md:text-[16px] text-text-secondary leading-[1.6]">
-          Интерактивная шкала на основе исследований «Тихая замена» и «ИИ в 2025».
+        <p className="mt-6 text-[15px] md:text-[17px] text-text-secondary leading-[1.55] max-w-[640px]">
+          Шкала на основе исследований «Тихая замена» и «ИИ в 2025». Каждый прогноз
+          привязан к кварталу и сопровождается уровнем уверенности.
         </p>
       </header>
 
-      {/* Фильтры */}
-      <div className="mt-8 flex flex-wrap gap-2">
-        {(Object.keys(THEME_LABELS) as ThemeKey[]).map((k) => {
-          const isActive = theme === k;
-          return (
-            <button
-              key={k}
-              onClick={() => setTheme(k)}
-              className="px-4 py-2 rounded-full text-[13px] transition-all duration-200 whitespace-nowrap border"
-              style={
-                isActive
-                  ? {
-                      background: `linear-gradient(135deg, ${EMERALD}22, ${BLUE}22)`,
-                      borderColor: `${EMERALD}66`,
-                      color: "#fff",
-                      boxShadow: `0 0 0 1px ${EMERALD}33, 0 8px 24px -12px ${EMERALD}55`,
-                    }
-                  : {
-                      background: "rgba(255,255,255,0.02)",
-                      borderColor: "rgba(255,255,255,0.08)",
-                      color: "rgba(240,240,245,0.65)",
-                    }
-              }
-            >
-              {THEME_LABELS[k]}
-            </button>
-          );
-        })}
+      {/* Фильтры — editorial tabs */}
+      <div className="mt-12 border-t border-white/10">
+        <div className="flex flex-wrap items-stretch -mb-px">
+          {(Object.keys(THEME_LABELS) as ThemeKey[]).map((k) => {
+            const isActive = theme === k;
+            return (
+              <button
+                key={k}
+                onClick={() => setTheme(k)}
+                className="relative px-5 py-4 text-[12px] uppercase tracking-[0.1em] font-medium transition-colors whitespace-nowrap"
+                style={{
+                  color: isActive ? "#fff" : "rgba(240,240,245,0.45)",
+                }}
+              >
+                {THEME_LABELS[k]}
+                {isActive && (
+                  <motion.span
+                    layoutId="theme-underline"
+                    className="absolute left-0 right-0 -top-px h-px bg-white"
+                    transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+                  />
+                )}
+              </button>
+            );
+          })}
+        </div>
       </div>
 
       {/* Timeline */}
@@ -412,26 +402,31 @@ export function PredictionsTimeline() {
       />
 
       {/* Сетка карточек */}
-      <div className="mt-10">
-        <div className="flex items-end justify-between mb-5 gap-4 flex-wrap">
-          <div className="text-[12px] uppercase tracking-[0.12em] text-text-tertiary">
-            {activeQuarterIdx !== null
-              ? `Прогнозы на ${QUARTERS[activeQuarterIdx]}`
-              : `Прогнозы (${filtered.length})`}
+      <div className="mt-16 border-t border-white/10 pt-8">
+        <div className="flex items-end justify-between mb-8 gap-4 flex-wrap">
+          <div className="flex items-baseline gap-3">
+            <span className="text-[11px] uppercase tracking-[0.18em] text-text-tertiary font-mono">
+              {activeQuarterIdx !== null
+                ? QUARTERS[activeQuarterIdx]
+                : "All forecasts"}
+            </span>
+            <span className="text-[11px] tabular-nums text-text-tertiary">
+              ({filteredOnQuarter.length})
+            </span>
           </div>
           {activeQuarterIdx !== null && (
             <button
               onClick={() => setActiveQuarterIdx(null)}
-              className="text-[12px] text-text-tertiary hover:text-text-primary transition-colors inline-flex items-center gap-1"
+              className="text-[11px] uppercase tracking-[0.12em] text-text-tertiary hover:text-text-primary transition-colors inline-flex items-center gap-1.5"
             >
-              <X size={12} /> Сбросить квартал
+              <X size={11} /> Сбросить
             </button>
           )}
         </div>
 
         <motion.div
           layout
-          className="grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-stretch"
+          className="grid gap-px bg-white/10 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 items-stretch border border-white/10"
         >
           <AnimatePresence mode="popLayout">
             {filteredOnQuarter.map((m) => (
@@ -528,94 +523,110 @@ function Timeline({
   const popoverIdx = activeIdx ?? hoverIdx;
 
   return (
-    <div className="mt-10">
-      {/* Легенда */}
-      <div className="flex items-center gap-5 mb-6 text-[11px] text-text-tertiary flex-wrap">
-        <LegendDot color={EMERALD} label="Уверенность ≥ 75%" />
-        <LegendDot color="#F59E0B" label="55–74%" />
-        <LegendDot color="#EF4444" label="< 55%" />
-        <span className="inline-flex items-center gap-2">
-          <span
-            className="inline-block w-6 h-1.5 rounded-full"
-            style={{
-              background: `linear-gradient(90deg, ${CRISIS_RED}00, ${CRISIS_RED}cc, ${CRISIS_RED}00)`,
-            }}
-          />
-          Зоны пиковых кризисов
-        </span>
-      </div>
-
+    <div className="mt-12">
+      {/* Шкала — editorial / Swiss style */}
       <div
         ref={trackRef}
-        className="relative pt-12 pb-16 px-2 select-none"
+        className="relative pt-16 pb-20 select-none"
       >
-        {/* Базовая линия */}
+        {/* Годовые маркеры — крупные служебные подписи */}
+        <div className="absolute inset-x-0 top-0 flex justify-between pointer-events-none">
+          {[2026, 2027, 2028].map((year, i) => (
+            <div
+              key={year}
+              className="absolute text-[11px] uppercase tracking-[0.22em] font-mono text-text-tertiary"
+              style={{
+                left: `${(i * 4 + 1.5) / (QUARTERS.length - 1) * 100}%`,
+                transform: "translateX(-50%)",
+                top: 0,
+              }}
+            >
+              {year}
+            </div>
+          ))}
+        </div>
+
+        {/* Основная горизонтальная линия — тонкая */}
         <div
-          className="absolute left-2 right-2 top-1/2 -translate-y-1/2 h-[2px] rounded-full"
-          style={{
-            background:
-              "linear-gradient(90deg, rgba(255,255,255,0.04), rgba(255,255,255,0.18) 50%, rgba(255,255,255,0.04))",
-          }}
+          className="absolute left-0 right-0 top-1/2 -translate-y-1/2 h-px bg-white/15"
         />
 
-        {/* Кризисные зоны */}
+        {/* Тики между кварталами (короткие штрихи вверх/вниз) */}
+        {QUARTERS.map((_, i) => {
+          const left = (i / (QUARTERS.length - 1)) * 100;
+          const isYearStart = i % 4 === 0;
+          return (
+            <div
+              key={`tick-${i}`}
+              className="absolute top-1/2 w-px bg-white/15 pointer-events-none"
+              style={{
+                left: `${left}%`,
+                height: isYearStart ? 14 : 6,
+                transform: "translate(-0.5px, -50%)",
+                opacity: isYearStart ? 0.4 : 0.2,
+              }}
+            />
+          );
+        })}
+
+        {/* Кризисные зоны — тонкие, editorial */}
         {CRISIS_RANGES.map(([a, b], i) => {
           const left = (a / (QUARTERS.length - 1)) * 100;
           const width = ((b - a) / (QUARTERS.length - 1)) * 100;
           return (
-            <div key={i} aria-hidden>
-              {/* Внешнее насыщенное свечение */}
+            <div key={i} aria-hidden className="pointer-events-none">
+              {/* Diagonal-stripe полоса под линией */}
               <div
-                className="absolute top-1/2 -translate-y-1/2 h-20 rounded-full pointer-events-none"
+                className="absolute top-1/2 h-[3px]"
                 style={{
-                  left: `calc(${left}% + 8px)`,
-                  width: `calc(${width}%)`,
-                  background: `radial-gradient(ellipse at center, #DC262655 0%, #B91C1C33 35%, transparent 75%)`,
-                  filter: "blur(12px)",
+                  left: `${left}%`,
+                  width: `${width}%`,
+                  background: CRISIS_RED,
+                  transform: "translateY(-50%)",
+                  opacity: 0.85,
                 }}
               />
-              {/* Чёткая полоса */}
+              {/* Скобка-индикатор сверху */}
               <div
-                className="absolute top-1/2 -translate-y-1/2 h-9 rounded-full pointer-events-none"
+                className="absolute"
                 style={{
-                  left: `calc(${left}% + 8px)`,
-                  width: `calc(${width}%)`,
-                  background: `linear-gradient(90deg, transparent 0%, #DC262633 15%, #EF444466 50%, #DC262633 85%, transparent 100%)`,
-                  border: `1px solid #DC262633`,
-                  boxShadow: `inset 0 0 24px #B91C1C44`,
-                }}
-              />
-              {/* Метка */}
-              <div
-                className="absolute pointer-events-none text-[9px] uppercase tracking-[0.18em] font-medium whitespace-nowrap"
-                style={{
-                  left: `calc(${left + width / 2}% + 8px)`,
-                  transform: "translate(-50%, 0)",
-                  top: "calc(50% - 38px)",
-                  color: "#FCA5A5",
-                  textShadow: "0 0 12px #DC262688",
+                  left: `${left}%`,
+                  width: `${width}%`,
+                  top: "calc(50% - 36px)",
                 }}
               >
-                Зона кризиса
+                <div className="relative h-3">
+                  <div
+                    className="absolute left-0 top-0 w-px h-full"
+                    style={{ background: CRISIS_RED }}
+                  />
+                  <div
+                    className="absolute right-0 top-0 w-px h-full"
+                    style={{ background: CRISIS_RED }}
+                  />
+                  <div
+                    className="absolute left-0 right-0 bottom-0 h-px"
+                    style={{ background: CRISIS_RED }}
+                  />
+                </div>
+                <div
+                  className="text-[9px] uppercase tracking-[0.22em] font-mono text-center mt-1"
+                  style={{ color: "#FCA5A5" }}
+                >
+                  Crisis window
+                </div>
               </div>
             </div>
           );
         })}
 
         {/* Точки */}
-        <div className="relative flex items-center justify-between h-8">
+        <div className="relative flex items-center justify-between h-10">
           {QUARTERS.map((q, i) => {
             const isActive = activeIdx === i;
             const isHover = hoverIdx === i;
-            const crisis = isCrisisIndex(i);
             const count = counts[i];
             const has = count > 0;
-            const dotColor = isActive
-              ? EMERALD
-              : has
-                ? BLUE
-                : "rgba(255,255,255,0.2)";
-            const size = isActive ? 18 : isHover && has ? 16 : has ? 13 : 7;
 
             return (
               <button
@@ -627,58 +638,63 @@ function Timeline({
                 onFocus={() => setHoverIdx(i)}
                 onBlur={() => setHoverIdx(null)}
                 className="relative flex flex-col items-center justify-center group focus:outline-none"
-                style={{ width: 28, height: 28 }}
+                style={{ width: 32, height: 32 }}
                 aria-label={`${q}: ${count} прогноз(ов)`}
               >
-                {/* Pulse при hover/active */}
-                {(isActive || (isHover && has)) && (
+                {/* Точка — концентрические круги, editorial */}
+                <span className="relative flex items-center justify-center">
+                  {/* Внешнее кольцо при active/hover */}
                   <motion.span
-                    className="absolute rounded-full pointer-events-none"
-                    initial={{ opacity: 0.6, scale: 1 }}
-                    animate={{ opacity: 0, scale: 2.4 }}
-                    transition={{ duration: 1.2, repeat: Infinity, ease: "easeOut" }}
-                    style={{
-                      width: size,
-                      height: size,
-                      background: dotColor,
+                    className="absolute rounded-full border"
+                    animate={{
+                      width: isActive ? 22 : isHover && has ? 18 : 0,
+                      height: isActive ? 22 : isHover && has ? 18 : 0,
+                      opacity: isActive || (isHover && has) ? 1 : 0,
+                      borderColor: "rgba(255,255,255,0.5)",
                     }}
+                    transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
                   />
-                )}
-                <motion.span
-                  layout
-                  className="rounded-full relative"
-                  animate={{
-                    width: size,
-                    height: size,
-                    backgroundColor: dotColor,
-                    boxShadow: isActive || isHover
-                      ? `0 0 0 5px ${dotColor}22, 0 0 0 1px ${dotColor}, 0 0 24px ${dotColor}cc`
-                      : has
-                        ? `0 0 0 1px ${dotColor}88, 0 0 12px ${dotColor}55`
-                        : "none",
-                  }}
-                  transition={{ duration: 0.18, ease: [0.22, 1, 0.36, 1] }}
-                />
-                {/* Подпись квартала */}
+                  {/* Сама точка */}
+                  <motion.span
+                    className="rounded-full"
+                    animate={{
+                      width: has ? (isActive ? 8 : 6) : 4,
+                      height: has ? (isActive ? 8 : 6) : 4,
+                      backgroundColor: has
+                        ? isActive
+                          ? "#ffffff"
+                          : "rgba(255,255,255,0.85)"
+                        : "rgba(255,255,255,0.25)",
+                    }}
+                    transition={{ duration: 0.2, ease: [0.22, 1, 0.36, 1] }}
+                  />
+                </span>
+
+                {/* Подпись квартала под точкой — mono */}
                 <span
-                  className="absolute top-full mt-3 text-[10px] tabular-nums whitespace-nowrap transition-colors"
+                  className="absolute top-full mt-4 text-[10px] tabular-nums whitespace-nowrap font-mono uppercase tracking-[0.1em] transition-colors"
                   style={{
                     color: isActive
                       ? "#fff"
-                      : crisis
-                        ? "#FCA5A5"
-                        : "rgba(240,240,245,0.45)",
+                      : isHover && has
+                        ? "rgba(255,255,255,0.85)"
+                        : "rgba(240,240,245,0.35)",
                   }}
                 >
-                  {q}
+                  {q.split(" ")[0]}
                 </span>
-                {/* Счётчик */}
+
+                {/* Счётчик над точкой */}
                 {has && (
                   <span
-                    className="absolute -top-5 text-[10px] font-medium tabular-nums"
-                    style={{ color: isActive ? EMERALD : "rgba(255,255,255,0.5)" }}
+                    className="absolute bottom-full mb-3 text-[10px] font-medium tabular-nums font-mono"
+                    style={{
+                      color: isActive
+                        ? "#fff"
+                        : "rgba(255,255,255,0.55)",
+                    }}
                   >
-                    {count}
+                    {String(count).padStart(2, "0")}
                   </span>
                 )}
               </button>
@@ -698,79 +714,15 @@ function Timeline({
         </AnimatePresence>
       </div>
 
-      {/* Слайдер */}
-      <div className="mt-2 px-2">
-        <input
-          type="range"
-          min={0}
-          max={QUARTERS.length - 1}
-          step={1}
-          value={activeIdx ?? 0}
-          onChange={(e) => onSelect(Number(e.target.value))}
-          aria-label="Перетащите ползунок по шкале кварталов"
-          className="timeline-range w-full"
-          style={
-            {
-              "--track-fill": EMERALD,
-            } as React.CSSProperties
-          }
-        />
-        <style>{`
-          .timeline-range {
-            -webkit-appearance: none;
-            appearance: none;
-            background: transparent;
-            height: 24px;
-          }
-          .timeline-range::-webkit-slider-runnable-track {
-            height: 2px;
-            background: rgba(255,255,255,0.08);
-            border-radius: 2px;
-          }
-          .timeline-range::-moz-range-track {
-            height: 2px;
-            background: rgba(255,255,255,0.08);
-            border-radius: 2px;
-          }
-          .timeline-range::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            appearance: none;
-            width: 14px;
-            height: 14px;
-            border-radius: 999px;
-            background: ${EMERALD};
-            margin-top: -6px;
-            box-shadow: 0 0 0 4px ${EMERALD}22, 0 0 12px ${EMERALD}88;
-            cursor: pointer;
-            border: none;
-          }
-          .timeline-range::-moz-range-thumb {
-            width: 14px;
-            height: 14px;
-            border-radius: 999px;
-            background: ${EMERALD};
-            box-shadow: 0 0 0 4px ${EMERALD}22, 0 0 12px ${EMERALD}88;
-            cursor: pointer;
-            border: none;
-          }
-          .timeline-range:focus { outline: none; }
-        `}</style>
+      {/* Минималистичная подсказка */}
+      <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.18em] text-text-tertiary font-mono mt-2">
+        <span>← наведите или кликните на точку</span>
+        <span>{QUARTERS.length} кварталов</span>
       </div>
     </div>
   );
 }
 
-function LegendDot({ color, label }: { color: string; label: string }) {
-  return (
-    <span className="inline-flex items-center gap-2">
-      <span
-        className="inline-block w-2 h-2 rounded-full"
-        style={{ background: color, boxShadow: `0 0 8px ${color}88` }}
-      />
-      {label}
-    </span>
-  );
-}
 
 // ============================================================================
 // Поповер над активной/наведённой точкой
@@ -802,46 +754,41 @@ function TimelinePopover({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 6 }}
       transition={{ duration: 0.18 }}
-      className={`absolute z-20 top-[calc(50%+28px)] ${align} w-[min(360px,calc(100vw-48px))]`}
+      className={`absolute z-20 top-[calc(50%+44px)] ${align} w-[min(360px,calc(100vw-48px))]`}
       style={positionStyle}
     >
       <div
-        className="rounded-[14px] p-4"
+        className="p-5"
         style={{
-          background: "rgba(15,17,21,0.95)",
-          border: `1px solid ${EMERALD}33`,
-          backdropFilter: "blur(24px)",
-          WebkitBackdropFilter: "blur(24px)",
-          boxShadow: `0 20px 50px -20px rgba(0,0,0,0.7), 0 0 0 1px ${EMERALD}11`,
+          background: "#0a0a0f",
+          border: "1px solid rgba(255,255,255,0.12)",
+          boxShadow: "0 30px 60px -20px rgba(0,0,0,0.8)",
         }}
       >
-        <div
-          className="text-[10px] uppercase tracking-[0.14em] mb-2"
-          style={{ color: EMERALD }}
-        >
-          {QUARTERS[idx]} · {items.length}{" "}
-          {items.length === 1 ? "прогноз" : "прогнозов"}
+        <div className="flex items-baseline justify-between mb-3 pb-3 border-b border-white/10">
+          <div className="text-[10px] uppercase tracking-[0.18em] font-mono text-white">
+            {QUARTERS[idx]}
+          </div>
+          <div className="text-[10px] tabular-nums font-mono text-text-tertiary">
+            {String(items.length).padStart(2, "0")} {items.length === 1 ? "прогноз" : "прогнозов"}
+          </div>
         </div>
-        <ul className="space-y-2">
-          {items.slice(0, 3).map((m) => (
-            <li key={m.curated.id}>
+        <ul className="space-y-3">
+          {items.slice(0, 3).map((m, i) => (
+            <li key={m.curated.id} className="flex items-start gap-3">
+              <span className="text-[10px] tabular-nums text-text-tertiary font-mono mt-[3px] shrink-0">
+                {String(i + 1).padStart(2, "0")}
+              </span>
               <button
                 onClick={() => onOpen(m.curated.id)}
-                className="text-left w-full text-[13px] leading-[1.4] text-text-primary hover:text-white transition-colors"
+                className="text-left flex-1 text-[13px] leading-[1.4] text-text-secondary hover:text-white transition-colors"
               >
-                <span
-                  className="inline-block w-1.5 h-1.5 rounded-full mr-2 align-middle"
-                  style={{
-                    background: confidenceColor(m.curated.confidence),
-                    boxShadow: `0 0 6px ${confidenceColor(m.curated.confidence)}88`,
-                  }}
-                />
                 {m.curated.shortTitle}
               </button>
             </li>
           ))}
           {items.length > 3 && (
-            <li className="text-[11px] text-text-tertiary pl-3.5">
+            <li className="text-[10px] uppercase tracking-[0.12em] text-text-tertiary font-mono pl-7">
               +{items.length - 3} ещё
             </li>
           )}
@@ -865,62 +812,55 @@ function PredictionMiniCard({
   const cColor = confidenceColor(item.confidence);
   const [hover, setHover] = useState(false);
   return (
-    <motion.div
-      onHoverStart={() => setHover(true)}
-      onHoverEnd={() => setHover(false)}
-      whileHover={{ y: -4 }}
-      transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-      className="h-full min-h-[240px] rounded-[16px] p-5 flex flex-col cursor-pointer"
+    <div
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
       onClick={onOpen}
+      className="group relative h-full min-h-[260px] p-6 flex flex-col cursor-pointer transition-colors duration-300"
       style={{
-        background: hover
-          ? "rgba(255,255,255,0.045)"
-          : "rgba(255,255,255,0.025)",
-        border: hover
-          ? `1px solid ${EMERALD}55`
-          : "1px solid rgba(255,255,255,0.06)",
-        backdropFilter: "blur(20px) saturate(160%)",
-        WebkitBackdropFilter: "blur(20px) saturate(160%)",
-        boxShadow: hover
-          ? `0 18px 40px -16px rgba(0,0,0,0.55), 0 0 0 1px ${EMERALD}22, 0 0 30px -6px ${EMERALD}33`
-          : "0 6px 16px -10px rgba(0,0,0,0.4)",
-        transition: "background 0.25s, border-color 0.25s, box-shadow 0.25s",
+        background: hover ? "#101015" : "#0a0a0f",
       }}
     >
-      <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.12em]">
-        <span style={{ color: BLUE }}>{item.horizon}</span>
-        <span
-          className="inline-flex items-center gap-1.5"
-          style={{ color: cColor }}
-        >
-          <span
-            className="inline-block w-1.5 h-1.5 rounded-full"
-            style={{ background: cColor, boxShadow: `0 0 6px ${cColor}88` }}
-          />
-          {item.confidence}%
+      {/* Confidence bar — тонкая полоса сверху */}
+      <div
+        className="absolute top-0 left-0 h-px transition-all duration-500"
+        style={{
+          width: hover ? "100%" : `${item.confidence}%`,
+          background: cColor,
+        }}
+      />
+
+      {/* Метаданные — mono, разнесены по углам */}
+      <div className="flex items-baseline justify-between text-[10px] font-mono uppercase tracking-[0.14em]">
+        <span className="text-text-tertiary">{item.horizon}</span>
+        <span className="tabular-nums text-text-secondary">
+          {item.confidence}<span className="text-text-tertiary">/100</span>
         </span>
       </div>
-      <h3 className="mt-3 text-[15px] font-medium leading-[1.35] tracking-[-0.01em] text-text-primary [text-wrap:balance]">
+
+      {/* Заголовок — крупная типографика */}
+      <h3 className="mt-6 text-[18px] font-medium leading-[1.2] tracking-[-0.015em] text-text-primary text-balance">
         {item.shortTitle}
       </h3>
-      <p className="mt-2 text-[13px] text-text-secondary leading-[1.55] flex-1">
+
+      {/* Описание */}
+      <p className="mt-3 text-[13px] text-text-secondary leading-[1.6] flex-1">
         {item.shortDescription}
       </p>
-      <div className="mt-4 pt-4 border-t border-white/5 flex items-center justify-between gap-3">
-        <span className="text-[11px] text-text-tertiary truncate">
+
+      {/* Footer — источник + arrow */}
+      <div className="mt-6 pt-5 border-t border-white/8 flex items-center justify-between gap-3">
+        <span className="text-[10px] uppercase tracking-[0.12em] font-mono text-text-tertiary truncate">
           {item.sourceLabel}
         </span>
         <span
-          className="text-[12px] inline-flex items-center gap-1 transition-transform whitespace-nowrap"
-          style={{
-            color: EMERALD,
-            transform: hover ? "translateX(2px)" : "translateX(0)",
-          }}
+          className="text-[18px] leading-none text-text-tertiary transition-all duration-300 group-hover:text-white group-hover:translate-x-1"
+          aria-hidden
         >
-          Подробнее →
+          →
         </span>
       </div>
-    </motion.div>
+    </div>
   );
 }
 
