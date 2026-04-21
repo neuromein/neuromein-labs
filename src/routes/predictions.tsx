@@ -34,9 +34,12 @@ function PredictionsPage() {
       <div className="max-w-[1320px] mx-auto pb-24 pt-4">
         <PredictionsValidationBanner />
 
-        {/* Summary stats — moved above the interactive timeline */}
+        {/* Main content — interactive timeline + filters + cards */}
+        <PredictionsTimeline />
+
+        {/* Summary stats — under the interactive timeline */}
         <Reveal>
-          <div className="grid grid-cols-2 md:grid-cols-5 gap-px rounded-[24px] overflow-hidden border-[0.5px] border-border bg-border mb-3">
+          <div className="mt-10 grid grid-cols-2 md:grid-cols-5 gap-px rounded-[24px] overflow-hidden border-[0.5px] border-border bg-border">
             <StatTile label="Всего" value={stats.total} />
             <StatTile label="Сбылось" value={stats.byStatus.fulfilled} />
             <StatTile label="Частично" value={stats.byStatus.partial} />
@@ -47,9 +50,6 @@ function PredictionsPage() {
             />
           </div>
         </Reveal>
-
-        {/* Main content — interactive timeline + filters + cards */}
-        <PredictionsTimeline />
       </div>
     </Layout>
   );
