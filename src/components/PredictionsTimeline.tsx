@@ -603,11 +603,11 @@ function ArcTimeline({
   });
 
   return (
-    <div className="mt-14">
+    <div className="mt-10 md:mt-14">
       {/* Контейнер-стекло */}
       <div
         ref={wrapperRef}
-        className="relative rounded-[28px] px-4 md:px-8 pt-5 pb-6"
+        className="relative rounded-[24px] sm:rounded-[28px] px-3 sm:px-4 md:px-8 pt-4 sm:pt-5 pb-5 sm:pb-6"
         style={{
           background:
             "linear-gradient(180deg, rgba(28,28,36,0.55) 0%, rgba(14,14,20,0.55) 100%)",
@@ -626,7 +626,7 @@ function ArcTimeline({
       >
         {/* Подсказка сверху по центру */}
         <div className="text-[12px] text-text-tertiary text-center mb-2">
-          Наведите или кликните на точку
+          {isMobile ? "Нажмите на квартал" : "Наведите или кликните на точку"}
         </div>
 
         {/* Подсветка-aurora за дугой */}
@@ -646,6 +646,17 @@ function ArcTimeline({
           }}
         />
 
+        {/* Мобильный список кварталов */}
+        {isMobile ? (
+          <MobileQuarterList
+            counts={counts}
+            activeIdx={activeIdx}
+            onSelect={onSelect}
+            getItemsAt={getItemsAt}
+            onOpen={onOpen}
+          />
+        ) : (
+          <>
         {/* SVG дуга */}
         <svg
           width="100%"
