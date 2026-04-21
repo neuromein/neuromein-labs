@@ -888,6 +888,8 @@ function ArcTimeline({
             />
           )}
         </AnimatePresence>
+          </>
+        )}
       </div>
 
     </div>
