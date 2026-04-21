@@ -829,12 +829,12 @@ function ArcTimeline({
             />
           )}
         </AnimatePresence>
+      </div>
 
-        {/* Подсказка снизу */}
-        <div className="flex items-center justify-between text-[12px] text-text-tertiary mt-2 px-2">
-          <span>Наведите или кликните на точку</span>
-          <span className="tabular-nums">{QUARTERS.length} кварталов</span>
-        </div>
+      {/* Подсказка снизу — теперь вне контейнера дуги */}
+      <div className="flex items-center justify-between text-[12px] text-text-tertiary mt-4 px-2">
+        <span>Наведите или кликните на точку</span>
+        <span className="tabular-nums">{QUARTERS.length} кварталов</span>
       </div>
     </div>
   );
