@@ -863,16 +863,28 @@ function PredictionMiniCard({
   onOpen: () => void;
 }) {
   const cColor = confidenceColor(item.confidence);
+  const [hover, setHover] = useState(false);
   return (
     <motion.div
-      whileHover={{ y: -3 }}
+      onHoverStart={() => setHover(true)}
+      onHoverEnd={() => setHover(false)}
+      whileHover={{ y: -4 }}
       transition={{ duration: 0.25, ease: [0.22, 1, 0.36, 1] }}
-      className="h-full rounded-[16px] p-5 flex flex-col"
+      className="h-full min-h-[240px] rounded-[16px] p-5 flex flex-col cursor-pointer"
+      onClick={onOpen}
       style={{
-        background: "rgba(255,255,255,0.025)",
-        border: "1px solid rgba(255,255,255,0.06)",
-        backdropFilter: "blur(16px)",
-        WebkitBackdropFilter: "blur(16px)",
+        background: hover
+          ? "rgba(255,255,255,0.045)"
+          : "rgba(255,255,255,0.025)",
+        border: hover
+          ? `1px solid ${EMERALD}55`
+          : "1px solid rgba(255,255,255,0.06)",
+        backdropFilter: "blur(20px) saturate(160%)",
+        WebkitBackdropFilter: "blur(20px) saturate(160%)",
+        boxShadow: hover
+          ? `0 18px 40px -16px rgba(0,0,0,0.55), 0 0 0 1px ${EMERALD}22, 0 0 30px -6px ${EMERALD}33`
+          : "0 6px 16px -10px rgba(0,0,0,0.4)",
+        transition: "background 0.25s, border-color 0.25s, box-shadow 0.25s",
       }}
     >
       <div className="flex items-center justify-between text-[10px] uppercase tracking-[0.12em]">
@@ -888,7 +900,7 @@ function PredictionMiniCard({
           {item.confidence}%
         </span>
       </div>
-      <h3 className="mt-3 text-[15px] font-medium leading-[1.35] tracking-[-0.01em] text-text-primary">
+      <h3 className="mt-3 text-[15px] font-medium leading-[1.35] tracking-[-0.01em] text-text-primary [text-wrap:balance]">
         {item.shortTitle}
       </h3>
       <p className="mt-2 text-[13px] text-text-secondary leading-[1.55] flex-1">
@@ -898,13 +910,15 @@ function PredictionMiniCard({
         <span className="text-[11px] text-text-tertiary truncate">
           {item.sourceLabel}
         </span>
-        <button
-          onClick={onOpen}
-          className="text-[12px] inline-flex items-center gap-1 transition-colors"
-          style={{ color: EMERALD }}
+        <span
+          className="text-[12px] inline-flex items-center gap-1 transition-transform whitespace-nowrap"
+          style={{
+            color: EMERALD,
+            transform: hover ? "translateX(2px)" : "translateX(0)",
+          }}
         >
           Подробнее →
-        </button>
+        </span>
       </div>
     </motion.div>
   );
