@@ -36,7 +36,7 @@ function PredictionsPage() {
 
         {/* Summary stats — under the interactive timeline */}
         <Reveal>
-          <div className="mt-10 grid grid-cols-2 md:grid-cols-6 gap-px rounded-[24px] overflow-hidden border-[0.5px] border-border bg-border">
+          <div className="mt-8 sm:mt-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-px rounded-[20px] sm:rounded-[24px] overflow-hidden border-[0.5px] border-border bg-border">
             <StatTile label="Всего" value={stats.total} />
             <StatTile label="Сбылось" value={stats.byStatus.fulfilled} />
             <StatTile label="Частично" value={stats.byStatus.partial} />
