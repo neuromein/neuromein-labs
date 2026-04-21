@@ -420,7 +420,9 @@ export function PredictionsTimeline() {
                 : "Все прогнозы"}
             </h3>
             <span className="text-[13px] tabular-nums text-text-tertiary">
-              {filteredOnQuarter.length}
+              {activeQuarterIdx === null && theme === "all"
+                ? predictions.length
+                : filteredOnQuarter.length}
             </span>
           </div>
           {activeQuarterIdx !== null && (
