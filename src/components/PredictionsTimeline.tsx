@@ -657,14 +657,14 @@ function ArcTimeline({
           />
         ) : (
           <div className="relative">
-        {/* SVG дуга */}
-        <svg
-          width="100%"
-          height={totalH}
-          viewBox={`0 0 ${W} ${totalH}`}
-          className="relative block"
-          style={{ overflow: "visible" }}
-        >
+            {/* SVG дуга */}
+            <svg
+              width="100%"
+              height={totalH}
+              viewBox={`0 0 ${W} ${totalH}`}
+              className="relative block"
+              style={{ overflow: "visible" }}
+            >
           <defs>
             <linearGradient id="arcGradient" x1="0%" y1="0%" x2="100%" y2="0%">
               <stop offset="0%" stopColor={INDIGO} stopOpacity="0.9" />
