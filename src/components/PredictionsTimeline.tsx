@@ -77,6 +77,7 @@ interface CuratedItem {
   confidence: number;
   sourceLabel: string;
   pdfUrl?: string;
+  researchSlug?: string;
   quarter: Quarter;
 }
 
