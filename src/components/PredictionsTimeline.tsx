@@ -754,46 +754,41 @@ function TimelinePopover({
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 6 }}
       transition={{ duration: 0.18 }}
-      className={`absolute z-20 top-[calc(50%+28px)] ${align} w-[min(360px,calc(100vw-48px))]`}
+      className={`absolute z-20 top-[calc(50%+44px)] ${align} w-[min(360px,calc(100vw-48px))]`}
       style={positionStyle}
     >
       <div
-        className="rounded-[14px] p-4"
+        className="p-5"
         style={{
-          background: "rgba(15,17,21,0.95)",
-          border: `1px solid ${EMERALD}33`,
-          backdropFilter: "blur(24px)",
-          WebkitBackdropFilter: "blur(24px)",
-          boxShadow: `0 20px 50px -20px rgba(0,0,0,0.7), 0 0 0 1px ${EMERALD}11`,
+          background: "#0a0a0f",
+          border: "1px solid rgba(255,255,255,0.12)",
+          boxShadow: "0 30px 60px -20px rgba(0,0,0,0.8)",
         }}
       >
-        <div
-          className="text-[10px] uppercase tracking-[0.14em] mb-2"
-          style={{ color: EMERALD }}
-        >
-          {QUARTERS[idx]} · {items.length}{" "}
-          {items.length === 1 ? "прогноз" : "прогнозов"}
+        <div className="flex items-baseline justify-between mb-3 pb-3 border-b border-white/10">
+          <div className="text-[10px] uppercase tracking-[0.18em] font-mono text-white">
+            {QUARTERS[idx]}
+          </div>
+          <div className="text-[10px] tabular-nums font-mono text-text-tertiary">
+            {String(items.length).padStart(2, "0")} {items.length === 1 ? "прогноз" : "прогнозов"}
+          </div>
         </div>
-        <ul className="space-y-2">
-          {items.slice(0, 3).map((m) => (
-            <li key={m.curated.id}>
+        <ul className="space-y-3">
+          {items.slice(0, 3).map((m, i) => (
+            <li key={m.curated.id} className="flex items-start gap-3">
+              <span className="text-[10px] tabular-nums text-text-tertiary font-mono mt-[3px] shrink-0">
+                {String(i + 1).padStart(2, "0")}
+              </span>
               <button
                 onClick={() => onOpen(m.curated.id)}
-                className="text-left w-full text-[13px] leading-[1.4] text-text-primary hover:text-white transition-colors"
+                className="text-left flex-1 text-[13px] leading-[1.4] text-text-secondary hover:text-white transition-colors"
               >
-                <span
-                  className="inline-block w-1.5 h-1.5 rounded-full mr-2 align-middle"
-                  style={{
-                    background: confidenceColor(m.curated.confidence),
-                    boxShadow: `0 0 6px ${confidenceColor(m.curated.confidence)}88`,
-                  }}
-                />
                 {m.curated.shortTitle}
               </button>
             </li>
           ))}
           {items.length > 3 && (
-            <li className="text-[11px] text-text-tertiary pl-3.5">
+            <li className="text-[10px] uppercase tracking-[0.12em] text-text-tertiary font-mono pl-7">
               +{items.length - 3} ещё
             </li>
           )}
