@@ -742,6 +742,7 @@ function ArcTimeline({
             return (
               <g
                 key={i}
+                data-arc-dot=""
                 style={{ cursor: "pointer" }}
                 onClick={() => onSelect(i)}
                 onMouseEnter={() => setHoverIdx(i)}
@@ -860,6 +861,7 @@ function ArcTimeline({
         <AnimatePresence>
           {popoverIdx !== null && counts[popoverIdx] > 0 && (
             <ArcPopover
+              popoverRef={popoverRef}
               idx={popoverIdx}
               x={dots[popoverIdx].x}
               y={dots[popoverIdx].y}
@@ -880,6 +882,7 @@ function ArcTimeline({
 // ============================================================================
 
 function ArcPopover({
+  popoverRef,
   idx,
   x,
   y,
@@ -887,6 +890,7 @@ function ArcPopover({
   items,
   onOpen,
 }: {
+  popoverRef?: React.RefObject<HTMLDivElement | null>;
   idx: number;
   x: number;
   y: number;
@@ -903,6 +907,7 @@ function ArcPopover({
 
   return (
     <motion.div
+      ref={popoverRef}
       initial={{ opacity: 0, y: 6, scale: 0.96 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: 6, scale: 0.96 }}
