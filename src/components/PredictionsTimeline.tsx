@@ -559,11 +559,14 @@ function ArcTimeline({
   const PADDING_X = 90;
   const W = Math.max(width, 360);
   const arcWidth = W - PADDING_X * 2;
-  const ARC_HEIGHT = Math.min(110, arcWidth * 0.13); // более плоская дуга
+  const ARC_HEIGHT = Math.min(140, arcWidth * 0.16); // выразительная дуга
   const radius = (Math.pow(arcWidth / 2, 2) + Math.pow(ARC_HEIGHT, 2)) / (2 * ARC_HEIGHT);
   const cx = W / 2;
-  const cy = ARC_HEIGHT + radius; // центр окружности ниже дуги
-  const totalH = ARC_HEIGHT + 90; // место для подписей
+  // Сдвигаем всю дугу вниз на TOP_OFFSET, чтобы апекс не упирался в верх контейнера
+  const TOP_OFFSET = 28;
+  const cy = TOP_OFFSET + ARC_HEIGHT + radius; // центр окружности ниже дуги
+  const LABEL_SPACE = 70; // место для подписей под точками
+  const totalH = TOP_OFFSET + ARC_HEIGHT + LABEL_SPACE;
 
   const startAngle = Math.atan2(-(radius - ARC_HEIGHT), -arcWidth / 2);
   const endAngle = Math.atan2(-(radius - ARC_HEIGHT), arcWidth / 2);
