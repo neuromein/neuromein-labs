@@ -561,13 +561,13 @@ function ArcTimeline({
   const PADDING_X = 90;
   const W = Math.max(width, 360);
   const arcWidth = W - PADDING_X * 2;
-  const ARC_HEIGHT = Math.min(140, arcWidth * 0.16); // выразительная дуга
+  const ARC_HEIGHT = Math.min(112, arcWidth * 0.125); // более собранная дуга выше по центру
   const radius = (Math.pow(arcWidth / 2, 2) + Math.pow(ARC_HEIGHT, 2)) / (2 * ARC_HEIGHT);
   const cx = W / 2;
-  // Сдвигаем всю дугу вниз на TOP_OFFSET, чтобы апекс не упирался в верх контейнера
-  const TOP_OFFSET = 28;
+  // Небольшой верхний отступ, чтобы дуга визуально сидела по центру блока
+  const TOP_OFFSET = 12;
   const cy = TOP_OFFSET + ARC_HEIGHT + radius; // центр окружности ниже дуги
-  const LABEL_SPACE = 70; // место для подписей под точками
+  const LABEL_SPACE = 56; // компактнее, чтобы блок не тянул дугу вниз
   const totalH = TOP_OFFSET + ARC_HEIGHT + LABEL_SPACE;
 
   const startAngle = Math.atan2(-(radius - ARC_HEIGHT), -arcWidth / 2);
@@ -606,7 +606,7 @@ function ArcTimeline({
       {/* Контейнер-стекло */}
       <div
         ref={wrapperRef}
-        className="relative rounded-[28px] px-4 md:px-8 pt-6 pb-8"
+        className="relative rounded-[28px] px-4 md:px-8 pt-5 pb-6"
         style={{
           background:
             "linear-gradient(180deg, rgba(28,28,36,0.55) 0%, rgba(14,14,20,0.55) 100%)",
@@ -811,7 +811,7 @@ function ArcTimeline({
                 {/* Подпись квартала под точкой, повёрнутая по углу касательной */}
                 <text
                   x={p.x}
-                  y={p.y + 28}
+                    y={p.y + 24}
                   fill={
                     isActive
                       ? "#fff"
@@ -828,7 +828,7 @@ function ArcTimeline({
                 </text>
                 <text
                   x={p.x}
-                  y={p.y + 44}
+                    y={p.y + 38}
                   fill="rgba(240,240,245,0.3)"
                   fontSize="10"
                   fontWeight="400"
