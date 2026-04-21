@@ -77,6 +77,7 @@ interface CuratedItem {
   confidence: number;
   sourceLabel: string;
   pdfUrl?: string;
+  researchSlug?: string;
   quarter: Quarter;
 }
 
@@ -91,8 +92,9 @@ const CURATED: CuratedItem[] = [
       "Китайские сверхэффективные модели на Ascend снизят стоимость агентов и робототехники на 50–80%.",
     horizon: "Q1–Q2 2026",
     confidence: 80,
-    sourceLabel: "ИИ в 2025, §2.1",
+    sourceLabel: "ИИ в 2025 и прогнозы на 2026, гл. 2.1",
     pdfUrl: PDF_AI2025,
+    researchSlug: "ai-2025-forecast",
     quarter: "Q1 2026",
   },
   {
@@ -102,8 +104,9 @@ const CURATED: CuratedItem[] = [
       "Вендоры начнут продавать единицы готового труда — оплата за результат, а не за лицензию.",
     horizon: "Конец 2026",
     confidence: 70,
-    sourceLabel: "ИИ в 2025, §2.2",
+    sourceLabel: "ИИ в 2025 и прогнозы на 2026, гл. 2.2",
     pdfUrl: PDF_AI2025,
+    researchSlug: "ai-2025-forecast",
     quarter: "Q4 2026",
   },
   {
@@ -113,8 +116,9 @@ const CURATED: CuratedItem[] = [
       "ИИ заменяет задачи, через которые молодые специалисты входили в профессию — цепочка опыта рвётся.",
     horizon: "В течение 2026",
     confidence: 85,
-    sourceLabel: "ИИ в 2025, §2.3",
+    sourceLabel: "ИИ в 2025 и прогнозы на 2026, гл. 2.3",
     pdfUrl: PDF_AI2025,
+    researchSlug: "ai-2025-forecast",
     quarter: "Q2 2026",
   },
   {
@@ -124,8 +128,9 @@ const CURATED: CuratedItem[] = [
       "Аватары проходят тест Тьюринга в видео; живое общение становится премиальным сервисом.",
     horizon: "В течение 2026",
     confidence: 65,
-    sourceLabel: "ИИ в 2025, §2.3",
+    sourceLabel: "ИИ в 2025 и прогнозы на 2026, гл. 2.3",
     pdfUrl: PDF_AI2025,
+    researchSlug: "ai-2025-forecast",
     quarter: "Q3 2026",
   },
   {
@@ -135,8 +140,9 @@ const CURATED: CuratedItem[] = [
       "Облачно-бортовая архитектура VLA, 5-й уровень автономности, заводы Tesla и BMW как полигоны.",
     horizon: "Конец 2026",
     confidence: 70,
-    sourceLabel: "ИИ в 2025, §2.4",
+    sourceLabel: "ИИ в 2025 и прогнозы на 2026, гл. 2.4",
     pdfUrl: PDF_AI2025,
+    researchSlug: "ai-2025-forecast",
     quarter: "Q4 2026",
   },
   {
@@ -146,8 +152,9 @@ const CURATED: CuratedItem[] = [
       "Беспилотные системы достигают операционной зрелости; первые удары по гиперскейл-облакам.",
     horizon: "В течение 2026",
     confidence: 75,
-    sourceLabel: "ИИ в 2025, §2.4",
+    sourceLabel: "ИИ в 2025 и прогнозы на 2026, гл. 2.4",
     pdfUrl: PDF_AI2025,
+    researchSlug: "ai-2025-forecast",
     quarter: "Q2 2026",
   },
   {
@@ -157,8 +164,9 @@ const CURATED: CuratedItem[] = [
       "Бренды переходят от топа выдачи к интеграции в прямой ответ ИИ; дизайн сайтов — под машины.",
     horizon: "Конец 2026",
     confidence: 80,
-    sourceLabel: "ИИ в 2025, §2.5",
+    sourceLabel: "ИИ в 2025 и прогнозы на 2026, гл. 2.5",
     pdfUrl: PDF_AI2025,
+    researchSlug: "ai-2025-forecast",
     quarter: "Q3 2026",
   },
   {
@@ -168,8 +176,9 @@ const CURATED: CuratedItem[] = [
       "Обязательное владение ИИ + входное тестирование на безалгоритмическое мышление.",
     horizon: "К 2027",
     confidence: 65,
-    sourceLabel: "ИИ в 2025, §2.3",
+    sourceLabel: "ИИ в 2025 и прогнозы на 2026, гл. 2.3",
     pdfUrl: PDF_AI2025,
+    researchSlug: "ai-2025-forecast",
     quarter: "Q1 2027",
   },
   {
@@ -179,8 +188,9 @@ const CURATED: CuratedItem[] = [
       "Tech-коррекция, геополитическое обострение и рецессия — реальность опередила график.",
     horizon: "Q2 2026 — середина 2027",
     confidence: 90,
-    sourceLabel: "Тихая замена, §6.3",
+    sourceLabel: "Тихая замена, гл. 6.3",
     pdfUrl: PDF_SILENT,
+    researchSlug: "silent-replacement",
     quarter: "Q2 2027",
   },
   {
@@ -192,6 +202,7 @@ const CURATED: CuratedItem[] = [
     confidence: 90,
     sourceLabel: "Тихая замена, гл. 4",
     pdfUrl: PDF_SILENT,
+    researchSlug: "silent-replacement",
     quarter: "Q3 2027",
   },
   {
@@ -203,6 +214,7 @@ const CURATED: CuratedItem[] = [
     confidence: 85,
     sourceLabel: "Тихая замена, гл. 5",
     pdfUrl: PDF_SILENT,
+    researchSlug: "silent-replacement",
     quarter: "Q4 2026",
   },
   {
@@ -212,8 +224,9 @@ const CURATED: CuratedItem[] = [
       "Сверху — операторы ИИ, снизу — нестандартный физический труд, в середине — пустота.",
     horizon: "До 2028",
     confidence: 75,
-    sourceLabel: "Тихая замена, §7.4",
+    sourceLabel: "Тихая замена, гл. 7.4",
     pdfUrl: PDF_SILENT,
+    researchSlug: "silent-replacement",
     quarter: "Q4 2027",
   },
   {
@@ -223,8 +236,9 @@ const CURATED: CuratedItem[] = [
       "Tesla, Figure, Boston Dynamics, Unitree давят на нижнюю перекладину «гантели».",
     horizon: "2028+",
     confidence: 60,
-    sourceLabel: "Тихая замена, §7.4",
+    sourceLabel: "Тихая замена, гл. 7.4",
     pdfUrl: PDF_SILENT,
+    researchSlug: "silent-replacement",
     quarter: "Q2 2028",
   },
   {
@@ -234,8 +248,9 @@ const CURATED: CuratedItem[] = [
       "Сокращённых в кризис не вернут — позиции займут ИИ-сотрудники до восстановления экономики.",
     horizon: "2027–2029",
     confidence: 80,
-    sourceLabel: "Тихая замена, §3.4, §6.3",
+    sourceLabel: "Тихая замена, гл. 3.4, 6.3",
     pdfUrl: PDF_SILENT,
+    researchSlug: "silent-replacement",
     quarter: "Q3 2028",
   },
   {
@@ -247,6 +262,7 @@ const CURATED: CuratedItem[] = [
     confidence: 55,
     sourceLabel: "Тихая замена, гл. 5",
     pdfUrl: PDF_SILENT,
+    researchSlug: "silent-replacement",
     quarter: "Q1 2028",
   },
 ];
@@ -455,13 +471,6 @@ export function PredictionsTimeline() {
         )}
       </div>
 
-      {/* Footnote */}
-      <p className="mt-12 text-[13px] leading-[1.65] text-text-tertiary max-w-2xl">
-        Все прогнозы основаны на исследованиях «Тихая замена» (март 2026) и «ИИ в
-        2025 и прогнозы на 2026» (январь 2026). Уровень уверенности отражает сочетание
-        данных, моделирования и экспертной оценки.
-      </p>
-
       {/* Modal */}
       <AnimatePresence>
         {openItem && (
@@ -495,6 +504,7 @@ function ArcTimeline({
 }) {
   const [hoverIdx, setHoverIdx] = useState<number | null>(null);
   const wrapperRef = useRef<HTMLDivElement | null>(null);
+  const popoverRef = useRef<HTMLDivElement | null>(null);
   const [width, setWidth] = useState(900);
 
   useLayoutEffect(() => {
@@ -524,17 +534,36 @@ function ArcTimeline({
     return () => window.removeEventListener("keydown", onKey);
   }, [activeIdx, onSelect]);
 
+  // Закрытие попровера по клику вне него
+  useEffect(() => {
+    if (activeIdx === null) return;
+    const onPointerDown = (e: PointerEvent) => {
+      const target = e.target as Node | null;
+      if (!target) return;
+      // Игнорируем клики внутри попровера
+      if (popoverRef.current && popoverRef.current.contains(target)) return;
+      // Игнорируем клики по точкам (SVG g внутри wrapperRef обрабатывает onSelect)
+      if (
+        target instanceof Element &&
+        target.closest("[data-arc-dot]")
+      ) return;
+      onSelect(activeIdx);
+    };
+    window.addEventListener("pointerdown", onPointerDown);
+    return () => window.removeEventListener("pointerdown", onPointerDown);
+  }, [activeIdx, onSelect]);
+
   const popoverIdx = activeIdx ?? hoverIdx;
 
   // ---- Геометрия дуги ----
   const PADDING_X = 90;
   const W = Math.max(width, 360);
   const arcWidth = W - PADDING_X * 2;
-  const ARC_HEIGHT = Math.min(140, arcWidth * 0.16); // плавная пологая дуга
+  const ARC_HEIGHT = Math.min(110, arcWidth * 0.13); // более плоская дуга
   const radius = (Math.pow(arcWidth / 2, 2) + Math.pow(ARC_HEIGHT, 2)) / (2 * ARC_HEIGHT);
   const cx = W / 2;
   const cy = ARC_HEIGHT + radius; // центр окружности ниже дуги
-  const totalH = ARC_HEIGHT + 110; // место для подписей
+  const totalH = ARC_HEIGHT + 90; // место для подписей
 
   const startAngle = Math.atan2(-(radius - ARC_HEIGHT), -arcWidth / 2);
   const endAngle = Math.atan2(-(radius - ARC_HEIGHT), arcWidth / 2);
@@ -572,7 +601,7 @@ function ArcTimeline({
       {/* Контейнер-стекло */}
       <div
         ref={wrapperRef}
-        className="relative rounded-[28px] px-4 md:px-8 pt-10 pb-10"
+        className="relative rounded-[28px] px-4 md:px-8 pt-6 pb-6"
         style={{
           background:
             "linear-gradient(180deg, rgba(28,28,36,0.55) 0%, rgba(14,14,20,0.55) 100%)",
@@ -582,7 +611,18 @@ function ArcTimeline({
           boxShadow:
             "0 30px 80px -30px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255,255,255,0.05)",
         }}
+        onClick={(e) => {
+          // Клик по пустому пространству контейнера закрывает попровер
+          if (e.target === e.currentTarget && activeIdx !== null) {
+            onSelect(activeIdx);
+          }
+        }}
       >
+        {/* Подсказка сверху по центру */}
+        <div className="text-[12px] text-text-tertiary text-center mb-2">
+          Наведите или кликните на точку
+        </div>
+
         {/* Подсветка-aurora за дугой */}
         <div
           aria-hidden
@@ -702,6 +742,7 @@ function ArcTimeline({
             return (
               <g
                 key={i}
+                data-arc-dot=""
                 style={{ cursor: "pointer" }}
                 onClick={() => onSelect(i)}
                 onMouseEnter={() => setHoverIdx(i)}
@@ -820,6 +861,7 @@ function ArcTimeline({
         <AnimatePresence>
           {popoverIdx !== null && counts[popoverIdx] > 0 && (
             <ArcPopover
+              popoverRef={popoverRef}
               idx={popoverIdx}
               x={dots[popoverIdx].x}
               y={dots[popoverIdx].y}
@@ -831,11 +873,6 @@ function ArcTimeline({
         </AnimatePresence>
       </div>
 
-      {/* Подсказка снизу — теперь вне контейнера дуги */}
-      <div className="flex items-center justify-between text-[12px] text-text-tertiary mt-4 px-2">
-        <span>Наведите или кликните на точку</span>
-        <span className="tabular-nums">{QUARTERS.length} кварталов</span>
-      </div>
     </div>
   );
 }
@@ -845,6 +882,7 @@ function ArcTimeline({
 // ============================================================================
 
 function ArcPopover({
+  popoverRef,
   idx,
   x,
   y,
@@ -852,6 +890,7 @@ function ArcPopover({
   items,
   onOpen,
 }: {
+  popoverRef?: React.RefObject<HTMLDivElement | null>;
   idx: number;
   x: number;
   y: number;
@@ -868,6 +907,7 @@ function ArcPopover({
 
   return (
     <motion.div
+      ref={popoverRef}
       initial={{ opacity: 0, y: 6, scale: 0.96 }}
       animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: 6, scale: 0.96 }}
@@ -1197,11 +1237,9 @@ function DetailModal({
           <div className="text-[12px] text-text-tertiary">
             Источник: {curated.sourceLabel}
           </div>
-          {curated.pdfUrl && (
+          {curated.researchSlug && (
             <a
-              href={curated.pdfUrl}
-              target="_blank"
-              rel="noreferrer"
+              href={`/research/${curated.researchSlug}`}
               className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full text-[13px] font-medium transition-all hover:scale-[1.02]"
               style={{
                 background: GRADIENT,
@@ -1210,7 +1248,7 @@ function DetailModal({
                   "0 12px 28px -10px rgba(99,102,241,0.5), inset 0 1px 0 rgba(255,255,255,0.2)",
               }}
             >
-              <FileText size={14} /> Открыть PDF исследования
+              <FileText size={14} /> Перейти к исследованию
             </a>
           )}
         </div>

@@ -36,16 +36,25 @@ function PredictionsPage() {
 
         {/* Summary stats — under the interactive timeline */}
         <Reveal>
-          <div className="mt-10 grid grid-cols-2 md:grid-cols-5 gap-px rounded-[24px] overflow-hidden border-[0.5px] border-border bg-border">
+          <div className="mt-10 grid grid-cols-2 md:grid-cols-6 gap-px rounded-[24px] overflow-hidden border-[0.5px] border-border bg-border">
             <StatTile label="Всего" value={stats.total} />
             <StatTile label="Сбылось" value={stats.byStatus.fulfilled} />
             <StatTile label="Частично" value={stats.byStatus.partial} />
+            <StatTile label="Не сбылось" value={stats.byStatus.not_fulfilled} />
             <StatTile label="В процессе" value={stats.byStatus.in_progress} />
             <StatTile
               label="Точность"
               value={stats.accuracy === null ? "—" : `${stats.accuracy}%`}
             />
           </div>
+
+          {/* Footnote — под табло */}
+          <p className="mt-6 text-[13px] leading-[1.65] text-text-tertiary max-w-2xl">
+            Все прогнозы основаны на исследованиях «Тихая замена» (март 2026) и «ИИ в
+            2025 и прогнозы на 2026» (январь 2026). Уровень уверенности отражает
+            сочетание данных, моделирования и экспертной оценки. Статистика обновляется
+            автоматически по мере изменения статусов в источнике данных.
+          </p>
         </Reveal>
       </div>
     </Layout>
