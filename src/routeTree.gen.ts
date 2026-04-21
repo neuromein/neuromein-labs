@@ -17,7 +17,6 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ResearchIndexRouteImport } from './routes/research.index'
 import { Route as ResearchSlugRouteImport } from './routes/research.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
-import { Route as ApiPredictionsJsonRouteImport } from './routes/api.predictions.json'
 
 const PredictionsRoute = PredictionsRouteImport.update({
   id: '/predictions',
@@ -59,11 +58,6 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => BlogRoute,
 } as any)
-const ApiPredictionsJsonRoute = ApiPredictionsJsonRouteImport.update({
-  id: '/api/predictions/json',
-  path: '/api/predictions/json',
-  getParentRoute: () => rootRouteImport,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -74,7 +68,6 @@ export interface FileRoutesByFullPath {
   '/blog/$slug': typeof BlogSlugRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/research/': typeof ResearchIndexRoute
-  '/api/predictions/json': typeof ApiPredictionsJsonRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -85,7 +78,6 @@ export interface FileRoutesByTo {
   '/blog/$slug': typeof BlogSlugRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/research': typeof ResearchIndexRoute
-  '/api/predictions/json': typeof ApiPredictionsJsonRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -97,7 +89,6 @@ export interface FileRoutesById {
   '/blog/$slug': typeof BlogSlugRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/research/': typeof ResearchIndexRoute
-  '/api/predictions/json': typeof ApiPredictionsJsonRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -110,7 +101,6 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/research/$slug'
     | '/research/'
-    | '/api/predictions/json'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -121,7 +111,6 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/research/$slug'
     | '/research'
-    | '/api/predictions/json'
   id:
     | '__root__'
     | '/'
@@ -132,7 +121,6 @@ export interface FileRouteTypes {
     | '/blog/$slug'
     | '/research/$slug'
     | '/research/'
-    | '/api/predictions/json'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -143,7 +131,6 @@ export interface RootRouteChildren {
   PredictionsRoute: typeof PredictionsRoute
   ResearchSlugRoute: typeof ResearchSlugRoute
   ResearchIndexRoute: typeof ResearchIndexRoute
-  ApiPredictionsJsonRoute: typeof ApiPredictionsJsonRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -204,13 +191,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof BlogRoute
     }
-    '/api/predictions/json': {
-      id: '/api/predictions/json'
-      path: '/api/predictions/json'
-      fullPath: '/api/predictions/json'
-      preLoaderRoute: typeof ApiPredictionsJsonRouteImport
-      parentRoute: typeof rootRouteImport
-    }
   }
 }
 
@@ -232,7 +212,6 @@ const rootRouteChildren: RootRouteChildren = {
   PredictionsRoute: PredictionsRoute,
   ResearchSlugRoute: ResearchSlugRoute,
   ResearchIndexRoute: ResearchIndexRoute,
-  ApiPredictionsJsonRoute: ApiPredictionsJsonRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
