@@ -1,6 +1,5 @@
 import { z } from "zod";
 import {
-  predictions,
   CATEGORIES,
   type Prediction,
 } from "./predictions";
@@ -64,7 +63,7 @@ export interface ValidationReport {
 }
 
 export function validatePredictions(
-  items: Prediction[] = predictions,
+  items: Prediction[],
 ): ValidationReport {
   const issues: ValidationIssue[] = [];
   const seen = new Map<string, number>();
