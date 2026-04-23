@@ -81,13 +81,16 @@ export const SOURCE_LABELS: Record<SourceWork, string> = {
 
 export function getStats(items: Prediction[]) {
   const total = items.length;
-  const byStatus = items.reduce<Record<PredictionStatus, number>>(
-    (acc, p) => {
-      acc[p.status] = (acc[p.status] || 0) + 1;
-      return acc;
-    },
-    { fulfilled: 0, partial: 0, not_fulfilled: 0, in_progress: 0, too_early: 0 },
-  );
+  const byStatus: Record<PredictionStatus, number> = {
+    fulfilled: 0,
+    partial: 0,
+    not_fulfilled: 0,
+    in_progress: 0,
+    too_early: 0,
+  };
+  for (const p of items) {
+    byStatus[p.status] = (byStatus[p.status] || 0) + 1;
+  }
   const settled = byStatus.fulfilled + byStatus.partial + byStatus.not_fulfilled;
   const accuracy =
     settled > 0
