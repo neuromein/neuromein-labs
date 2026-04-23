@@ -179,6 +179,55 @@ function AdminPredictionsPage() {
         </button>
       </div>
 
+      {/* Status counters */}
+      <div className="flex flex-wrap gap-2 mb-4">
+        {([
+          ["all", "Все"],
+          ["fulfilled", "Сбылся"],
+          ["partial", "Частично"],
+          ["in_progress", "В процессе"],
+          ["not_fulfilled", "Не сбылся"],
+          ["too_early", "Рано судить"],
+        ] as const).map(([val, label]) => {
+          const active = statusFilter === val;
+          const color = val === "all" ? "#9ca3af" : STATUS_COLOR[val];
+          return (
+            <button
+              key={val}
+              onClick={() => setStatusFilter(val)}
+              className="inline-flex items-center gap-2 h-8 px-3 rounded-full text-[12px] font-medium border transition-colors"
+              style={{
+                background: active ? `${color}20` : "transparent",
+                borderColor: active ? color : "var(--border)",
+                color: active ? color : "var(--text-secondary, #9ca3af)",
+              }}
+            >
+              <span>{label}</span>
+              <span className="tabular-nums opacity-70">{counts[val] ?? 0}</span>
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Search */}
+      <div className="relative mb-5">
+        <Search size={14} className="absolute left-3 top-1/2 -translate-y-1/2 text-text-tertiary" />
+        <input
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          placeholder="Поиск по заголовку, формулировке или slug…"
+          className="w-full h-10 pl-9 pr-9 rounded-lg bg-bg-card border border-border text-[14px] text-text-primary placeholder:text-text-tertiary focus:outline-none focus:border-text-secondary"
+        />
+        {search && (
+          <button
+            onClick={() => setSearch("")}
+            className="absolute right-2 top-1/2 -translate-y-1/2 h-6 w-6 flex items-center justify-center rounded text-text-tertiary hover:text-text-primary"
+          >
+            <X size={13} />
+          </button>
+        )}
+      </div>
+
       {loadingData ? (
         <div className="text-text-secondary text-[14px]">Загрузка…</div>
       ) : items.length === 0 ? (
@@ -193,9 +242,15 @@ function AdminPredictionsPage() {
             <Plus size={14} /> Создать прогноз
           </button>
         </div>
+      ) : filteredItems.length === 0 ? (
+        <div className="border border-dashed border-border rounded-2xl p-12 text-center">
+          <p className="text-[14px] text-text-secondary">
+            По выбранным фильтрам ничего не найдено
+          </p>
+        </div>
       ) : (
         <div className="grid grid-cols-1 gap-3">
-          {items.map((p) => (
+          {filteredItems.map((p) => (
             <div
               key={p.id}
               className="bg-bg-card/40 border border-border rounded-xl p-4 sm:p-5 hover:bg-bg-card/60 transition-colors"
