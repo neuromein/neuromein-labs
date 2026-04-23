@@ -2,7 +2,6 @@ import { useMemo, useState, useEffect, useRef, useLayoutEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ExternalLink, FileText, ArrowUpRight } from "lucide-react";
 import {
-  predictions,
   type Prediction,
   type CategoryKey,
 } from "@/data/predictions";
@@ -300,7 +299,7 @@ function confidenceLabel(c: number): string {
 // Главный компонент
 // ============================================================================
 
-export function PredictionsTimeline() {
+export function PredictionsTimeline({ predictions }: { predictions: Prediction[] }) {
   const [theme, setTheme] = useState<ThemeKey>("all");
   const [activeQuarterIdx, setActiveQuarterIdx] = useState<number | null>(null);
   const [openId, setOpenId] = useState<string | null>(null);
@@ -314,7 +313,7 @@ export function PredictionsTimeline() {
         return { curated: c, full, themes: predictionThemes(full) };
       })
       .filter((x): x is { curated: CuratedItem; full: Prediction; themes: ThemeKey[] } => !!x);
-  }, []);
+  }, [predictions]);
 
   const filtered = useMemo(
     () => merged.filter((m) => theme === "all" || m.themes.includes(theme)),
