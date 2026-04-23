@@ -21,7 +21,7 @@ export function AdminLoginDialog({ open, onOpenChange }: Props) {
   useEffect(() => {
     if (open && !loading && session && isAdmin) {
       onOpenChange(false);
-      navigate({ to: "/predictions/admin" });
+      navigate({ to: "/admin/predictions" });
     }
   }, [open, loading, session, isAdmin, navigate, onOpenChange]);
 
