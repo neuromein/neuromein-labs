@@ -1,8 +1,8 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useMemo, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2, FileText } from "lucide-react";
+import { Plus, Pencil, Trash2, FileText, Search, X } from "lucide-react";
 
 export const Route = createFileRoute("/admin/predictions")({
   head: () => ({
@@ -82,6 +82,8 @@ function AdminPredictionsPage() {
   const [loadingData, setLoadingData] = useState(true);
   const [editing, setEditing] = useState<PredictionRow | "new" | null>(null);
   const [evidenceFor, setEvidenceFor] = useState<PredictionRow | null>(null);
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState<string>("all");
 
   const load = useCallback(async () => {
     setLoadingData(true);
@@ -101,6 +103,48 @@ function AdminPredictionsPage() {
   useEffect(() => {
     load();
   }, [load]);
+
+  // Realtime: refresh on any change to predictions or evidence
+  useEffect(() => {
+    const channel = supabase
+      .channel("predictions-admin")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "predictions" },
+        () => load(),
+      )
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "prediction_evidence" },
+        () => load(),
+      )
+      .subscribe();
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [load]);
+
+  const counts = useMemo(() => {
+    const acc: Record<string, number> = {
+      all: items.length, fulfilled: 0, partial: 0, in_progress: 0,
+      not_fulfilled: 0, too_early: 0,
+    };
+    items.forEach((p) => { acc[p.status] = (acc[p.status] ?? 0) + 1; });
+    return acc;
+  }, [items]);
+
+  const filteredItems = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return items.filter((p) => {
+      if (statusFilter !== "all" && p.status !== statusFilter) return false;
+      if (!q) return true;
+      return (
+        p.title.toLowerCase().includes(q) ||
+        p.statement.toLowerCase().includes(q) ||
+        p.slug.toLowerCase().includes(q)
+      );
+    });
+  }, [items, search, statusFilter]);
 
   async function handleDelete(id: string, title: string) {
     if (!confirm(`Удалить прогноз «${title}»? Действие нельзя отменить.`)) return;
