@@ -1,11 +1,24 @@
-import { Link } from "@tanstack/react-router";
+import { Link, useNavigate } from "@tanstack/react-router";
 import { NAV_LINKS, SITE } from "@/lib/site";
 import logoUrl from "@/assets/logo.svg";
 import { useState } from "react";
 import { AdminLoginDialog } from "@/components/AdminLoginDialog";
+import { useAuth } from "@/hooks/useAuth";
 
 export function Footer() {
+  const navigate = useNavigate();
+  const { session, isAdmin, loading } = useAuth();
   const [loginOpen, setLoginOpen] = useState(false);
+
+  function onAdminLogoClick() {
+    if (!loading && session && isAdmin) {
+      navigate({ to: "/predictions/admin" });
+      return;
+    }
+
+    setLoginOpen(true);
+  }
+
   return (
     <footer className="px-4 lg:px-6 mt-20">
       <div className="max-w-[1320px] mx-auto rounded-[24px] border-[0.5px] border-border bg-bg-card/40 p-8 lg:p-12 mb-8">
@@ -108,7 +121,7 @@ export function Footer() {
           <span>© 2026 {SITE.author}</span>
           <button
             type="button"
-            onClick={() => setLoginOpen(true)}
+            onClick={onAdminLogoClick}
             aria-label="Вход в личный кабинет"
             title="Вход в личный кабинет"
             className="opacity-40 hover:opacity-80 transition-opacity cursor-pointer"
