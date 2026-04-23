@@ -36,7 +36,7 @@ function AdminLayout() {
 
   useEffect(() => {
     if (loading) return;
-    if (!session) navigate({ to: "/login" });
+    if (!session) navigate({ to: "/" });
   }, [loading, session, navigate]);
 
   async function handleSignOut() {
