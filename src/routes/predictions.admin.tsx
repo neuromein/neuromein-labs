@@ -360,7 +360,7 @@ function PredictionForm({
       date_made: form.date_made,
       target_horizon: form.target_horizon.trim(),
       categories: form.categories,
-      status: form.status as PredictionRow["status"],
+      status: form.status as "fulfilled" | "in_progress" | "not_fulfilled" | "partial" | "too_early",
       status_updated: form.status_updated,
       confidence: form.confidence ? Number(form.confidence) : null,
       notes: form.notes.trim() || null,
@@ -374,7 +374,7 @@ function PredictionForm({
     }
 
     const { error } = isNew
-      ? await supabase.from("predictions").insert(payload)
+      ? await supabase.from("predictions").insert([payload])
       : await supabase.from("predictions").update(payload).eq("id", initial!.id);
 
     if (error) {

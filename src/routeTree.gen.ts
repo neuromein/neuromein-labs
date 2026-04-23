@@ -17,6 +17,7 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ResearchIndexRouteImport } from './routes/research.index'
 import { Route as ResearchSlugRouteImport } from './routes/research.$slug'
+import { Route as PredictionsAdminRouteImport } from './routes/predictions.admin'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as ApiPredictionsJsonRouteImport } from './routes/api.predictions.json'
 
@@ -60,6 +61,11 @@ const ResearchSlugRoute = ResearchSlugRouteImport.update({
   path: '/research/$slug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const PredictionsAdminRoute = PredictionsAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => PredictionsRoute,
+} as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -77,8 +83,9 @@ export interface FileRoutesByFullPath {
   '/blog': typeof BlogRouteWithChildren
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
-  '/predictions': typeof PredictionsRoute
+  '/predictions': typeof PredictionsRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
+  '/predictions/admin': typeof PredictionsAdminRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/research/': typeof ResearchIndexRoute
   '/api/predictions/json': typeof ApiPredictionsJsonRoute
@@ -89,8 +96,9 @@ export interface FileRoutesByTo {
   '/blog': typeof BlogRouteWithChildren
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
-  '/predictions': typeof PredictionsRoute
+  '/predictions': typeof PredictionsRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
+  '/predictions/admin': typeof PredictionsAdminRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/research': typeof ResearchIndexRoute
   '/api/predictions/json': typeof ApiPredictionsJsonRoute
@@ -102,8 +110,9 @@ export interface FileRoutesById {
   '/blog': typeof BlogRouteWithChildren
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
-  '/predictions': typeof PredictionsRoute
+  '/predictions': typeof PredictionsRouteWithChildren
   '/blog/$slug': typeof BlogSlugRoute
+  '/predictions/admin': typeof PredictionsAdminRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/research/': typeof ResearchIndexRoute
   '/api/predictions/json': typeof ApiPredictionsJsonRoute
@@ -118,6 +127,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/predictions'
     | '/blog/$slug'
+    | '/predictions/admin'
     | '/research/$slug'
     | '/research/'
     | '/api/predictions/json'
@@ -130,6 +140,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/predictions'
     | '/blog/$slug'
+    | '/predictions/admin'
     | '/research/$slug'
     | '/research'
     | '/api/predictions/json'
@@ -142,6 +153,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/predictions'
     | '/blog/$slug'
+    | '/predictions/admin'
     | '/research/$slug'
     | '/research/'
     | '/api/predictions/json'
@@ -153,7 +165,7 @@ export interface RootRouteChildren {
   BlogRoute: typeof BlogRouteWithChildren
   FaqRoute: typeof FaqRoute
   LoginRoute: typeof LoginRoute
-  PredictionsRoute: typeof PredictionsRoute
+  PredictionsRoute: typeof PredictionsRouteWithChildren
   ResearchSlugRoute: typeof ResearchSlugRoute
   ResearchIndexRoute: typeof ResearchIndexRoute
   ApiPredictionsJsonRoute: typeof ApiPredictionsJsonRoute
@@ -217,6 +229,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResearchSlugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/predictions/admin': {
+      id: '/predictions/admin'
+      path: '/admin'
+      fullPath: '/predictions/admin'
+      preLoaderRoute: typeof PredictionsAdminRouteImport
+      parentRoute: typeof PredictionsRoute
+    }
     '/blog/$slug': {
       id: '/blog/$slug'
       path: '/$slug'
@@ -244,13 +263,25 @@ const BlogRouteChildren: BlogRouteChildren = {
 
 const BlogRouteWithChildren = BlogRoute._addFileChildren(BlogRouteChildren)
 
+interface PredictionsRouteChildren {
+  PredictionsAdminRoute: typeof PredictionsAdminRoute
+}
+
+const PredictionsRouteChildren: PredictionsRouteChildren = {
+  PredictionsAdminRoute: PredictionsAdminRoute,
+}
+
+const PredictionsRouteWithChildren = PredictionsRoute._addFileChildren(
+  PredictionsRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
   BlogRoute: BlogRouteWithChildren,
   FaqRoute: FaqRoute,
   LoginRoute: LoginRoute,
-  PredictionsRoute: PredictionsRoute,
+  PredictionsRoute: PredictionsRouteWithChildren,
   ResearchSlugRoute: ResearchSlugRoute,
   ResearchIndexRoute: ResearchIndexRoute,
   ApiPredictionsJsonRoute: ApiPredictionsJsonRoute,
