@@ -1,8 +1,11 @@
 import { Link } from "@tanstack/react-router";
 import { NAV_LINKS, SITE } from "@/lib/site";
 import logoUrl from "@/assets/logo.svg";
+import { useState } from "react";
+import { AdminLoginDialog } from "@/components/AdminLoginDialog";
 
 export function Footer() {
+  const [loginOpen, setLoginOpen] = useState(false);
   return (
     <footer className="px-4 lg:px-6 mt-20">
       <div className="max-w-[1320px] mx-auto rounded-[24px] border-[0.5px] border-border bg-bg-card/40 p-8 lg:p-12 mb-8">
@@ -103,9 +106,18 @@ export function Footer() {
 
         <div className="mt-12 pt-6 border-t border-border flex items-center justify-between text-[12px] text-text-tertiary">
           <span>© 2026 {SITE.author}</span>
-          <img src={logoUrl} alt="NEUROMEIN" className="h-3 w-auto opacity-40" />
+          <button
+            type="button"
+            onClick={() => setLoginOpen(true)}
+            aria-label="Вход в личный кабинет"
+            title="Вход в личный кабинет"
+            className="opacity-40 hover:opacity-80 transition-opacity cursor-pointer"
+          >
+            <img src={logoUrl} alt="NEUROMEIN" className="h-3 w-auto" />
+          </button>
         </div>
       </div>
+      <AdminLoginDialog open={loginOpen} onOpenChange={setLoginOpen} />
     </footer>
   );
 }
