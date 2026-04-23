@@ -14,16 +14,146 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      prediction_evidence: {
+        Row: {
+          created_at: string
+          evidence_date: string
+          id: string
+          note: string
+          prediction_id: string
+          source_url: string | null
+        }
+        Insert: {
+          created_at?: string
+          evidence_date: string
+          id?: string
+          note: string
+          prediction_id: string
+          source_url?: string | null
+        }
+        Update: {
+          created_at?: string
+          evidence_date?: string
+          id?: string
+          note?: string
+          prediction_id?: string
+          source_url?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prediction_evidence_prediction_id_fkey"
+            columns: ["prediction_id"]
+            isOneToOne: false
+            referencedRelation: "predictions"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      predictions: {
+        Row: {
+          categories: string[]
+          confidence: number | null
+          created_at: string
+          date_made: string
+          display_order: number
+          id: string
+          notes: string | null
+          slug: string
+          source_page: number | null
+          source_section: string | null
+          source_work: string
+          source_work_title: string
+          statement: string
+          status: Database["public"]["Enums"]["prediction_status"]
+          status_updated: string
+          target_horizon: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          categories?: string[]
+          confidence?: number | null
+          created_at?: string
+          date_made: string
+          display_order?: number
+          id?: string
+          notes?: string | null
+          slug: string
+          source_page?: number | null
+          source_section?: string | null
+          source_work: string
+          source_work_title: string
+          statement: string
+          status?: Database["public"]["Enums"]["prediction_status"]
+          status_updated?: string
+          target_horizon: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          categories?: string[]
+          confidence?: number | null
+          created_at?: string
+          date_made?: string
+          display_order?: number
+          id?: string
+          notes?: string | null
+          slug?: string
+          source_page?: number | null
+          source_section?: string | null
+          source_work?: string
+          source_work_title?: string
+          statement?: string
+          status?: Database["public"]["Enums"]["prediction_status"]
+          status_updated?: string
+          target_horizon?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
+      user_roles: {
+        Row: {
+          created_at: string
+          id: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          role: Database["public"]["Enums"]["app_role"]
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          role?: Database["public"]["Enums"]["app_role"]
+          user_id?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
     }
     Functions: {
-      [_ in never]: never
+      has_role: {
+        Args: {
+          _role: Database["public"]["Enums"]["app_role"]
+          _user_id: string
+        }
+        Returns: boolean
+      }
     }
     Enums: {
-      [_ in never]: never
+      app_role: "admin" | "user"
+      prediction_status:
+        | "fulfilled"
+        | "partial"
+        | "not_fulfilled"
+        | "in_progress"
+        | "too_early"
     }
     CompositeTypes: {
       [_ in never]: never
@@ -150,6 +280,15 @@ export type CompositeTypes<
 
 export const Constants = {
   public: {
-    Enums: {},
+    Enums: {
+      app_role: ["admin", "user"],
+      prediction_status: [
+        "fulfilled",
+        "partial",
+        "not_fulfilled",
+        "in_progress",
+        "too_early",
+      ],
+    },
   },
 } as const
