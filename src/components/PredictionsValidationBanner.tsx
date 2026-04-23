@@ -2,11 +2,13 @@ import { useMemo, useState } from "react";
 import { AlertTriangle, ChevronDown, CheckCircle2 } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
 import { validatePredictions } from "@/data/predictions.validation";
-import { predictions } from "@/data/predictions";
+import type { Prediction } from "@/data/predictions";
 
 export function PredictionsValidationBanner({
+  predictions,
   alwaysShow = false,
 }: {
+  predictions: Prediction[];
   alwaysShow?: boolean;
 }) {
   const report = useMemo(() => validatePredictions(predictions), []);

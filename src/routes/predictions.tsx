@@ -1,9 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Layout } from "@/components/Layout";
 import { Reveal } from "@/components/Reveal";
 import { PredictionsTimeline } from "@/components/PredictionsTimeline";
-import { predictions, getStats } from "@/data/predictions";
+import { getStats, type Prediction } from "@/data/predictions";
+import { fetchPredictions } from "@/data/predictions.fetch";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/predictions")({
   head: () => ({
@@ -22,19 +24,43 @@ export const Route = createFileRoute("/predictions")({
       { property: "og:url", content: "https://neuromein.ru/predictions" },
     ],
   }),
+  loader: () => fetchPredictions(),
   component: PredictionsPage,
 });
 
 function PredictionsPage() {
-  const stats = useMemo(() => getStats(predictions), []);
+  const initial = Route.useLoaderData() as Prediction[];
+  const [predictions, setPredictions] = useState<Prediction[]>(initial);
+
+  // Realtime: re-fetch on any change to predictions or evidence
+  useEffect(() => {
+    let cancelled = false;
+    const refetch = async () => {
+      try {
+        const next = await fetchPredictions();
+        if (!cancelled) setPredictions(next);
+      } catch (e) {
+        console.error("predictions refetch failed", e);
+      }
+    };
+    const channel = supabase
+      .channel("predictions-public")
+      .on("postgres_changes", { event: "*", schema: "public", table: "predictions" }, refetch)
+      .on("postgres_changes", { event: "*", schema: "public", table: "prediction_evidence" }, refetch)
+      .subscribe();
+    return () => {
+      cancelled = true;
+      supabase.removeChannel(channel);
+    };
+  }, []);
+
+  const stats = useMemo(() => getStats(predictions), [predictions]);
 
   return (
     <Layout>
       <div className="max-w-[1320px] mx-auto pb-24 pt-4 px-4 sm:px-6 lg:px-8">
-        {/* Main content — interactive timeline + filters + cards */}
-        <PredictionsTimeline />
+        <PredictionsTimeline predictions={predictions} />
 
-        {/* Summary stats — under the interactive timeline */}
         <Reveal>
           <div className="mt-8 sm:mt-10 grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-px rounded-[20px] sm:rounded-[24px] overflow-hidden border-[0.5px] border-border bg-border">
             <StatTile label="Всего" value={stats.total} />
@@ -48,7 +74,6 @@ function PredictionsPage() {
             />
           </div>
 
-          {/* Footnote — под табло */}
           <p className="mt-6 text-[13px] leading-[1.65] text-text-tertiary max-w-2xl">
             Все прогнозы основаны на исследованиях «Тихая замена» (март 2026) и «ИИ в
             2025 и прогнозы на 2026» (январь 2026). Уровень уверенности отражает
