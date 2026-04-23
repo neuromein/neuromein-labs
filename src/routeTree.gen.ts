@@ -13,12 +13,15 @@ import { Route as PredictionsRouteImport } from './routes/predictions'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as BlogRouteImport } from './routes/blog'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ResearchIndexRouteImport } from './routes/research.index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as ResearchSlugRouteImport } from './routes/research.$slug'
 import { Route as PredictionsAdminRouteImport } from './routes/predictions.admin'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as AdminPredictionsRouteImport } from './routes/admin.predictions'
 import { Route as ApiPredictionsJsonRouteImport } from './routes/api.predictions.json'
 
 const PredictionsRoute = PredictionsRouteImport.update({
@@ -41,6 +44,11 @@ const BlogRoute = BlogRouteImport.update({
   path: '/blog',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AboutRoute = AboutRouteImport.update({
   id: '/about',
   path: '/about',
@@ -55,6 +63,11 @@ const ResearchIndexRoute = ResearchIndexRouteImport.update({
   id: '/research/',
   path: '/research/',
   getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
 } as any)
 const ResearchSlugRoute = ResearchSlugRouteImport.update({
   id: '/research/$slug',
@@ -71,6 +84,11 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   path: '/$slug',
   getParentRoute: () => BlogRoute,
 } as any)
+const AdminPredictionsRoute = AdminPredictionsRouteImport.update({
+  id: '/predictions',
+  path: '/predictions',
+  getParentRoute: () => AdminRoute,
+} as any)
 const ApiPredictionsJsonRoute = ApiPredictionsJsonRouteImport.update({
   id: '/api/predictions/json',
   path: '/api/predictions/json',
@@ -80,13 +98,16 @@ const ApiPredictionsJsonRoute = ApiPredictionsJsonRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRouteWithChildren
   '/blog': typeof BlogRouteWithChildren
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
   '/predictions': typeof PredictionsRouteWithChildren
+  '/admin/predictions': typeof AdminPredictionsRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/predictions/admin': typeof PredictionsAdminRoute
   '/research/$slug': typeof ResearchSlugRoute
+  '/admin/': typeof AdminIndexRoute
   '/research/': typeof ResearchIndexRoute
   '/api/predictions/json': typeof ApiPredictionsJsonRoute
 }
@@ -97,9 +118,11 @@ export interface FileRoutesByTo {
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
   '/predictions': typeof PredictionsRouteWithChildren
+  '/admin/predictions': typeof AdminPredictionsRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/predictions/admin': typeof PredictionsAdminRoute
   '/research/$slug': typeof ResearchSlugRoute
+  '/admin': typeof AdminIndexRoute
   '/research': typeof ResearchIndexRoute
   '/api/predictions/json': typeof ApiPredictionsJsonRoute
 }
@@ -107,13 +130,16 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/about': typeof AboutRoute
+  '/admin': typeof AdminRouteWithChildren
   '/blog': typeof BlogRouteWithChildren
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
   '/predictions': typeof PredictionsRouteWithChildren
+  '/admin/predictions': typeof AdminPredictionsRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/predictions/admin': typeof PredictionsAdminRoute
   '/research/$slug': typeof ResearchSlugRoute
+  '/admin/': typeof AdminIndexRoute
   '/research/': typeof ResearchIndexRoute
   '/api/predictions/json': typeof ApiPredictionsJsonRoute
 }
@@ -122,13 +148,16 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/about'
+    | '/admin'
     | '/blog'
     | '/faq'
     | '/login'
     | '/predictions'
+    | '/admin/predictions'
     | '/blog/$slug'
     | '/predictions/admin'
     | '/research/$slug'
+    | '/admin/'
     | '/research/'
     | '/api/predictions/json'
   fileRoutesByTo: FileRoutesByTo
@@ -139,22 +168,27 @@ export interface FileRouteTypes {
     | '/faq'
     | '/login'
     | '/predictions'
+    | '/admin/predictions'
     | '/blog/$slug'
     | '/predictions/admin'
     | '/research/$slug'
+    | '/admin'
     | '/research'
     | '/api/predictions/json'
   id:
     | '__root__'
     | '/'
     | '/about'
+    | '/admin'
     | '/blog'
     | '/faq'
     | '/login'
     | '/predictions'
+    | '/admin/predictions'
     | '/blog/$slug'
     | '/predictions/admin'
     | '/research/$slug'
+    | '/admin/'
     | '/research/'
     | '/api/predictions/json'
   fileRoutesById: FileRoutesById
@@ -162,6 +196,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AboutRoute: typeof AboutRoute
+  AdminRoute: typeof AdminRouteWithChildren
   BlogRoute: typeof BlogRouteWithChildren
   FaqRoute: typeof FaqRoute
   LoginRoute: typeof LoginRoute
@@ -201,6 +236,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/about': {
       id: '/about'
       path: '/about'
@@ -221,6 +263,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/research/'
       preLoaderRoute: typeof ResearchIndexRouteImport
       parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/research/$slug': {
       id: '/research/$slug'
@@ -243,6 +292,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof BlogRoute
     }
+    '/admin/predictions': {
+      id: '/admin/predictions'
+      path: '/predictions'
+      fullPath: '/admin/predictions'
+      preLoaderRoute: typeof AdminPredictionsRouteImport
+      parentRoute: typeof AdminRoute
+    }
     '/api/predictions/json': {
       id: '/api/predictions/json'
       path: '/api/predictions/json'
@@ -252,6 +308,18 @@ declare module '@tanstack/react-router' {
     }
   }
 }
+
+interface AdminRouteChildren {
+  AdminPredictionsRoute: typeof AdminPredictionsRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminPredictionsRoute: AdminPredictionsRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
 
 interface BlogRouteChildren {
   BlogSlugRoute: typeof BlogSlugRoute
@@ -278,6 +346,7 @@ const PredictionsRouteWithChildren = PredictionsRoute._addFileChildren(
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AboutRoute: AboutRoute,
+  AdminRoute: AdminRouteWithChildren,
   BlogRoute: BlogRouteWithChildren,
   FaqRoute: FaqRoute,
   LoginRoute: LoginRoute,
@@ -289,3 +358,12 @@ const rootRouteChildren: RootRouteChildren = {
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { createStart } from '@tanstack/react-start'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+  }
+}

@@ -14,12 +14,12 @@ export function Footer() {
 
   function onAdminLogoClick() {
     if (!loading && session && isAdmin) {
-      if (location.pathname === "/predictions/admin") {
+      if (location.pathname.startsWith("/admin")) {
         toast.success("Вы уже в личном кабинете");
         return;
       }
 
-      navigate({ to: "/predictions/admin" });
+      navigate({ to: "/admin/predictions" });
       return;
     }
 
