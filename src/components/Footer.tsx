@@ -1,17 +1,24 @@
-import { Link, useNavigate } from "@tanstack/react-router";
+import { Link, useLocation, useNavigate } from "@tanstack/react-router";
 import { NAV_LINKS, SITE } from "@/lib/site";
 import logoUrl from "@/assets/logo.svg";
 import { useState } from "react";
 import { AdminLoginDialog } from "@/components/AdminLoginDialog";
 import { useAuth } from "@/hooks/useAuth";
+import { toast } from "sonner";
 
 export function Footer() {
+  const location = useLocation();
   const navigate = useNavigate();
   const { session, isAdmin, loading } = useAuth();
   const [loginOpen, setLoginOpen] = useState(false);
 
   function onAdminLogoClick() {
     if (!loading && session && isAdmin) {
+      if (location.pathname === "/predictions/admin") {
+        toast.success("Вы уже в личном кабинете");
+        return;
+      }
+
       navigate({ to: "/predictions/admin" });
       return;
     }
