@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2, FileText, Search, X } from "lucide-react";
+import { Plus, Pencil, Trash2, FileText, Search, X, Eye, EyeOff } from "lucide-react";
 
 export const Route = createFileRoute("/admin/predictions")({
   head: () => ({
@@ -67,6 +67,7 @@ interface PredictionRow {
   confidence: number | null;
   notes: string | null;
   display_order: number;
+  is_visible: boolean;
 }
 
 interface EvidenceRow {
@@ -154,6 +155,27 @@ function AdminPredictionsPage() {
     } else {
       toast.success("Прогноз удалён");
       load();
+    }
+  }
+
+  async function handleToggleVisibility(p: PredictionRow) {
+    const next = !p.is_visible;
+    // Optimistic update
+    setItems((prev) =>
+      prev.map((it) => (it.id === p.id ? { ...it, is_visible: next } : it)),
+    );
+    const { error } = await supabase
+      .from("predictions")
+      .update({ is_visible: next })
+      .eq("id", p.id);
+    if (error) {
+      toast.error("Не удалось изменить видимость: " + error.message);
+      // Revert
+      setItems((prev) =>
+        prev.map((it) => (it.id === p.id ? { ...it, is_visible: !next } : it)),
+      );
+    } else {
+      toast.success(next ? "Прогноз показан на сайте" : "Прогноз скрыт с сайта");
     }
   }
 
