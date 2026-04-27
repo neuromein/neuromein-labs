@@ -57,6 +57,7 @@ export type Database = {
           date_made: string
           display_order: number
           id: string
+          is_visible: boolean
           notes: string | null
           slug: string
           source_page: number | null
@@ -77,6 +78,7 @@ export type Database = {
           date_made: string
           display_order?: number
           id?: string
+          is_visible?: boolean
           notes?: string | null
           slug: string
           source_page?: number | null
@@ -97,6 +99,7 @@ export type Database = {
           date_made?: string
           display_order?: number
           id?: string
+          is_visible?: boolean
           notes?: string | null
           slug?: string
           source_page?: number | null

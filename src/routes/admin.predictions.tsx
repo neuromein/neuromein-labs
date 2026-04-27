@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useMemo, useState, useCallback } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2, FileText, Search, X } from "lucide-react";
+import { Plus, Pencil, Trash2, FileText, Search, X, Eye, EyeOff } from "lucide-react";
 
 export const Route = createFileRoute("/admin/predictions")({
   head: () => ({
@@ -67,6 +67,7 @@ interface PredictionRow {
   confidence: number | null;
   notes: string | null;
   display_order: number;
+  is_visible: boolean;
 }
 
 interface EvidenceRow {
@@ -154,6 +155,27 @@ function AdminPredictionsPage() {
     } else {
       toast.success("Прогноз удалён");
       load();
+    }
+  }
+
+  async function handleToggleVisibility(p: PredictionRow) {
+    const next = !p.is_visible;
+    // Optimistic update
+    setItems((prev) =>
+      prev.map((it) => (it.id === p.id ? { ...it, is_visible: next } : it)),
+    );
+    const { error } = await supabase
+      .from("predictions")
+      .update({ is_visible: next })
+      .eq("id", p.id);
+    if (error) {
+      toast.error("Не удалось изменить видимость: " + error.message);
+      // Revert
+      setItems((prev) =>
+        prev.map((it) => (it.id === p.id ? { ...it, is_visible: !next } : it)),
+      );
+    } else {
+      toast.success(next ? "Прогноз показан на сайте" : "Прогноз скрыт с сайта");
     }
   }
 
@@ -253,7 +275,9 @@ function AdminPredictionsPage() {
           {filteredItems.map((p) => (
             <div
               key={p.id}
-              className="bg-bg-card/40 border border-border rounded-xl p-4 sm:p-5 hover:bg-bg-card/60 transition-colors"
+              className={`bg-bg-card/40 border border-border rounded-xl p-4 sm:p-5 hover:bg-bg-card/60 transition-colors ${
+                p.is_visible ? "" : "opacity-55"
+              }`}
             >
               <div className="flex items-start gap-4">
                 <div className="flex-1 min-w-0">
@@ -273,6 +297,11 @@ function AdminPredictionsPage() {
                     {p.confidence != null && (
                       <span className="text-[11px] text-text-tertiary">
                         · {p.confidence}% уверенности
+                      </span>
+                    )}
+                    {!p.is_visible && (
+                      <span className="inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-[10px] font-medium uppercase tracking-wide bg-bg-deep text-text-tertiary border border-border">
+                        <EyeOff size={10} /> Скрыт
                       </span>
                     )}
                   </div>
@@ -296,6 +325,17 @@ function AdminPredictionsPage() {
                   )}
                 </div>
                 <div className="flex items-center gap-1 shrink-0">
+                  <button
+                    onClick={() => handleToggleVisibility(p)}
+                    title={p.is_visible ? "Скрыть с сайта" : "Показать на сайте"}
+                    className={`h-9 w-9 flex items-center justify-center rounded-lg hover:bg-bg-deep transition-colors ${
+                      p.is_visible
+                        ? "text-text-tertiary hover:text-text-primary"
+                        : "text-amber-400 hover:text-amber-300"
+                    }`}
+                  >
+                    {p.is_visible ? <Eye size={15} /> : <EyeOff size={15} />}
+                  </button>
                   <button
                     onClick={() => setEvidenceFor(p)}
                     title="Доказательства"
