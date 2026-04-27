@@ -1,7 +1,7 @@
 import { createFileRoute, Link, Outlet, useNavigate, useLocation } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { useAuth } from "@/hooks/useAuth";
-import { LogOut, ListChecks, FileText, Settings as SettingsIcon, ExternalLink } from "lucide-react";
+import { LogOut, ListChecks, FileText, Mic, Settings as SettingsIcon, ExternalLink } from "lucide-react";
 import logoUrl from "@/assets/logo.svg";
 import { toast } from "sonner";
 
@@ -26,6 +26,7 @@ interface NavItem {
 const NAV: NavItem[] = [
   { to: "/admin/predictions", label: "Прогнозы", icon: ListChecks, enabled: true },
   { to: "/admin/publications", label: "Публикации", icon: FileText, enabled: true },
+  { to: "/admin/speaking", label: "Выступления", icon: Mic, enabled: true },
   { to: "/admin/settings", label: "Настройки", icon: SettingsIcon, enabled: false, hint: "скоро" },
 ];
 
