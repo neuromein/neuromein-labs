@@ -1,7 +1,12 @@
 import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Reveal } from "./Reveal";
-import { PUBLICATIONS, SITE } from "@/lib/site";
+import { SITE } from "@/lib/site";
+import {
+  fetchPublications,
+  type Publication,
+} from "@/data/publications.fetch";
+import { supabase } from "@/integrations/supabase/client";
 import neuromeinAvatar from "@/assets/neuromein-avatar.jpg";
 
 /**
@@ -10,7 +15,33 @@ import neuromeinAvatar from "@/assets/neuromein-avatar.jpg";
  * (как «Выступления и обучения», но в другую сторону).
  */
 export function HomePublications() {
-  const items = PUBLICATIONS;
+  const [items, setItems] = useState<Publication[]>([]);
+
+  // Initial load + realtime sync with the database
+  useEffect(() => {
+    let cancelled = false;
+    const refetch = async () => {
+      try {
+        const next = await fetchPublications();
+        if (!cancelled) setItems(next);
+      } catch (e) {
+        console.error("home publications fetch failed", e);
+      }
+    };
+    refetch();
+    const channel = supabase
+      .channel("publications-public-home")
+      .on(
+        "postgres_changes",
+        { event: "*", schema: "public", table: "publications" },
+        refetch,
+      )
+      .subscribe();
+    return () => {
+      cancelled = true;
+      supabase.removeChannel(channel);
+    };
+  }, []);
 
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [canPrev, setCanPrev] = useState(true);
@@ -37,7 +68,7 @@ export function HomePublications() {
       el.removeEventListener("scroll", updateButtons);
       window.removeEventListener("resize", updateButtons);
     };
-  }, []);
+  }, [items.length]);
 
   // Авто-прокрутка влево: непрерывный медленный скролл с бесшовным зацикливанием.
   useEffect(() => {
@@ -210,6 +241,7 @@ export function HomePublications() {
                 key={`${p.slug}-${idx}`}
                 title={p.title}
                 body={p.body ?? p.excerpt}
+                dateLabel={p.dateLabel}
                 telegramUrl={p.telegramUrl ?? SITE.telegram}
               />
             ))}
@@ -227,10 +259,12 @@ export function HomePublications() {
 function TelegramPostCard({
   title,
   body,
+  dateLabel,
   telegramUrl,
 }: {
   title: string;
   body: string;
+  dateLabel: string;
   telegramUrl: string;
 }) {
   const COLLAPSED_LIMIT = 220;
@@ -277,7 +311,8 @@ function TelegramPostCard({
             className="text-[12px] block truncate"
             style={{ color: "#7a7a8a" }}
           >
-            @neuromein
+            @neuromein <span aria-hidden>·</span>{" "}
+            <time>{dateLabel}</time>
           </span>
         </div>
       </header>
