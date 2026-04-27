@@ -2,11 +2,11 @@ import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { Layout } from "@/components/Layout";
 import { FadeIn } from "@/components/Reveal";
 import { Pill } from "@/components/ui-bits";
-import { PUBLICATIONS } from "@/lib/site";
+import { fetchPublicationBySlug } from "@/data/publications.fetch";
 
 export const Route = createFileRoute("/blog/$slug")({
-  loader: ({ params }) => {
-    const item = PUBLICATIONS.find((p) => p.slug === params.slug);
+  loader: async ({ params }) => {
+    const item = await fetchPublicationBySlug(params.slug);
     if (!item) throw notFound();
     return { item };
   },
@@ -32,6 +32,13 @@ export const Route = createFileRoute("/blog/$slug")({
         <Link to="/blog" className="mt-6 inline-block text-brand">
           ← Все публикации
         </Link>
+      </div>
+    </Layout>
+  ),
+  errorComponent: ({ error }) => (
+    <Layout>
+      <div className="max-w-3xl mx-auto px-6 py-32 text-center text-text-secondary">
+        Не удалось загрузить публикацию: {error.message}
       </div>
     </Layout>
   ),
@@ -74,19 +81,33 @@ function BlogPostPage() {
 
             <FadeIn delay={0.2}>
               <div className="reading-content mt-12">
-                <p>{p.excerpt}</p>
-                <p>
-                  [Полный текст публикации будет добавлен позже] Этот материал — часть
-                  регулярной аналитики NEUROMEIN о трансформации рынка труда под
-                  влиянием ИИ.
-                </p>
-                <p>
-                  Если вы хотите следить за обновлениями, подпишитесь на{" "}
-                  <a href="https://t.me/neuromein" target="_blank" rel="noreferrer">
-                    Telegram-канал
-                  </a>
-                  .
-                </p>
+                {p.body
+                  ? p.body
+                      .split(/\n\n+/)
+                      .map((para, i) => (
+                        <p key={i} style={{ whiteSpace: "pre-line" }}>
+                          {para}
+                        </p>
+                      ))
+                  : (
+                    <>
+                      <p>{p.excerpt}</p>
+                      <p>
+                        Если вы хотите следить за обновлениями, подпишитесь на{" "}
+                        <a href="https://t.me/neuromein" target="_blank" rel="noreferrer">
+                          Telegram-канал
+                        </a>
+                        .
+                      </p>
+                    </>
+                  )}
+                {p.telegramUrl && (
+                  <p>
+                    <a href={p.telegramUrl} target="_blank" rel="noreferrer">
+                      Читать оригинал в Telegram →
+                    </a>
+                  </p>
+                )}
               </div>
             </FadeIn>
           </div>
