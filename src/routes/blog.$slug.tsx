@@ -117,29 +117,23 @@ function BlogPostPage() {
             </FadeIn>
             </div>
 
-            <FadeIn delay={0.14}>
-              <aside className="lg:sticky lg:top-32 lg:self-start">
-                <div className="border-l border-border pl-5">
-                  <div className="label-eyebrow">Источник</div>
-                  <p className="mt-3 text-[14px] leading-[1.6] text-text-secondary">
-                    Полная версия доступна на сайте. Оригинал сохранён в Telegram-канале.
-                  </p>
-                  {p.telegramUrl && (
-                    <a
-                      href={p.telegramUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="mt-5 inline-flex h-10 items-center gap-2 rounded-full border-[0.5px] border-border-strong bg-bg-card/70 px-4 text-[13px] font-medium text-brand transition-colors hover:border-brand/50 hover:text-text-primary"
-                    >
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                        <path d="M21.95 4.32c.32-1.32-.46-1.86-1.32-1.55L2.78 9.9c-1.27.5-1.25 1.21-.22 1.53l4.62 1.44 10.7-6.74c.5-.33.96-.15.58.18l-8.66 7.83-.34 4.83c.5 0 .72-.22.99-.48l2.37-2.3 4.92 3.63c.9.5 1.55.24 1.78-.83l3.22-15.13z" />
-                      </svg>
-                      Оригинал
-                    </a>
-                  )}
-                </div>
-              </aside>
-            </FadeIn>
+            {p.telegramUrl && (
+              <FadeIn delay={0.14}>
+                <aside className="lg:sticky lg:top-32 lg:self-start">
+                  <a
+                    href={p.telegramUrl}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="inline-flex h-11 items-center gap-2 rounded-full border-[0.5px] border-border-strong bg-bg-card/70 px-5 text-[13px] font-medium text-brand transition-colors hover:border-brand/50 hover:text-text-primary"
+                  >
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                      <path d="M21.95 4.32c.32-1.32-.46-1.86-1.32-1.55L2.78 9.9c-1.27.5-1.25 1.21-.22 1.53l4.62 1.44 10.7-6.74c.5-.33.96-.15.58.18l-8.66 7.83-.34 4.83c.5 0 .72-.22.99-.48l2.37-2.3 4.92 3.63c.9.5 1.55.24 1.78-.83l3.22-15.13z" />
+                    </svg>
+                    Читать в Telegram
+                  </a>
+                </aside>
+              </FadeIn>
+            )}
           </div>
 
             <FadeIn delay={0.2}>
