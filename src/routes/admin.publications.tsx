@@ -508,17 +508,6 @@ function AdminPublicationsPage() {
             </div>
 
             <div className="grid gap-1.5">
-              <Label htmlFor="pub-excerpt">Короткое описание</Label>
-              <Textarea
-                id="pub-excerpt"
-                value={draft.excerpt}
-                onChange={(e) => setDraft((d) => ({ ...d, excerpt: e.target.value }))}
-                placeholder="1–2 предложения, которые показываются в списке публикаций"
-                rows={2}
-              />
-            </div>
-
-            <div className="grid gap-1.5">
               <Label htmlFor="pub-body">Текст публикации</Label>
               <Textarea
                 id="pub-body"
@@ -617,4 +606,13 @@ function formatLocalDate(date: Date): string {
   const m = String(date.getMonth() + 1).padStart(2, "0");
   const d = String(date.getDate()).padStart(2, "0");
   return `${y}-${m}-${d}`;
+}
+
+/** Inline Telegram paper-plane icon. */
+function TelegramIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden className="shrink-0">
+      <path d="M21.95 4.32c.32-1.32-.46-1.86-1.32-1.55L2.78 9.9c-1.27.5-1.25 1.21-.22 1.53l4.62 1.44 10.7-6.74c.5-.33.96-.15.58.18l-8.66 7.83-.34 4.83c.5 0 .72-.22.99-.48l2.37-2.3 4.92 3.63c.9.5 1.55.24 1.78-.83l3.22-15.13z" />
+    </svg>
+  );
 }
