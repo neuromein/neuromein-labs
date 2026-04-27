@@ -1,16 +1,27 @@
 import { Link } from "@tanstack/react-router";
 import { motion } from "framer-motion";
 import { Reveal } from "./Reveal";
-import { PUBLICATIONS } from "@/lib/site";
+import type { Publication } from "@/data/publications.fetch";
 
 /**
  * Премиальная лента публикаций в стиле madiyour:
  * - тёмная карточка-контейнер с тонкой градиентной подсветкой
  * - строки с hover-эффектом (фон скользит слева направо)
  * - крупная типографика, monospaced даты
+ *
+ * Источник данных передаётся пропсом (БД через fetchPublications).
+ * Если ничего не передано — берётся пустой массив (компонент не падает).
  */
-export function PublicationsList() {
-  const items = PUBLICATIONS.slice(0, 4);
+export function PublicationsList({
+  items,
+  limit,
+}: {
+  items: Publication[];
+  /** Если задан — показать только первые N публикаций. */
+  limit?: number;
+}) {
+  const list = typeof limit === "number" ? items.slice(0, limit) : items;
+  if (list.length === 0) return null;
   return (
     <div className="relative mt-8 rounded-[28px] border-[0.5px] border-border bg-bg-deep overflow-hidden">
       {/* Ambient glow */}
@@ -34,7 +45,7 @@ export function PublicationsList() {
       />
 
       <ul className="relative divide-y divide-border">
-        {items.map((p, i) => (
+        {list.map((p, i) => (
           <Reveal key={p.slug} delay={i * 0.1}>
             <li>
               <Link
