@@ -1,4 +1,4 @@
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, Outlet, useLocation } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Layout } from "@/components/Layout";
 import { Reveal } from "@/components/Reveal";
@@ -40,6 +40,11 @@ export const Route = createFileRoute("/blog")({
 function BlogPage() {
   const initial = Route.useLoaderData() as Publication[];
   const [items, setItems] = useState<Publication[]>(initial);
+  const location = useLocation();
+
+  if (location.pathname !== "/blog") {
+    return <Outlet />;
+  }
 
   // Realtime: re-fetch on any change to publications
   useEffect(() => {
