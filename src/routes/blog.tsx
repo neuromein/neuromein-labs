@@ -42,10 +42,6 @@ function BlogPage() {
   const [items, setItems] = useState<Publication[]>(initial);
   const location = useLocation();
 
-  if (location.pathname !== "/blog") {
-    return <Outlet />;
-  }
-
   // Realtime: re-fetch on any change to publications
   useEffect(() => {
     let cancelled = false;
@@ -70,6 +66,10 @@ function BlogPage() {
       supabase.removeChannel(channel);
     };
   }, []);
+
+  if (location.pathname !== "/blog") {
+    return <Outlet />;
+  }
 
   return (
     <Layout>
