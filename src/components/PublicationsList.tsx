@@ -23,10 +23,10 @@ export function PublicationsList({
   if (list.length === 0) return null;
   return (
     <div className="relative mt-10">
-      <ul className="grid gap-3">
+      <div className="grid gap-3">
         {list.map((p, i) => (
           <Reveal key={p.slug} delay={i * 0.1}>
-            <li className="group relative overflow-hidden rounded-[16px] border-[0.5px] border-border bg-bg-deep/80 transition-colors duration-300 hover:border-border-strong hover:bg-bg-card/70">
+            <article className="group relative overflow-hidden rounded-[16px] border-[0.5px] border-border bg-bg-deep/80 transition-colors duration-300 hover:border-border-strong hover:bg-bg-card/70">
               <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand/35 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
               <div className="flex flex-col gap-4 p-5 sm:flex-row sm:items-center sm:justify-between lg:p-6">
                 <Link
@@ -67,10 +67,10 @@ export function PublicationsList({
                   </a>
                 )}
               </div>
-            </li>
+            </article>
           </Reveal>
         ))}
-      </ul>
+      </div>
     </div>
   );
 }
