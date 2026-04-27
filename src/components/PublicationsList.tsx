@@ -81,6 +81,21 @@ export function PublicationsList({
                   </span>
                 </span>
                 <span className="relative flex items-center gap-3 shrink-0">
+                  {p.telegramUrl && (
+                    <a
+                      href={p.telegramUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      title="Оригинальный пост в Telegram"
+                      aria-label="Оригинальный пост в Telegram"
+                      className="inline-flex items-center justify-center h-7 w-7 rounded-full border-[0.5px] border-border-strong bg-bg-card/60 text-[#4A9EF5] hover:text-[#7eb8f8] hover:border-[#4A9EF5]/40 transition-colors"
+                    >
+                      <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                        <path d="M21.95 4.32c.32-1.32-.46-1.86-1.32-1.55L2.78 9.9c-1.27.5-1.25 1.21-.22 1.53l4.62 1.44 10.7-6.74c.5-.33.96-.15.58.18l-8.66 7.83-.34 4.83c.5 0 .72-.22.99-.48l2.37-2.3 4.92 3.63c.9.5 1.55.24 1.78-.83l3.22-15.13z" />
+                      </svg>
+                    </a>
+                  )}
                   <span className="inline-flex items-center h-7 px-3 rounded-full border-[0.5px] border-border-strong bg-bg-card/60 text-[11px] text-text-secondary tracking-[0.04em] uppercase">
                     {p.tag}
                   </span>

@@ -336,10 +336,18 @@ function AdminPublicationsPage() {
                   <h3 className="text-[15px] font-medium text-text-primary leading-snug">
                     {row.title}
                   </h3>
-                  {row.excerpt && (
-                    <p className="mt-1 text-[13px] text-text-secondary line-clamp-2">
-                      {row.excerpt}
-                    </p>
+                  {row.telegram_url && (
+                    <a
+                      href={row.telegram_url}
+                      target="_blank"
+                      rel="noreferrer"
+                      onClick={(e) => e.stopPropagation()}
+                      className="mt-1 inline-flex items-center gap-1.5 text-[12px] text-[#4A9EF5] hover:text-[#7eb8f8] transition-colors break-all"
+                      title="Открыть пост в Telegram"
+                    >
+                      <TelegramIcon />
+                      <span className="truncate max-w-[420px]">{row.telegram_url}</span>
+                    </a>
                   )}
                 </div>
                 <div className="flex items-center gap-1 shrink-0">
@@ -500,17 +508,6 @@ function AdminPublicationsPage() {
             </div>
 
             <div className="grid gap-1.5">
-              <Label htmlFor="pub-excerpt">Короткое описание</Label>
-              <Textarea
-                id="pub-excerpt"
-                value={draft.excerpt}
-                onChange={(e) => setDraft((d) => ({ ...d, excerpt: e.target.value }))}
-                placeholder="1–2 предложения, которые показываются в списке публикаций"
-                rows={2}
-              />
-            </div>
-
-            <div className="grid gap-1.5">
               <Label htmlFor="pub-body">Текст публикации</Label>
               <Textarea
                 id="pub-body"
@@ -609,4 +606,13 @@ function formatLocalDate(date: Date): string {
   const m = String(date.getMonth() + 1).padStart(2, "0");
   const d = String(date.getDate()).padStart(2, "0");
   return `${y}-${m}-${d}`;
+}
+
+/** Inline Telegram paper-plane icon. */
+function TelegramIcon() {
+  return (
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden className="shrink-0">
+      <path d="M21.95 4.32c.32-1.32-.46-1.86-1.32-1.55L2.78 9.9c-1.27.5-1.25 1.21-.22 1.53l4.62 1.44 10.7-6.74c.5-.33.96-.15.58.18l-8.66 7.83-.34 4.83c.5 0 .72-.22.99-.48l2.37-2.3 4.92 3.63c.9.5 1.55.24 1.78-.83l3.22-15.13z" />
+    </svg>
+  );
 }

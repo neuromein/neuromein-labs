@@ -4,6 +4,40 @@ import { FadeIn } from "@/components/Reveal";
 import { Pill } from "@/components/ui-bits";
 import { fetchPublicationBySlug } from "@/data/publications.fetch";
 
+/**
+ * Convert plain text into React nodes with auto-linked URLs.
+ * Detects http(s)://, t.me/, and bare www.* links.
+ */
+function linkify(text: string): React.ReactNode[] {
+  const re = /(https?:\/\/[^\s)]+|t\.me\/[^\s)]+|www\.[^\s)]+)/g;
+  const out: React.ReactNode[] = [];
+  let last = 0;
+  let m: RegExpExecArray | null;
+  let i = 0;
+  while ((m = re.exec(text)) !== null) {
+    if (m.index > last) out.push(text.slice(last, m.index));
+    const raw = m[0];
+    const href = raw.startsWith("http")
+      ? raw
+      : raw.startsWith("t.me/")
+        ? `https://${raw}`
+        : `https://${raw}`;
+    out.push(
+      <a
+        key={`lnk-${i++}`}
+        href={href}
+        target="_blank"
+        rel="noreferrer"
+      >
+        {raw}
+      </a>,
+    );
+    last = m.index + raw.length;
+  }
+  if (last < text.length) out.push(text.slice(last));
+  return out;
+}
+
 export const Route = createFileRoute("/blog/$slug")({
   loader: async ({ params }) => {
     const item = await fetchPublicationBySlug(params.slug);
@@ -81,26 +115,27 @@ function BlogPostPage() {
 
             <FadeIn delay={0.2}>
               <div className="reading-content mt-12">
-                {p.body
-                  ? p.body
-                      .split(/\n\n+/)
-                      .map((para, i) => (
-                        <p key={i} style={{ whiteSpace: "pre-line" }}>
-                          {para}
-                        </p>
-                      ))
-                  : (
-                    <>
-                      <p>{p.excerpt}</p>
-                      <p>
-                        Если вы хотите следить за обновлениями, подпишитесь на{" "}
-                        <a href="https://t.me/neuromein" target="_blank" rel="noreferrer">
-                          Telegram-канал
-                        </a>
-                        .
+                {p.body && p.body.trim().length > 0 ? (
+                  p.body
+                    .split(/\n\n+/)
+                    .map((para, i) => (
+                      <p key={i} style={{ whiteSpace: "pre-line" }}>
+                        {linkify(para)}
                       </p>
-                    </>
-                  )}
+                    ))
+                ) : (
+                  <>
+                    {p.excerpt && <p>{p.excerpt}</p>}
+                    <p>
+                      Полный текст публикации скоро появится здесь. Пока вы можете
+                      прочитать оригинал в{" "}
+                      <a href={p.telegramUrl ?? "https://t.me/neuromein"} target="_blank" rel="noreferrer">
+                        Telegram-канале
+                      </a>
+                      .
+                    </p>
+                  </>
+                )}
                 {p.telegramUrl && (
                   <p>
                     <a href={p.telegramUrl} target="_blank" rel="noreferrer">
