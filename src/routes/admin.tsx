@@ -25,7 +25,7 @@ interface NavItem {
 
 const NAV: NavItem[] = [
   { to: "/admin/predictions", label: "Прогнозы", icon: ListChecks, enabled: true },
-  { to: "/admin/publications", label: "Публикации", icon: FileText, enabled: false, hint: "скоро" },
+  { to: "/admin/publications", label: "Публикации", icon: FileText, enabled: true },
   { to: "/admin/settings", label: "Настройки", icon: SettingsIcon, enabled: false, hint: "скоро" },
 ];
 
