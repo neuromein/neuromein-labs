@@ -81,48 +81,80 @@ export const Route = createFileRoute("/blog/$slug")({
 
 function BlogPostPage() {
   const { item: p } = Route.useLoaderData();
+  const paragraphs = p.body.trim().length > 0
+    ? p.body.trim().split(/\n{2,}/).filter((para) => para.trim().length > 0)
+    : [];
+
   return (
     <Layout>
-      <div className="max-w-[1320px] mx-auto pb-20">
-        <article>
-          <div className="max-w-[820px] mx-auto px-2 sm:px-6 lg:px-10 py-10 lg:py-18">
+      <article className="mx-auto max-w-[1180px] pb-24">
+        <div className="px-0 sm:px-6 lg:px-10">
+          <div className="grid gap-10 py-8 lg:grid-cols-[minmax(0,1fr)_240px] lg:gap-16 lg:py-14">
+            <div className="min-w-0">
             <FadeIn>
-              <nav className="text-[13px] text-text-tertiary flex items-center gap-2 flex-wrap">
-                <Link to="/" className="hover:text-text-secondary transition-colors">
-                  Главная
-                </Link>
-                <span aria-hidden>/</span>
-                <Link to="/blog" className="hover:text-text-secondary transition-colors">
-                  Публикации
-                </Link>
-                <span aria-hidden>/</span>
-                <span className="text-text-secondary">{p.title}</span>
-              </nav>
+              <Link
+                to="/blog"
+                className="inline-flex items-center gap-2 text-[13px] font-medium text-text-tertiary transition-colors hover:text-text-primary"
+              >
+                <svg width="15" height="15" viewBox="0 0 16 16" fill="none" aria-hidden>
+                  <path d="M10 12L6 8l4-4" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                Все публикации
+              </Link>
             </FadeIn>
 
             <FadeIn delay={0.06}>
-              <div className="mt-8 flex items-center gap-3 flex-wrap">
-                <span className="text-[13px] text-text-tertiary">{p.dateLabel}</span>
+              <div className="mt-9 flex flex-wrap items-center gap-3">
                 <Pill>{p.tag}</Pill>
+                <span className="text-[13px] text-text-tertiary">{p.dateLabel}</span>
               </div>
             </FadeIn>
 
             <FadeIn delay={0.12}>
-              <h1 className="mt-6 text-[40px] sm:text-[56px] lg:text-[68px] font-medium text-text-primary leading-[1.02] tracking-[-0.025em]">
+              <h1 className="mt-6 max-w-[920px] text-[38px] font-medium leading-[1.05] text-text-primary sm:text-[56px] lg:text-[72px]">
                 {p.title}
               </h1>
             </FadeIn>
+            </div>
+
+            <FadeIn delay={0.14}>
+              <aside className="lg:sticky lg:top-32 lg:self-start">
+                <div className="border-l border-border pl-5">
+                  <div className="label-eyebrow">Источник</div>
+                  <p className="mt-3 text-[14px] leading-[1.6] text-text-secondary">
+                    Полная версия доступна на сайте. Оригинал сохранён в Telegram-канале.
+                  </p>
+                  {p.telegramUrl && (
+                    <a
+                      href={p.telegramUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="mt-5 inline-flex h-10 items-center gap-2 rounded-full border-[0.5px] border-border-strong bg-bg-card/70 px-4 text-[13px] font-medium text-brand transition-colors hover:border-brand/50 hover:text-text-primary"
+                    >
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                        <path d="M21.95 4.32c.32-1.32-.46-1.86-1.32-1.55L2.78 9.9c-1.27.5-1.25 1.21-.22 1.53l4.62 1.44 10.7-6.74c.5-.33.96-.15.58.18l-8.66 7.83-.34 4.83c.5 0 .72-.22.99-.48l2.37-2.3 4.92 3.63c.9.5 1.55.24 1.78-.83l3.22-15.13z" />
+                      </svg>
+                      Оригинал
+                    </a>
+                  )}
+                </div>
+              </aside>
+            </FadeIn>
+          </div>
 
             <FadeIn delay={0.2}>
-              <div className="reading-content mt-12 border-t border-border pt-10">
-                {p.body && p.body.trim().length > 0 ? (
-                  p.body
-                    .split(/\n\n+/)
-                    .map((para, i) => (
-                      <p key={i} style={{ whiteSpace: "pre-line" }}>
-                        {linkify(para)}
-                      </p>
-                    ))
+            <div className="border-t border-border pt-10 lg:pt-14">
+              <div className="reading-content mx-auto max-w-[760px]">
+                {paragraphs.length > 0 ? (
+                  paragraphs.map((para, i) => (
+                    <p
+                      key={i}
+                      className={i === 0 ? "text-[19px] leading-[1.75] text-text-primary sm:text-[21px]" : undefined}
+                      style={{ whiteSpace: "pre-line" }}
+                    >
+                      {linkify(para)}
+                    </p>
+                  ))
                 ) : (
                   <>
                     {p.excerpt && <p>{p.excerpt}</p>}
@@ -136,26 +168,11 @@ function BlogPostPage() {
                     </p>
                   </>
                 )}
-                {p.telegramUrl && (
-                  <p className="pt-6">
-                    <a
-                      href={p.telegramUrl}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="not-prose inline-flex items-center gap-2 rounded-full border-[0.5px] border-border-strong bg-bg-card/70 px-4 py-2 text-[13px] font-medium text-brand transition-colors hover:border-brand/50 hover:text-text-primary"
-                    >
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
-                        <path d="M21.95 4.32c.32-1.32-.46-1.86-1.32-1.55L2.78 9.9c-1.27.5-1.25 1.21-.22 1.53l4.62 1.44 10.7-6.74c.5-.33.96-.15.58.18l-8.66 7.83-.34 4.83c.5 0 .72-.22.99-.48l2.37-2.3 4.92 3.63c.9.5 1.55.24 1.78-.83l3.22-15.13z" />
-                      </svg>
-                      Оригинал в Telegram
-                    </a>
-                  </p>
-                )}
               </div>
+            </div>
             </FadeIn>
-          </div>
-        </article>
-      </div>
+        </div>
+      </article>
     </Layout>
   );
 }
