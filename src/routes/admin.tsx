@@ -122,16 +122,6 @@ function AdminLayout() {
             );
           })}
         </nav>
-
-        <div className="p-3 border-t border-border">
-          <Link
-            to="/"
-            className="flex items-center gap-2 h-9 px-3 rounded-lg text-[12px] text-text-tertiary hover:text-text-primary hover:bg-bg-card/60 transition-colors"
-          >
-            <ExternalLink size={13} />
-            На сайт
-          </Link>
-        </div>
       </aside>
 
       {/* Main */}
@@ -149,14 +139,24 @@ function AdminLayout() {
               </div>
             </div>
           </div>
-          <button
-            onClick={handleSignOut}
-            className="inline-flex items-center gap-2 h-9 px-3.5 rounded-lg border border-border bg-bg-card/60 text-text-secondary hover:text-text-primary hover:bg-bg-card text-[13px] transition-colors"
-            title="Выйти из личного кабинета"
-          >
-            <LogOut size={14} />
-            <span className="hidden sm:inline">Выйти</span>
-          </button>
+          <div className="flex items-center gap-2">
+            <Link
+              to="/"
+              className="inline-flex items-center gap-2 h-9 px-3.5 rounded-lg border border-border bg-bg-card/60 text-text-secondary hover:text-text-primary hover:bg-bg-card text-[13px] transition-colors"
+              title="Перейти на сайт"
+            >
+              <ExternalLink size={14} />
+              <span className="hidden sm:inline">На сайт</span>
+            </Link>
+            <button
+              onClick={handleSignOut}
+              className="inline-flex items-center gap-2 h-9 px-3.5 rounded-lg border border-border bg-bg-card/60 text-text-secondary hover:text-text-primary hover:bg-bg-card text-[13px] transition-colors"
+              title="Выйти из личного кабинета"
+            >
+              <LogOut size={14} />
+              <span className="hidden sm:inline">Выйти</span>
+            </button>
+          </div>
         </header>
 
         {/* Mobile nav */}
