@@ -84,8 +84,8 @@ function BlogPostPage() {
   return (
     <Layout>
       <div className="max-w-[1320px] mx-auto pb-20">
-        <article className="rounded-[24px] border-[0.5px] border-border bg-bg-reading">
-          <div className="max-w-[760px] mx-auto px-6 lg:px-10 py-16 lg:py-24">
+        <article>
+          <div className="max-w-[820px] mx-auto px-2 sm:px-6 lg:px-10 py-10 lg:py-18">
             <FadeIn>
               <nav className="text-[13px] text-text-tertiary flex items-center gap-2 flex-wrap">
                 <Link to="/" className="hover:text-text-secondary transition-colors">
@@ -108,13 +108,13 @@ function BlogPostPage() {
             </FadeIn>
 
             <FadeIn delay={0.12}>
-              <h1 className="mt-6 text-[36px] sm:text-[48px] font-medium text-text-primary leading-[1.05] tracking-[-0.02em]">
+              <h1 className="mt-6 text-[40px] sm:text-[56px] lg:text-[68px] font-medium text-text-primary leading-[1.02] tracking-[-0.025em]">
                 {p.title}
               </h1>
             </FadeIn>
 
             <FadeIn delay={0.2}>
-              <div className="reading-content mt-12">
+              <div className="reading-content mt-12 border-t border-border pt-10">
                 {p.body && p.body.trim().length > 0 ? (
                   p.body
                     .split(/\n\n+/)
@@ -137,9 +137,17 @@ function BlogPostPage() {
                   </>
                 )}
                 {p.telegramUrl && (
-                  <p>
-                    <a href={p.telegramUrl} target="_blank" rel="noreferrer">
-                      Читать оригинал в Telegram →
+                  <p className="pt-6">
+                    <a
+                      href={p.telegramUrl}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="not-prose inline-flex items-center gap-2 rounded-full border-[0.5px] border-border-strong bg-bg-card/70 px-4 py-2 text-[13px] font-medium text-brand transition-colors hover:border-brand/50 hover:text-text-primary"
+                    >
+                      <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden>
+                        <path d="M21.95 4.32c.32-1.32-.46-1.86-1.32-1.55L2.78 9.9c-1.27.5-1.25 1.21-.22 1.53l4.62 1.44 10.7-6.74c.5-.33.96-.15.58.18l-8.66 7.83-.34 4.83c.5 0 .72-.22.99-.48l2.37-2.3 4.92 3.63c.9.5 1.55.24 1.78-.83l3.22-15.13z" />
+                      </svg>
+                      Оригинал в Telegram
                     </a>
                   </p>
                 )}
