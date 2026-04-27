@@ -18,9 +18,11 @@ import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ResearchIndexRouteImport } from './routes/research.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as SpeakingSlugRouteImport } from './routes/speaking.$slug'
 import { Route as ResearchSlugRouteImport } from './routes/research.$slug'
 import { Route as PredictionsAdminRouteImport } from './routes/predictions.admin'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
+import { Route as AdminSpeakingRouteImport } from './routes/admin.speaking'
 import { Route as AdminPublicationsRouteImport } from './routes/admin.publications'
 import { Route as AdminPredictionsRouteImport } from './routes/admin.predictions'
 import { Route as ApiPredictionsJsonRouteImport } from './routes/api.predictions.json'
@@ -70,6 +72,11 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AdminRoute,
 } as any)
+const SpeakingSlugRoute = SpeakingSlugRouteImport.update({
+  id: '/speaking/$slug',
+  path: '/speaking/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ResearchSlugRoute = ResearchSlugRouteImport.update({
   id: '/research/$slug',
   path: '/research/$slug',
@@ -84,6 +91,11 @@ const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
   getParentRoute: () => BlogRoute,
+} as any)
+const AdminSpeakingRoute = AdminSpeakingRouteImport.update({
+  id: '/speaking',
+  path: '/speaking',
+  getParentRoute: () => AdminRoute,
 } as any)
 const AdminPublicationsRoute = AdminPublicationsRouteImport.update({
   id: '/publications',
@@ -111,9 +123,11 @@ export interface FileRoutesByFullPath {
   '/predictions': typeof PredictionsRouteWithChildren
   '/admin/predictions': typeof AdminPredictionsRoute
   '/admin/publications': typeof AdminPublicationsRoute
+  '/admin/speaking': typeof AdminSpeakingRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/predictions/admin': typeof PredictionsAdminRoute
   '/research/$slug': typeof ResearchSlugRoute
+  '/speaking/$slug': typeof SpeakingSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/research/': typeof ResearchIndexRoute
   '/api/predictions/json': typeof ApiPredictionsJsonRoute
@@ -127,9 +141,11 @@ export interface FileRoutesByTo {
   '/predictions': typeof PredictionsRouteWithChildren
   '/admin/predictions': typeof AdminPredictionsRoute
   '/admin/publications': typeof AdminPublicationsRoute
+  '/admin/speaking': typeof AdminSpeakingRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/predictions/admin': typeof PredictionsAdminRoute
   '/research/$slug': typeof ResearchSlugRoute
+  '/speaking/$slug': typeof SpeakingSlugRoute
   '/admin': typeof AdminIndexRoute
   '/research': typeof ResearchIndexRoute
   '/api/predictions/json': typeof ApiPredictionsJsonRoute
@@ -145,9 +161,11 @@ export interface FileRoutesById {
   '/predictions': typeof PredictionsRouteWithChildren
   '/admin/predictions': typeof AdminPredictionsRoute
   '/admin/publications': typeof AdminPublicationsRoute
+  '/admin/speaking': typeof AdminSpeakingRoute
   '/blog/$slug': typeof BlogSlugRoute
   '/predictions/admin': typeof PredictionsAdminRoute
   '/research/$slug': typeof ResearchSlugRoute
+  '/speaking/$slug': typeof SpeakingSlugRoute
   '/admin/': typeof AdminIndexRoute
   '/research/': typeof ResearchIndexRoute
   '/api/predictions/json': typeof ApiPredictionsJsonRoute
@@ -164,9 +182,11 @@ export interface FileRouteTypes {
     | '/predictions'
     | '/admin/predictions'
     | '/admin/publications'
+    | '/admin/speaking'
     | '/blog/$slug'
     | '/predictions/admin'
     | '/research/$slug'
+    | '/speaking/$slug'
     | '/admin/'
     | '/research/'
     | '/api/predictions/json'
@@ -180,9 +200,11 @@ export interface FileRouteTypes {
     | '/predictions'
     | '/admin/predictions'
     | '/admin/publications'
+    | '/admin/speaking'
     | '/blog/$slug'
     | '/predictions/admin'
     | '/research/$slug'
+    | '/speaking/$slug'
     | '/admin'
     | '/research'
     | '/api/predictions/json'
@@ -197,9 +219,11 @@ export interface FileRouteTypes {
     | '/predictions'
     | '/admin/predictions'
     | '/admin/publications'
+    | '/admin/speaking'
     | '/blog/$slug'
     | '/predictions/admin'
     | '/research/$slug'
+    | '/speaking/$slug'
     | '/admin/'
     | '/research/'
     | '/api/predictions/json'
@@ -214,6 +238,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   PredictionsRoute: typeof PredictionsRouteWithChildren
   ResearchSlugRoute: typeof ResearchSlugRoute
+  SpeakingSlugRoute: typeof SpeakingSlugRoute
   ResearchIndexRoute: typeof ResearchIndexRoute
   ApiPredictionsJsonRoute: typeof ApiPredictionsJsonRoute
 }
@@ -283,6 +308,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof AdminRoute
     }
+    '/speaking/$slug': {
+      id: '/speaking/$slug'
+      path: '/speaking/$slug'
+      fullPath: '/speaking/$slug'
+      preLoaderRoute: typeof SpeakingSlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/research/$slug': {
       id: '/research/$slug'
       path: '/research/$slug'
@@ -303,6 +335,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/blog/$slug'
       preLoaderRoute: typeof BlogSlugRouteImport
       parentRoute: typeof BlogRoute
+    }
+    '/admin/speaking': {
+      id: '/admin/speaking'
+      path: '/speaking'
+      fullPath: '/admin/speaking'
+      preLoaderRoute: typeof AdminSpeakingRouteImport
+      parentRoute: typeof AdminRoute
     }
     '/admin/publications': {
       id: '/admin/publications'
@@ -331,12 +370,14 @@ declare module '@tanstack/react-router' {
 interface AdminRouteChildren {
   AdminPredictionsRoute: typeof AdminPredictionsRoute
   AdminPublicationsRoute: typeof AdminPublicationsRoute
+  AdminSpeakingRoute: typeof AdminSpeakingRoute
   AdminIndexRoute: typeof AdminIndexRoute
 }
 
 const AdminRouteChildren: AdminRouteChildren = {
   AdminPredictionsRoute: AdminPredictionsRoute,
   AdminPublicationsRoute: AdminPublicationsRoute,
+  AdminSpeakingRoute: AdminSpeakingRoute,
   AdminIndexRoute: AdminIndexRoute,
 }
 
@@ -373,6 +414,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   PredictionsRoute: PredictionsRouteWithChildren,
   ResearchSlugRoute: ResearchSlugRoute,
+  SpeakingSlugRoute: SpeakingSlugRoute,
   ResearchIndexRoute: ResearchIndexRoute,
   ApiPredictionsJsonRoute: ApiPredictionsJsonRoute,
 }

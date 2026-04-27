@@ -1,72 +1,28 @@
 import { useEffect, useRef, useState } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Link } from "@tanstack/react-router";
 import { Reveal } from "./Reveal";
+import type { SpeakingEngagement } from "@/data/speaking.fetch";
+import { fetchSpeaking } from "@/data/speaking.fetch";
 
-import mguImg from "@/assets/speaking/mgu.jpeg";
-import r1Img from "@/assets/speaking/r1.jpeg";
-import bankingImg from "@/assets/speaking/banking.jpg";
-import armeniaImg from "@/assets/speaking/armenia-bank.jpeg";
-import yandexImg from "@/assets/speaking/yandex.jpeg";
-import maiImg from "@/assets/speaking/mai.jpeg";
+export function SpeakingSlider({ items: itemsProp }: { items?: SpeakingEngagement[] }) {
+  const [items, setItems] = useState<SpeakingEngagement[]>(itemsProp ?? []);
 
-type Item = {
-  id: string;
-  org: string;
-  role: string;
-  caption: string;
-  image: string;
-};
+  useEffect(() => {
+    if (itemsProp && itemsProp.length > 0) return;
+    let cancelled = false;
+    fetchSpeaking()
+      .then((rows) => {
+        if (!cancelled) setItems(rows);
+      })
+      .catch(() => {
+        /* fail silently — section just stays empty */
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [itemsProp]);
 
-const ITEMS: Item[] = [
-  {
-    id: "wmt-msu",
-    org: "Личный ИИ · WMT AI / МГУ",
-    role: "Спикер-эксперт",
-    caption: "Обучающий курс по программе Stanford Global Studies",
-    image: mguImg,
-  },
-  {
-    id: "r1",
-    org: "Проектное бюро R1",
-    role: "Спикер-эксперт",
-    caption:
-      "Воркшоп по интеграции ИИ в бизнес-процессы архитектурного бюро",
-    image: r1Img,
-  },
-  {
-    id: "ai-banking",
-    org: "ИИ-БАНКИНГ_26",
-    role: "Спикер",
-    caption:
-      "О развитии ИИ в банках в ближайшие годы. Презентация исследования «Тихая замена»",
-    image: bankingImg,
-  },
-  {
-    id: "armenia-cb",
-    org: "Центральный Банк Армении",
-    role: "Спикер-эксперт",
-    caption:
-      "Двухдневная Executive Program on Applied AI для руководителей ЦБ Армении совместно с WMT AI",
-    image: armeniaImg,
-  },
-  {
-    id: "yandex",
-    org: "Yandex AI Studio",
-    role: "Приглашённый эксперт",
-    caption: "Участие в закрытой студийной серии Yandex Cloud",
-    image: yandexImg,
-  },
-  {
-    id: "mai",
-    org: "Московский Авиационный Институт «МАИ»",
-    role: "Спикер-эксперт",
-    caption:
-      "Обучение администрации вуза стратегиям адаптации образования к эпохе ИИ",
-    image: maiImg,
-  },
-];
-
-export function SpeakingSlider() {
   const scrollerRef = useRef<HTMLDivElement>(null);
   const [canPrev, setCanPrev] = useState(false);
   const [canNext, setCanNext] = useState(true);
@@ -88,13 +44,13 @@ export function SpeakingSlider() {
       el.removeEventListener("scroll", updateButtons);
       window.removeEventListener("resize", updateButtons);
     };
-  }, []);
+  }, [items.length]);
 
   // Авто-прокрутка: медленный непрерывный скролл с бесшовным зацикливанием.
   // Пауза при наведении, тач-взаимодействии или скрытой вкладке.
   useEffect(() => {
     const el = scrollerRef.current;
-    if (!el) return;
+    if (!el || items.length === 0) return;
 
     const reduceMotion = window.matchMedia(
       "(prefers-reduced-motion: reduce)",
@@ -164,7 +120,7 @@ export function SpeakingSlider() {
       el.removeEventListener("wheel", onUserScroll);
       document.removeEventListener("visibilitychange", onVisibility);
     };
-  }, []);
+  }, [items.length]);
 
   const scrollByCard = (dir: 1 | -1) => {
     const el = scrollerRef.current;
@@ -173,6 +129,8 @@ export function SpeakingSlider() {
     const step = card ? card.offsetWidth + 20 : el.clientWidth * 0.8;
     el.scrollBy({ left: step * dir, behavior: "smooth" });
   };
+
+  if (items.length === 0) return null;
 
   return (
     <div>
@@ -248,7 +206,7 @@ export function SpeakingSlider() {
             }}
           >
             {/* Дублируем список для бесшовного зацикливания авто-прокрутки */}
-            {[...ITEMS, ...ITEMS].map((item, idx) => (
+            {[...items, ...items].map((item, idx) => (
               <SpeakingCard key={`${item.id}-${idx}`} item={item} />
             ))}
           </div>
@@ -258,11 +216,13 @@ export function SpeakingSlider() {
   );
 }
 
-function SpeakingCard({ item }: { item: Item }) {
+function SpeakingCard({ item }: { item: SpeakingEngagement }) {
   return (
-    <article
+    <Link
+      to="/speaking/$slug"
+      params={{ slug: item.slug }}
       data-card
-      className="group relative shrink-0 snap-start overflow-hidden flex flex-col"
+      className="group relative shrink-0 snap-start overflow-hidden flex flex-col cursor-pointer"
       style={{
         width: "min(86vw, 360px)",
         background: "#0c0c12",
@@ -283,8 +243,8 @@ function SpeakingCard({ item }: { item: Item }) {
         style={{ aspectRatio: "4 / 3", background: "#0a0a10" }}
       >
         <img
-          src={item.image}
-          alt={item.org}
+          src={item.imageUrl}
+          alt={item.organization}
           loading="lazy"
           className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-[1.04]"
         />
@@ -319,7 +279,7 @@ function SpeakingCard({ item }: { item: Item }) {
           className="text-[17px] lg:text-[18px] font-medium leading-[1.25] tracking-[-0.01em]"
           style={{ color: "#f0f0f5" }}
         >
-          {item.org}
+          {item.organization}
         </h3>
         <p
           className="text-[13.5px] leading-[1.55]"
@@ -328,6 +288,6 @@ function SpeakingCard({ item }: { item: Item }) {
           {item.caption}
         </p>
       </div>
-    </article>
+    </Link>
   );
 }

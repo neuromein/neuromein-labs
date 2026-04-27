@@ -160,6 +160,57 @@ export type Database = {
         }
         Relationships: []
       }
+      speaking_engagements: {
+        Row: {
+          caption: string
+          created_at: string
+          description: string
+          display_order: number
+          event_date: string | null
+          external_url: string | null
+          id: string
+          image_url: string
+          is_visible: boolean
+          location: string | null
+          organization: string
+          role: string
+          slug: string
+          updated_at: string
+        }
+        Insert: {
+          caption?: string
+          created_at?: string
+          description?: string
+          display_order?: number
+          event_date?: string | null
+          external_url?: string | null
+          id?: string
+          image_url?: string
+          is_visible?: boolean
+          location?: string | null
+          organization: string
+          role?: string
+          slug: string
+          updated_at?: string
+        }
+        Update: {
+          caption?: string
+          created_at?: string
+          description?: string
+          display_order?: number
+          event_date?: string | null
+          external_url?: string | null
+          id?: string
+          image_url?: string
+          is_visible?: boolean
+          location?: string | null
+          organization?: string
+          role?: string
+          slug?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
