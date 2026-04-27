@@ -34,6 +34,7 @@ export async function fetchPredictions(): Promise<Prediction[]> {
       supabase
         .from("predictions")
         .select("*")
+        .eq("is_visible", true)
         .order("display_order", { ascending: true }),
       supabase
         .from("prediction_evidence")
