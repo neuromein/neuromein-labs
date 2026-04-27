@@ -1,7 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { Layout } from "@/components/Layout";
-import { PageHero } from "@/components/HeroCard";
 import { Reveal } from "@/components/Reveal";
 import { PublicationsList } from "@/components/PublicationsList";
 import {
@@ -70,11 +69,25 @@ function BlogPage() {
   return (
     <Layout>
       <div className="max-w-[1320px] mx-auto pb-20">
-        <PageHero
-          eyebrow="Заметки и разборы"
-          title="Публикации"
-          description="Аналитические заметки, разборы событий и мнения о развитии ИИ и его влиянии на рынок труда."
-        />
+        <section className="relative overflow-hidden border-b border-border pb-10 pt-8 lg:pb-14 lg:pt-12">
+          <div className="grid gap-8 lg:grid-cols-[1fr_360px] lg:items-end">
+            <div>
+              <div className="label-eyebrow mb-6">Заметки и разборы</div>
+              <h1 className="max-w-[12ch] text-[56px] font-medium leading-[0.96] tracking-[-0.025em] text-text-primary sm:text-[82px] lg:text-[112px]">
+                Публикации
+              </h1>
+            </div>
+            <div className="max-w-[420px] lg:justify-self-end">
+              <p className="text-[16px] leading-[1.65] text-text-secondary">
+                Аналитические заметки, разборы событий и мнения о развитии ИИ и его влиянии на рынок труда.
+              </p>
+              <div className="mt-6 flex items-center gap-3 text-[12px] text-text-tertiary">
+                <span className="h-px flex-1 bg-border" aria-hidden />
+                <span>{items.length} материалов</span>
+              </div>
+            </div>
+          </div>
+        </section>
 
         {items.length === 0 ? (
           <Reveal>
