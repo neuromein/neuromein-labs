@@ -115,6 +115,51 @@ export type Database = {
         }
         Relationships: []
       }
+      publications: {
+        Row: {
+          body: string
+          created_at: string
+          display_order: number
+          excerpt: string
+          id: string
+          is_visible: boolean
+          published_at: string
+          slug: string
+          tag: string
+          telegram_url: string | null
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          body?: string
+          created_at?: string
+          display_order?: number
+          excerpt?: string
+          id?: string
+          is_visible?: boolean
+          published_at?: string
+          slug: string
+          tag?: string
+          telegram_url?: string | null
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          display_order?: number
+          excerpt?: string
+          id?: string
+          is_visible?: boolean
+          published_at?: string
+          slug?: string
+          tag?: string
+          telegram_url?: string | null
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string
