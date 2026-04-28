@@ -8,13 +8,13 @@ import { SpeakingSlider } from "@/components/SpeakingSlider";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "NEUROMEIN — Андрей Майнгардт. AI-стратег и аналитик" },
+      { title: "Андрей Майнгардт - AI-стратег | Автор исследования «Тихая замена» | NEUROMEIN" },
       {
         name: "description",
         content:
           "AI-стратег и аналитик Андрей Майнгардт исследует трансформацию рынка труда в горизонте 2026–2030. Аналитика, исследования и проверяемые прогнозы.",
       },
-      { property: "og:title", content: "NEUROMEIN — Андрей Майнгардт. AI-стратег и аналитик" },
+      { property: "og:title", content: "Андрей Майнгардт - AI-стратег | Автор исследования «Тихая замена» | NEUROMEIN" },
       {
         property: "og:description",
         content:
@@ -28,15 +28,15 @@ export const Route = createFileRoute("/")({
         type: "application/ld+json",
         children: JSON.stringify({
           "@context": "https://schema.org",
-          "@type": "Person",
-          name: "Андрей Майнгардт",
-          alternateName: "Andrew Meinhardt",
-          jobTitle: "AI-стратег и аналитик",
+          "@type": "WebSite",
+          name: "NEUROMEIN",
           url: "https://neuromein.ru",
-          sameAs: [
-            "https://t.me/neuromein",
-            "https://linkedin.com/in/andrew-meinhardt-306821361",
-          ],
+          author: {
+            "@type": "Person",
+            name: "Андрей Майнгардт",
+          },
+          description:
+            "Аналитический ресурс об искусственном интеллекте и рынке труда. Исследования, прогнозы, аналитика.",
         }),
       },
     ],
