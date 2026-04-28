@@ -14,6 +14,7 @@ export const SITE = {
 
 export const NAV_LINKS = [
   { to: "/research" as const, label: "Исследования" },
+  { to: "/methodology" as const, label: "Методология" },
   { to: "/predictions" as const, label: "Прогнозы" },
   { to: "/blog" as const, label: "Публикации" },
   { to: "/faq" as const, label: "FAQ" },
