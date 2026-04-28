@@ -17,10 +17,12 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ResearchIndexRouteImport } from './routes/research.index'
+import { Route as MethodologyIndexRouteImport } from './routes/methodology.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as SpeakingSlugRouteImport } from './routes/speaking.$slug'
 import { Route as ResearchSlugRouteImport } from './routes/research.$slug'
 import { Route as PredictionsAdminRouteImport } from './routes/predictions.admin'
+import { Route as MethodologySlugRouteImport } from './routes/methodology.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AdminSpeakingRouteImport } from './routes/admin.speaking'
 import { Route as AdminPublicationsRouteImport } from './routes/admin.publications'
@@ -67,6 +69,11 @@ const ResearchIndexRoute = ResearchIndexRouteImport.update({
   path: '/research/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const MethodologyIndexRoute = MethodologyIndexRouteImport.update({
+  id: '/methodology/',
+  path: '/methodology/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -86,6 +93,11 @@ const PredictionsAdminRoute = PredictionsAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
   getParentRoute: () => PredictionsRoute,
+} as any)
+const MethodologySlugRoute = MethodologySlugRouteImport.update({
+  id: '/methodology/$slug',
+  path: '/methodology/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/$slug',
@@ -125,10 +137,12 @@ export interface FileRoutesByFullPath {
   '/admin/publications': typeof AdminPublicationsRoute
   '/admin/speaking': typeof AdminSpeakingRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/methodology/$slug': typeof MethodologySlugRoute
   '/predictions/admin': typeof PredictionsAdminRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/speaking/$slug': typeof SpeakingSlugRoute
   '/admin/': typeof AdminIndexRoute
+  '/methodology/': typeof MethodologyIndexRoute
   '/research/': typeof ResearchIndexRoute
   '/api/predictions/json': typeof ApiPredictionsJsonRoute
 }
@@ -143,10 +157,12 @@ export interface FileRoutesByTo {
   '/admin/publications': typeof AdminPublicationsRoute
   '/admin/speaking': typeof AdminSpeakingRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/methodology/$slug': typeof MethodologySlugRoute
   '/predictions/admin': typeof PredictionsAdminRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/speaking/$slug': typeof SpeakingSlugRoute
   '/admin': typeof AdminIndexRoute
+  '/methodology': typeof MethodologyIndexRoute
   '/research': typeof ResearchIndexRoute
   '/api/predictions/json': typeof ApiPredictionsJsonRoute
 }
@@ -163,10 +179,12 @@ export interface FileRoutesById {
   '/admin/publications': typeof AdminPublicationsRoute
   '/admin/speaking': typeof AdminSpeakingRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/methodology/$slug': typeof MethodologySlugRoute
   '/predictions/admin': typeof PredictionsAdminRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/speaking/$slug': typeof SpeakingSlugRoute
   '/admin/': typeof AdminIndexRoute
+  '/methodology/': typeof MethodologyIndexRoute
   '/research/': typeof ResearchIndexRoute
   '/api/predictions/json': typeof ApiPredictionsJsonRoute
 }
@@ -184,10 +202,12 @@ export interface FileRouteTypes {
     | '/admin/publications'
     | '/admin/speaking'
     | '/blog/$slug'
+    | '/methodology/$slug'
     | '/predictions/admin'
     | '/research/$slug'
     | '/speaking/$slug'
     | '/admin/'
+    | '/methodology/'
     | '/research/'
     | '/api/predictions/json'
   fileRoutesByTo: FileRoutesByTo
@@ -202,10 +222,12 @@ export interface FileRouteTypes {
     | '/admin/publications'
     | '/admin/speaking'
     | '/blog/$slug'
+    | '/methodology/$slug'
     | '/predictions/admin'
     | '/research/$slug'
     | '/speaking/$slug'
     | '/admin'
+    | '/methodology'
     | '/research'
     | '/api/predictions/json'
   id:
@@ -221,10 +243,12 @@ export interface FileRouteTypes {
     | '/admin/publications'
     | '/admin/speaking'
     | '/blog/$slug'
+    | '/methodology/$slug'
     | '/predictions/admin'
     | '/research/$slug'
     | '/speaking/$slug'
     | '/admin/'
+    | '/methodology/'
     | '/research/'
     | '/api/predictions/json'
   fileRoutesById: FileRoutesById
@@ -237,8 +261,10 @@ export interface RootRouteChildren {
   FaqRoute: typeof FaqRoute
   LoginRoute: typeof LoginRoute
   PredictionsRoute: typeof PredictionsRouteWithChildren
+  MethodologySlugRoute: typeof MethodologySlugRoute
   ResearchSlugRoute: typeof ResearchSlugRoute
   SpeakingSlugRoute: typeof SpeakingSlugRoute
+  MethodologyIndexRoute: typeof MethodologyIndexRoute
   ResearchIndexRoute: typeof ResearchIndexRoute
   ApiPredictionsJsonRoute: typeof ApiPredictionsJsonRoute
 }
@@ -301,6 +327,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ResearchIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/methodology/': {
+      id: '/methodology/'
+      path: '/methodology'
+      fullPath: '/methodology/'
+      preLoaderRoute: typeof MethodologyIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/admin/': {
       id: '/admin/'
       path: '/'
@@ -328,6 +361,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/predictions/admin'
       preLoaderRoute: typeof PredictionsAdminRouteImport
       parentRoute: typeof PredictionsRoute
+    }
+    '/methodology/$slug': {
+      id: '/methodology/$slug'
+      path: '/methodology/$slug'
+      fullPath: '/methodology/$slug'
+      preLoaderRoute: typeof MethodologySlugRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/blog/$slug': {
       id: '/blog/$slug'
@@ -413,8 +453,10 @@ const rootRouteChildren: RootRouteChildren = {
   FaqRoute: FaqRoute,
   LoginRoute: LoginRoute,
   PredictionsRoute: PredictionsRouteWithChildren,
+  MethodologySlugRoute: MethodologySlugRoute,
   ResearchSlugRoute: ResearchSlugRoute,
   SpeakingSlugRoute: SpeakingSlugRoute,
+  MethodologyIndexRoute: MethodologyIndexRoute,
   ResearchIndexRoute: ResearchIndexRoute,
   ApiPredictionsJsonRoute: ApiPredictionsJsonRoute,
 }
