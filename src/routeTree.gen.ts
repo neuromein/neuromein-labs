@@ -22,6 +22,7 @@ import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as SpeakingSlugRouteImport } from './routes/speaking.$slug'
 import { Route as ResearchSlugRouteImport } from './routes/research.$slug'
 import { Route as PredictionsAdminRouteImport } from './routes/predictions.admin'
+import { Route as MethodologySlugRouteImport } from './routes/methodology.$slug'
 import { Route as BlogSlugRouteImport } from './routes/blog.$slug'
 import { Route as AdminSpeakingRouteImport } from './routes/admin.speaking'
 import { Route as AdminPublicationsRouteImport } from './routes/admin.publications'
@@ -93,6 +94,11 @@ const PredictionsAdminRoute = PredictionsAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => PredictionsRoute,
 } as any)
+const MethodologySlugRoute = MethodologySlugRouteImport.update({
+  id: '/methodology/$slug',
+  path: '/methodology/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const BlogSlugRoute = BlogSlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -131,6 +137,7 @@ export interface FileRoutesByFullPath {
   '/admin/publications': typeof AdminPublicationsRoute
   '/admin/speaking': typeof AdminSpeakingRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/methodology/$slug': typeof MethodologySlugRoute
   '/predictions/admin': typeof PredictionsAdminRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/speaking/$slug': typeof SpeakingSlugRoute
@@ -150,6 +157,7 @@ export interface FileRoutesByTo {
   '/admin/publications': typeof AdminPublicationsRoute
   '/admin/speaking': typeof AdminSpeakingRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/methodology/$slug': typeof MethodologySlugRoute
   '/predictions/admin': typeof PredictionsAdminRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/speaking/$slug': typeof SpeakingSlugRoute
@@ -171,6 +179,7 @@ export interface FileRoutesById {
   '/admin/publications': typeof AdminPublicationsRoute
   '/admin/speaking': typeof AdminSpeakingRoute
   '/blog/$slug': typeof BlogSlugRoute
+  '/methodology/$slug': typeof MethodologySlugRoute
   '/predictions/admin': typeof PredictionsAdminRoute
   '/research/$slug': typeof ResearchSlugRoute
   '/speaking/$slug': typeof SpeakingSlugRoute
@@ -193,6 +202,7 @@ export interface FileRouteTypes {
     | '/admin/publications'
     | '/admin/speaking'
     | '/blog/$slug'
+    | '/methodology/$slug'
     | '/predictions/admin'
     | '/research/$slug'
     | '/speaking/$slug'
@@ -212,6 +222,7 @@ export interface FileRouteTypes {
     | '/admin/publications'
     | '/admin/speaking'
     | '/blog/$slug'
+    | '/methodology/$slug'
     | '/predictions/admin'
     | '/research/$slug'
     | '/speaking/$slug'
@@ -232,6 +243,7 @@ export interface FileRouteTypes {
     | '/admin/publications'
     | '/admin/speaking'
     | '/blog/$slug'
+    | '/methodology/$slug'
     | '/predictions/admin'
     | '/research/$slug'
     | '/speaking/$slug'
@@ -249,6 +261,7 @@ export interface RootRouteChildren {
   FaqRoute: typeof FaqRoute
   LoginRoute: typeof LoginRoute
   PredictionsRoute: typeof PredictionsRouteWithChildren
+  MethodologySlugRoute: typeof MethodologySlugRoute
   ResearchSlugRoute: typeof ResearchSlugRoute
   SpeakingSlugRoute: typeof SpeakingSlugRoute
   MethodologyIndexRoute: typeof MethodologyIndexRoute
@@ -349,6 +362,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PredictionsAdminRouteImport
       parentRoute: typeof PredictionsRoute
     }
+    '/methodology/$slug': {
+      id: '/methodology/$slug'
+      path: '/methodology/$slug'
+      fullPath: '/methodology/$slug'
+      preLoaderRoute: typeof MethodologySlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/blog/$slug': {
       id: '/blog/$slug'
       path: '/$slug'
@@ -433,6 +453,7 @@ const rootRouteChildren: RootRouteChildren = {
   FaqRoute: FaqRoute,
   LoginRoute: LoginRoute,
   PredictionsRoute: PredictionsRouteWithChildren,
+  MethodologySlugRoute: MethodologySlugRoute,
   ResearchSlugRoute: ResearchSlugRoute,
   SpeakingSlugRoute: SpeakingSlugRoute,
   MethodologyIndexRoute: MethodologyIndexRoute,
