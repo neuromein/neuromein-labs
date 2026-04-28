@@ -34,10 +34,19 @@ export const Route = createFileRoute("/research/$slug")({
           type: "application/ld+json",
           children: JSON.stringify({
             "@context": "https://schema.org",
-            "@type": "Article",
+            "@type": "ScholarlyArticle",
             headline: r.title,
-            author: { "@type": "Person", name: "Андрей Майнгардт" },
+            author: {
+              "@type": "Person",
+              name: "Андрей Майнгардт",
+              url: "https://neuromein.ru/about",
+            },
             datePublished: r.date,
+            publisher: {
+              "@type": "Organization",
+              name: "NEUROMEIN",
+            },
+            url: `https://neuromein.ru/research/${r.slug}`,
             description: r.short,
           }),
         },
