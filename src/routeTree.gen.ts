@@ -10,7 +10,6 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as PredictionsRouteImport } from './routes/predictions'
-import { Route as MethodologyRouteImport } from './routes/methodology'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as FaqRouteImport } from './routes/faq'
 import { Route as BlogRouteImport } from './routes/blog'
@@ -18,6 +17,7 @@ import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AboutRouteImport } from './routes/about'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as ResearchIndexRouteImport } from './routes/research.index'
+import { Route as MethodologyIndexRouteImport } from './routes/methodology.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as SpeakingSlugRouteImport } from './routes/speaking.$slug'
 import { Route as ResearchSlugRouteImport } from './routes/research.$slug'
@@ -31,11 +31,6 @@ import { Route as ApiPredictionsJsonRouteImport } from './routes/api.predictions
 const PredictionsRoute = PredictionsRouteImport.update({
   id: '/predictions',
   path: '/predictions',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const MethodologyRoute = MethodologyRouteImport.update({
-  id: '/methodology',
-  path: '/methodology',
   getParentRoute: () => rootRouteImport,
 } as any)
 const LoginRoute = LoginRouteImport.update({
@@ -71,6 +66,11 @@ const IndexRoute = IndexRouteImport.update({
 const ResearchIndexRoute = ResearchIndexRouteImport.update({
   id: '/research/',
   path: '/research/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MethodologyIndexRoute = MethodologyIndexRouteImport.update({
+  id: '/methodology/',
+  path: '/methodology/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminIndexRoute = AdminIndexRouteImport.update({
@@ -126,7 +126,6 @@ export interface FileRoutesByFullPath {
   '/blog': typeof BlogRouteWithChildren
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
-  '/methodology': typeof MethodologyRoute
   '/predictions': typeof PredictionsRouteWithChildren
   '/admin/predictions': typeof AdminPredictionsRoute
   '/admin/publications': typeof AdminPublicationsRoute
@@ -136,6 +135,7 @@ export interface FileRoutesByFullPath {
   '/research/$slug': typeof ResearchSlugRoute
   '/speaking/$slug': typeof SpeakingSlugRoute
   '/admin/': typeof AdminIndexRoute
+  '/methodology/': typeof MethodologyIndexRoute
   '/research/': typeof ResearchIndexRoute
   '/api/predictions/json': typeof ApiPredictionsJsonRoute
 }
@@ -145,7 +145,6 @@ export interface FileRoutesByTo {
   '/blog': typeof BlogRouteWithChildren
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
-  '/methodology': typeof MethodologyRoute
   '/predictions': typeof PredictionsRouteWithChildren
   '/admin/predictions': typeof AdminPredictionsRoute
   '/admin/publications': typeof AdminPublicationsRoute
@@ -155,6 +154,7 @@ export interface FileRoutesByTo {
   '/research/$slug': typeof ResearchSlugRoute
   '/speaking/$slug': typeof SpeakingSlugRoute
   '/admin': typeof AdminIndexRoute
+  '/methodology': typeof MethodologyIndexRoute
   '/research': typeof ResearchIndexRoute
   '/api/predictions/json': typeof ApiPredictionsJsonRoute
 }
@@ -166,7 +166,6 @@ export interface FileRoutesById {
   '/blog': typeof BlogRouteWithChildren
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
-  '/methodology': typeof MethodologyRoute
   '/predictions': typeof PredictionsRouteWithChildren
   '/admin/predictions': typeof AdminPredictionsRoute
   '/admin/publications': typeof AdminPublicationsRoute
@@ -176,6 +175,7 @@ export interface FileRoutesById {
   '/research/$slug': typeof ResearchSlugRoute
   '/speaking/$slug': typeof SpeakingSlugRoute
   '/admin/': typeof AdminIndexRoute
+  '/methodology/': typeof MethodologyIndexRoute
   '/research/': typeof ResearchIndexRoute
   '/api/predictions/json': typeof ApiPredictionsJsonRoute
 }
@@ -188,7 +188,6 @@ export interface FileRouteTypes {
     | '/blog'
     | '/faq'
     | '/login'
-    | '/methodology'
     | '/predictions'
     | '/admin/predictions'
     | '/admin/publications'
@@ -198,6 +197,7 @@ export interface FileRouteTypes {
     | '/research/$slug'
     | '/speaking/$slug'
     | '/admin/'
+    | '/methodology/'
     | '/research/'
     | '/api/predictions/json'
   fileRoutesByTo: FileRoutesByTo
@@ -207,7 +207,6 @@ export interface FileRouteTypes {
     | '/blog'
     | '/faq'
     | '/login'
-    | '/methodology'
     | '/predictions'
     | '/admin/predictions'
     | '/admin/publications'
@@ -217,6 +216,7 @@ export interface FileRouteTypes {
     | '/research/$slug'
     | '/speaking/$slug'
     | '/admin'
+    | '/methodology'
     | '/research'
     | '/api/predictions/json'
   id:
@@ -227,7 +227,6 @@ export interface FileRouteTypes {
     | '/blog'
     | '/faq'
     | '/login'
-    | '/methodology'
     | '/predictions'
     | '/admin/predictions'
     | '/admin/publications'
@@ -237,6 +236,7 @@ export interface FileRouteTypes {
     | '/research/$slug'
     | '/speaking/$slug'
     | '/admin/'
+    | '/methodology/'
     | '/research/'
     | '/api/predictions/json'
   fileRoutesById: FileRoutesById
@@ -248,10 +248,10 @@ export interface RootRouteChildren {
   BlogRoute: typeof BlogRouteWithChildren
   FaqRoute: typeof FaqRoute
   LoginRoute: typeof LoginRoute
-  MethodologyRoute: typeof MethodologyRoute
   PredictionsRoute: typeof PredictionsRouteWithChildren
   ResearchSlugRoute: typeof ResearchSlugRoute
   SpeakingSlugRoute: typeof SpeakingSlugRoute
+  MethodologyIndexRoute: typeof MethodologyIndexRoute
   ResearchIndexRoute: typeof ResearchIndexRoute
   ApiPredictionsJsonRoute: typeof ApiPredictionsJsonRoute
 }
@@ -263,13 +263,6 @@ declare module '@tanstack/react-router' {
       path: '/predictions'
       fullPath: '/predictions'
       preLoaderRoute: typeof PredictionsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/methodology': {
-      id: '/methodology'
-      path: '/methodology'
-      fullPath: '/methodology'
-      preLoaderRoute: typeof MethodologyRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/login': {
@@ -319,6 +312,13 @@ declare module '@tanstack/react-router' {
       path: '/research'
       fullPath: '/research/'
       preLoaderRoute: typeof ResearchIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/methodology/': {
+      id: '/methodology/'
+      path: '/methodology'
+      fullPath: '/methodology/'
+      preLoaderRoute: typeof MethodologyIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/': {
@@ -432,10 +432,10 @@ const rootRouteChildren: RootRouteChildren = {
   BlogRoute: BlogRouteWithChildren,
   FaqRoute: FaqRoute,
   LoginRoute: LoginRoute,
-  MethodologyRoute: MethodologyRoute,
   PredictionsRoute: PredictionsRouteWithChildren,
   ResearchSlugRoute: ResearchSlugRoute,
   SpeakingSlugRoute: SpeakingSlugRoute,
+  MethodologyIndexRoute: MethodologyIndexRoute,
   ResearchIndexRoute: ResearchIndexRoute,
   ApiPredictionsJsonRoute: ApiPredictionsJsonRoute,
 }
