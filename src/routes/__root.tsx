@@ -72,6 +72,37 @@ export const Route = createRootRoute({
       },
     ],
   }),
+  scripts: () => [
+    {
+      type: "application/ld+json",
+      children: JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Person",
+        name: "Андрей Майнгардт",
+        alternateName: "Andrey Meinhardt",
+        jobTitle: "AI Strategist, Director of Strategy",
+        worksFor: {
+          "@type": "Organization",
+          name: "WMT AI",
+        },
+        url: "https://neuromein.ru",
+        sameAs: [
+          "https://t.me/neuromein",
+          "https://linkedin.com/in/andrew-meinhardt-306821361",
+          "https://www.instagram.com/neuromein.ai/",
+        ],
+        knowsAbout: [
+          "Artificial Intelligence",
+          "AI Strategy",
+          "Labor Market Transformation",
+          "Silent Replacement",
+          "AI Risk Assessment",
+        ],
+        description:
+          "AI-стратег и аналитик. Автор исследования «Тихая замена». Исследует влияние ИИ на бизнес и рынок труда.",
+      }),
+    },
+  ],
   shellComponent: RootShell,
   component: RootComponent,
   notFoundComponent: NotFoundComponent,
