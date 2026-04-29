@@ -31,7 +31,6 @@ function MethodologyIndex() {
       <div className="max-w-[1200px] mx-auto px-4 lg:px-8 py-12 lg:py-20">
         <Reveal>
           <div className="max-w-[820px]">
-            <div className="label-eyebrow">Методология</div>
             <h1 className="mt-4 text-[40px] lg:text-[56px] font-medium leading-[1.05] tracking-[-0.025em] text-text-primary">
               Методология анализа
             </h1>
