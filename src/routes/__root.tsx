@@ -6,6 +6,20 @@ import { Footer } from "@/components/Footer";
 import { AuthProvider } from "@/hooks/useAuth";
 import { Toaster } from "sonner";
 
+const CACHE_RESET_SCRIPT = `
+(function () {
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.getRegistrations().then(function (registrations) {
+      registrations.forEach(function (registration) { registration.unregister(); });
+    }).catch(function () {});
+  }
+  if ("caches" in window) {
+    caches.keys().then(function (keys) {
+      keys.forEach(function (key) { caches.delete(key); });
+    }).catch(function () {});
+  }
+})();`;
+
 function NotFoundComponent() {
   return (
     <div className="min-h-screen flex flex-col bg-bg">
@@ -72,6 +86,9 @@ export const Route = createRootRoute({
       },
     ],
     scripts: [
+      {
+        children: CACHE_RESET_SCRIPT,
+      },
       {
         type: "application/ld+json",
         children: JSON.stringify({
