@@ -35,16 +35,30 @@ export const Route = createFileRoute("/research/$slug")({
           children: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "ScholarlyArticle",
+            name: r.title,
             headline: r.title,
+            ...(r.slug === "silent-replacement"
+              ? {
+                  alternativeHeadline: "Silent Replacement",
+                  inLanguage: "ru",
+                  about: [
+                    "AI-driven workforce displacement",
+                    "Labor market transformation",
+                    "One-Way Door Effect",
+                    "Pyramid to Barbell model",
+                  ],
+                }
+              : {}),
             author: {
               "@type": "Person",
               name: "Андрей Майнгардт",
-              url: "https://neuromein.ru/about",
+              url: "https://neuromein.ru",
             },
             datePublished: r.date,
             publisher: {
               "@type": "Organization",
               name: "NEUROMEIN",
+              url: "https://neuromein.ru",
             },
             url: `https://neuromein.ru/research/${r.slug}`,
             description: r.short,
