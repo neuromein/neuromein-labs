@@ -26,7 +26,7 @@ export function HomeNeuromeinPromo() {
           }}
         />
 
-        <div className="relative grid grid-cols-1 lg:grid-cols-[0.6fr_1.55fr] gap-12 lg:gap-8 items-center">
+        <div className="relative grid grid-cols-1 lg:grid-cols-[0.42fr_1.85fr] gap-12 lg:gap-8 items-center">
         {/* Text */}
         <div className="order-2 lg:order-1 pr-6 sm:pr-10 lg:pr-0">
           <h2
