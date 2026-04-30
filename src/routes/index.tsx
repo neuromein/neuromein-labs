@@ -4,6 +4,7 @@ import { HeroCard } from "@/components/HeroCard";
 import { HomeResearchCards } from "@/components/HomeResearchCards";
 import { HomePublications } from "@/components/HomePublications";
 import { SpeakingSlider } from "@/components/SpeakingSlider";
+import { HomeNeuromeinPromo } from "@/components/HomeNeuromeinPromo";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -75,6 +76,11 @@ function IndexPage() {
             </div>
           </div>
           <HomeResearchCards />
+        </section>
+
+        {/* NEUROMEIN.AI promo */}
+        <section style={{ paddingTop: 100 }}>
+          <HomeNeuromeinPromo />
         </section>
 
         {/* SPEAKING — 100px от исследований */}
