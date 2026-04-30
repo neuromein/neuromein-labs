@@ -36,15 +36,15 @@ export function HomeNeuromeinPromo() {
           }}
         />
 
-        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[1fr_minmax(0,420px)] gap-8 lg:gap-12 p-7 sm:p-10 lg:p-14 items-center">
+        <div className="relative z-10 grid grid-cols-1 lg:grid-cols-[1.35fr_1fr] gap-10 lg:gap-16 p-8 sm:p-12 lg:p-20 items-center">
           {/* Text + counter */}
           <div className="order-2 lg:order-1">
             <h2
               style={{
-                fontSize: 34,
+                fontSize: "clamp(40px, 6vw, 64px)",
                 fontWeight: 600,
-                letterSpacing: "-0.025em",
-                lineHeight: 1.1,
+                letterSpacing: "-0.03em",
+                lineHeight: 1.05,
                 color: "#f0f0f5",
               }}
             >
@@ -52,23 +52,23 @@ export function HomeNeuromeinPromo() {
             </h2>
 
             <p
-              className="mt-5"
+              className="mt-6"
               style={{
-                fontSize: 16,
-                lineHeight: 1.6,
+                fontSize: 17,
+                lineHeight: 1.65,
                 color: "#9a9aaa",
-                maxWidth: 420,
+                maxWidth: 460,
               }}
             >
               Аналитический блог о влиянии искусственного интеллекта на бизнес и
               рынок труда. Разборы, прогнозы, авторские исследования.
             </p>
 
-            <div className="mt-9 flex items-center">
+            <div className="mt-12 flex items-center">
               <div>
                 <div
                   style={{
-                    fontSize: 40,
+                    fontSize: 48,
                     fontWeight: 600,
                     letterSpacing: "-0.02em",
                     lineHeight: 1.05,
@@ -84,7 +84,7 @@ export function HomeNeuromeinPromo() {
                 </div>
                 <div
                   className="mt-2"
-                  style={{ fontSize: 13, color: "#7a7a8a" }}
+                  style={{ fontSize: 14, color: "#7a7a8a" }}
                 >
                   подписчиков
                 </div>
@@ -94,7 +94,7 @@ export function HomeNeuromeinPromo() {
 
           {/* Photo */}
           <div
-            className="order-1 lg:order-2 relative w-full max-w-[420px] mx-auto lg:mx-0 aspect-[4/5] rounded-[22px] overflow-hidden"
+            className="order-1 lg:order-2 relative w-full max-w-[480px] mx-auto lg:mx-0 lg:ml-auto aspect-[4/5] rounded-[24px] overflow-hidden"
             style={{
               border: "1px solid rgba(255,255,255,0.10)",
               boxShadow:
