@@ -1,15 +1,14 @@
 import { Reveal } from "./Reveal";
-import portraitUrl from "@/assets/neuromein-portrait.jpg";
+import instagramShot from "@/assets/neuromein-instagram.png";
 
 /**
- * Промо-блок NEUROMEIN.AI — спокойная композиция в духе Carbon:
- * крупный заголовок и описание слева, портрет справа на фоне страницы,
- * без декоративной рамки и сетки.
+ * Промо-блок NEUROMEIN.AI — слева текст и счётчик,
+ * справа полный скриншот Instagram-страницы (без обрезки).
  */
 export function HomeNeuromeinPromo() {
   return (
     <Reveal>
-      <section className="relative grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-12 lg:gap-20 items-center py-10 lg:py-20">
+      <section className="relative grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-12 lg:gap-16 items-center py-10 lg:py-20">
         {/* Text */}
         <div className="order-2 lg:order-1">
           <h2
@@ -58,33 +57,14 @@ export function HomeNeuromeinPromo() {
           </div>
         </div>
 
-        {/* Portrait */}
-        <div className="order-1 lg:order-2 flex justify-center lg:justify-end">
-          <div
-            className="relative"
-            style={{
-              width: "min(360px, 80vw)",
-              aspectRatio: "1 / 1",
-            }}
-          >
-            {/* Soft glow behind */}
-            <div
-              aria-hidden
-              className="absolute inset-0 rounded-full pointer-events-none"
-              style={{
-                background:
-                  "radial-gradient(circle at 50% 50%, rgba(74,158,245,0.25) 0%, transparent 65%)",
-                filter: "blur(30px)",
-                transform: "scale(1.15)",
-              }}
-            />
-            <img
-              src={portraitUrl}
-              alt="Андрей Майнгардт — автор NEUROMEIN.AI"
-              className="relative w-full h-full object-cover rounded-full"
-              loading="lazy"
-            />
-          </div>
+        {/* Instagram screenshot — full, no crop */}
+        <div className="order-1 lg:order-2 w-full">
+          <img
+            src={instagramShot}
+            alt="Страница NEUROMEIN.AI в Instagram"
+            className="w-full h-auto block rounded-[16px]"
+            loading="lazy"
+          />
         </div>
       </section>
     </Reveal>
