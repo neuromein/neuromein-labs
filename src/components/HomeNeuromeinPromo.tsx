@@ -2,13 +2,43 @@ import { Reveal } from "./Reveal";
 import instagramShot from "@/assets/neuromein-instagram.png";
 
 /**
- * Промо-блок NEUROMEIN.AI — слева текст и счётчик,
- * справа полный скриншот Instagram-страницы (без обрезки).
+ * Промо-блок NEUROMEIN.AI в стиле Carbon (framer):
+ * слева текст + счётчик, справа скриншот Instagram в стилизованной
+ * browser-рамке с мягким голубым свечением и виньеткой по краям.
  */
 export function HomeNeuromeinPromo() {
   return (
     <Reveal>
-      <section className="relative grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-12 lg:gap-16 items-center py-10 lg:py-20">
+      <section
+        className="relative overflow-hidden rounded-[28px] border border-white/[0.06] px-6 sm:px-10 lg:px-16 py-14 lg:py-24"
+        style={{
+          background:
+            "radial-gradient(120% 80% at 100% 0%, rgba(74,158,245,0.12) 0%, rgba(74,158,245,0) 55%), linear-gradient(180deg, #0d0d12 0%, #08080c 100%)",
+        }}
+      >
+        {/* мягкая виньетка по краям как в Carbon */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(110% 70% at 50% 50%, rgba(0,0,0,0) 55%, rgba(0,0,0,0.55) 100%)",
+          }}
+        />
+        {/* тонкая сетка */}
+        <div
+          aria-hidden
+          className="pointer-events-none absolute inset-0 opacity-[0.04]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,0.6) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.6) 1px, transparent 1px)",
+            backgroundSize: "44px 44px",
+            maskImage:
+              "radial-gradient(80% 60% at 50% 50%, #000 30%, transparent 80%)",
+          }}
+        />
+
+        <div className="relative grid grid-cols-1 lg:grid-cols-[1fr_1.05fr] gap-12 lg:gap-16 items-center">
         {/* Text */}
         <div className="order-2 lg:order-1">
           <h2
@@ -57,14 +87,54 @@ export function HomeNeuromeinPromo() {
           </div>
         </div>
 
-        {/* Instagram screenshot — full, no crop */}
-        <div className="order-1 lg:order-2 w-full">
-          <img
-            src={instagramShot}
-            alt="Страница NEUROMEIN.AI в Instagram"
-            className="w-full h-auto block rounded-[16px]"
-            loading="lazy"
+        {/* Instagram screenshot в browser-рамке со свечением */}
+        <div className="order-1 lg:order-2 relative">
+          {/* голубое свечение под рамкой */}
+          <div
+            aria-hidden
+            className="pointer-events-none absolute -inset-10"
+            style={{
+              background:
+                "radial-gradient(60% 60% at 50% 50%, rgba(74,158,245,0.35) 0%, rgba(74,158,245,0.08) 45%, transparent 75%)",
+              filter: "blur(40px)",
+            }}
           />
+
+          <div
+            className="relative rounded-[14px] overflow-hidden border border-white/10"
+            style={{
+              background: "#0a0a0f",
+              boxShadow:
+                "0 30px 80px -20px rgba(0,0,0,0.7), 0 0 0 1px rgba(255,255,255,0.04) inset, 0 0 60px -10px rgba(74,158,245,0.25)",
+            }}
+          >
+            {/* title bar (macOS-style) */}
+            <div
+              className="flex items-center gap-2 px-4 h-9 border-b border-white/[0.06]"
+              style={{
+                background:
+                  "linear-gradient(180deg, #15151c 0%, #0e0e14 100%)",
+              }}
+            >
+              <span className="w-3 h-3 rounded-full" style={{ background: "#ff5f57" }} />
+              <span className="w-3 h-3 rounded-full" style={{ background: "#febc2e" }} />
+              <span className="w-3 h-3 rounded-full" style={{ background: "#28c840" }} />
+              <span
+                className="ml-3 text-[11px] tracking-wide"
+                style={{ color: "#6a6a78" }}
+              >
+                instagram.com / neuromein.ai
+              </span>
+            </div>
+
+            <img
+              src={instagramShot}
+              alt="Страница NEUROMEIN.AI в Instagram"
+              className="w-full h-auto block"
+              loading="lazy"
+            />
+          </div>
+        </div>
         </div>
       </section>
     </Reveal>
