@@ -31,20 +31,9 @@ export function HomeNeuromeinPromo() {
         <div className="relative grid grid-cols-1 lg:grid-cols-[0.42fr_1.85fr] gap-12 lg:gap-8 items-center">
         {/* Text */}
         <div className="order-2 lg:order-1 pr-6 sm:pr-10 lg:pr-0 flex flex-col justify-center">
-          {/* акцентная вертикальная линия */}
-          <div
-            aria-hidden
-            className="mb-5"
-            style={{
-              width: 2,
-              height: 40,
-              background:
-                "linear-gradient(180deg, rgba(74,158,245,0.5) 0%, rgba(74,158,245,0) 100%)",
-            }}
-          />
           <h2
             style={{
-              fontSize: "clamp(44px, 6.4vw, 72px)",
+              fontSize: "clamp(34px, 4.8vw, 54px)",
               fontWeight: 600,
               letterSpacing: "-0.035em",
               lineHeight: 1.02,
@@ -136,9 +125,9 @@ export function HomeNeuromeinPromo() {
                 aria-hidden
                 className="pointer-events-none absolute inset-x-0 bottom-0"
                 style={{
-                  height: "55%",
+                  height: "25%",
                   background:
-                    "linear-gradient(to top, #0c0c12 0%, rgba(12,12,18,0.95) 10%, rgba(12,12,18,0.7) 25%, rgba(12,12,18,0.3) 45%, rgba(12,12,18,0.05) 70%, transparent 100%)",
+                    "linear-gradient(to top, #0c0c12 0%, rgba(12,12,18,0.6) 40%, rgba(12,12,18,0.2) 70%, transparent 100%)",
                 }}
               />
             </div>
