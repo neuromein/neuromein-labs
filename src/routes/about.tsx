@@ -19,6 +19,9 @@ export const Route = createFileRoute("/about")({
       },
       { property: "og:url", content: "https://neuromein.ru/about" },
     ],
+    links: [
+      { rel: "canonical", href: "https://neuromein.ru/about" },
+    ],
     scripts: [
       {
         type: "application/ld+json",
