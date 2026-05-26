@@ -4,6 +4,14 @@ import { Layout } from "@/components/Layout";
 import { Reveal, FadeIn } from "@/components/Reveal";
 import { ArrowLink } from "@/components/ui-bits";
 import { RESEARCH } from "@/lib/site";
+import { ResearchBody } from "@/components/ResearchBody";
+import silentReplacementText from "@/data/research/silent-replacement.md?raw";
+import aiForecastText from "@/data/research/ai-2025-forecast.md?raw";
+
+const FULL_TEXT: Record<string, string> = {
+  "silent-replacement": silentReplacementText,
+  "ai-2025-forecast": aiForecastText,
+};
 
 const PdfReader = lazy(() =>
   import("@/components/PdfReader").then((m) => ({ default: m.PdfReader })),
@@ -88,6 +96,7 @@ function ResearchPage() {
   const other = RESEARCH.find((x) => x.slug !== r.slug);
   const [isClient, setIsClient] = useState(false);
   useEffect(() => setIsClient(true), []);
+  const fullText = FULL_TEXT[r.slug];
 
   return (
     <Layout>
@@ -289,6 +298,27 @@ function ResearchPage() {
             </div>
           </section>
         </Reveal>
+
+        {fullText && (
+          <Reveal>
+            <section
+              id="text"
+              className="mt-4 rounded-[24px] border-[0.5px] border-border bg-bg-reading overflow-hidden scroll-mt-28"
+              aria-label="Текстовая версия исследования"
+            >
+              <div className="px-6 lg:px-8 py-5 border-b border-border">
+                <div className="label-eyebrow">Текстовая версия</div>
+                <h2 className="mt-1 text-[18px] text-text-primary">
+                  {r.title} — полный текст
+                </h2>
+                <p className="mt-1 text-[12px] text-text-tertiary">
+                  Для поисковых систем, ИИ-ассистентов и читателей без PDF.
+                </p>
+              </div>
+              <ResearchBody raw={fullText} />
+            </section>
+          </Reveal>
+        )}
 
         {other && (
           <Reveal>
