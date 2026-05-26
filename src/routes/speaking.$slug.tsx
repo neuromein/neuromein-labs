@@ -37,13 +37,16 @@ export const Route = createFileRoute("/speaking/$slug")({
       </div>
     </Layout>
   ),
-  errorComponent: ({ error }) => (
-    <Layout>
-      <div className="max-w-3xl mx-auto px-6 py-32 text-center text-text-secondary">
-        Не удалось загрузить: {error.message}
-      </div>
-    </Layout>
-  ),
+  errorComponent: ({ error }) => {
+    if (import.meta.env.DEV) console.error(error);
+    return (
+      <Layout>
+        <div className="max-w-3xl mx-auto px-6 py-32 text-center text-text-secondary">
+          Что-то пошло не так. Попробуйте позже.
+        </div>
+      </Layout>
+    );
+  },
   component: SpeakingDetailPage,
 });
 

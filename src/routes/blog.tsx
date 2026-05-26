@@ -31,13 +31,16 @@ export const Route = createFileRoute("/blog")({
   }),
   loader: () => fetchPublications(),
   component: BlogPage,
-  errorComponent: ({ error }) => (
-    <Layout>
-      <div className="max-w-[1320px] mx-auto py-20 text-center text-text-secondary">
-        Не удалось загрузить публикации: {error.message}
-      </div>
-    </Layout>
-  ),
+  errorComponent: ({ error }) => {
+    if (import.meta.env.DEV) console.error(error);
+    return (
+      <Layout>
+        <div className="max-w-[1320px] mx-auto py-20 text-center text-text-secondary">
+          Что-то пошло не так. Попробуйте позже.
+        </div>
+      </Layout>
+    );
+  },
 });
 
 function BlogPage() {
