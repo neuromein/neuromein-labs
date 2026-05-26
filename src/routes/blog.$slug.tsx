@@ -47,7 +47,7 @@ export const Route = createFileRoute("/blog/$slug")({
   head: ({ loaderData }) => {
     const p = loaderData?.item;
     if (!p) return { meta: [{ title: "Публикация — NEUROMEIN" }] };
-    const title = `${p.title} — NEUROMEIN | Андрей Майнгардт`;
+    const title = `${p.title} — NEUROMEIN`;
     return {
       meta: [
         { title },

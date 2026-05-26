@@ -12,7 +12,7 @@ export const Route = createFileRoute("/speaking/$slug")({
   head: ({ loaderData }) => {
     const p = loaderData?.item;
     if (!p) return { meta: [{ title: "Выступление — NEUROMEIN" }] };
-    const title = `${p.organization} — Выступления | NEUROMEIN`;
+    const title = `${p.organization} — NEUROMEIN`;
     const description = p.caption || p.description.slice(0, 160);
     return {
       meta: [
