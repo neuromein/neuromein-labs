@@ -1,6 +1,7 @@
 import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
+import { METHODOLOGY } from "@/data/methodology";
 
 const BASE_URL = "https://neuromein.ru";
 
@@ -51,6 +52,13 @@ export const Route = createFileRoute("/sitemap.xml")({
             lastmod: row.updated_at ? new Date(row.updated_at).toISOString().slice(0, 10) : undefined,
             changefreq: "monthly",
             priority: "0.5",
+          });
+        }
+        for (const m of METHODOLOGY) {
+          dynamicEntries.push({
+            path: `/methodology/${m.slug}`,
+            changefreq: "monthly",
+            priority: "0.6",
           });
         }
 
