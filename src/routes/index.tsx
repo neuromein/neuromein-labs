@@ -22,7 +22,9 @@ export const Route = createFileRoute("/")({
           "Исследования и проверяемые прогнозы о влиянии ИИ на рынок труда, профессии и экономику.",
       },
       { property: "og:url", content: "https://neuromein.ru/" },
-      { rel: "canonical", href: "https://neuromein.ru/" } as never,
+    ],
+    links: [
+      { rel: "canonical", href: "https://neuromein.ru/" },
     ],
     scripts: [
       {
