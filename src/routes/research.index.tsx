@@ -22,6 +22,9 @@ export const Route = createFileRoute("/research/")({
       },
       { property: "og:url", content: "https://neuromein.ru/research" },
     ],
+    links: [
+      { rel: "canonical", href: "https://neuromein.ru/research" },
+    ],
   }),
   component: ResearchListPage,
 });

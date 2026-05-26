@@ -21,6 +21,9 @@ export const Route = createFileRoute("/methodology/")({
       { property: "og:url", content: "https://neuromein.ru/methodology" },
       { property: "og:type", content: "website" },
     ],
+    links: [
+      { rel: "canonical", href: "https://neuromein.ru/methodology" },
+    ],
   }),
   component: MethodologyIndex,
 });

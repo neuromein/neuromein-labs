@@ -25,6 +25,9 @@ export const Route = createFileRoute("/blog")({
       },
       { property: "og:url", content: "https://neuromein.ru/blog" },
     ],
+    links: [
+      { rel: "canonical", href: "https://neuromein.ru/blog" },
+    ],
   }),
   loader: () => fetchPublications(),
   component: BlogPage,

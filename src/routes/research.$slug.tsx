@@ -29,6 +29,9 @@ export const Route = createFileRoute("/research/$slug")({
         { property: "og:url", content: `https://neuromein.ru/research/${r.slug}` },
         { property: "og:image", content: `https://neuromein.ru${r.cover}` },
       ],
+      links: [
+        { rel: "canonical", href: `https://neuromein.ru/research/${r.slug}` },
+      ],
       scripts: [
         {
           type: "application/ld+json",
