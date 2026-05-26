@@ -122,10 +122,7 @@ export function HeroCard({
         </motion.div>
 
         {/* Name */}
-        <motion.h1
-          initial={{ opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.18, duration: 0.7, ease }}
+        <h1
           className="mt-7 font-medium tracking-[-0.025em] max-w-[18ch] text-3xl"
           style={{
             lineHeight: 1.06,
@@ -133,13 +130,10 @@ export function HeroCard({
           }}
         >
           Андрей Майнгардт
-        </motion.h1>
+        </h1>
 
         {/* Description */}
-        <motion.p
-          initial={{ opacity: 0, y: 12 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.28, duration: 0.6, ease }}
+        <p
           className="mt-6 max-w-[640px] text-2xl"
           style={{
             lineHeight: 1.45,
@@ -149,7 +143,7 @@ export function HeroCard({
         >
           Исследую влияние ИИ на бизнес и рынок труда и показываю, к чему
           готовиться бизнесу и людям
-        </motion.p>
+        </p>
 
         {/* Role */}
         <motion.div
