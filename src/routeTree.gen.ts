@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as PredictionsRouteImport } from './routes/predictions'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as FaqRouteImport } from './routes/faq'
@@ -29,6 +30,11 @@ import { Route as AdminPublicationsRouteImport } from './routes/admin.publicatio
 import { Route as AdminPredictionsRouteImport } from './routes/admin.predictions'
 import { Route as ApiPredictionsJsonRouteImport } from './routes/api.predictions.json'
 
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PredictionsRoute = PredictionsRouteImport.update({
   id: '/predictions',
   path: '/predictions',
@@ -133,6 +139,7 @@ export interface FileRoutesByFullPath {
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
   '/predictions': typeof PredictionsRouteWithChildren
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin/predictions': typeof AdminPredictionsRoute
   '/admin/publications': typeof AdminPublicationsRoute
   '/admin/speaking': typeof AdminSpeakingRoute
@@ -153,6 +160,7 @@ export interface FileRoutesByTo {
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
   '/predictions': typeof PredictionsRouteWithChildren
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin/predictions': typeof AdminPredictionsRoute
   '/admin/publications': typeof AdminPublicationsRoute
   '/admin/speaking': typeof AdminSpeakingRoute
@@ -175,6 +183,7 @@ export interface FileRoutesById {
   '/faq': typeof FaqRoute
   '/login': typeof LoginRoute
   '/predictions': typeof PredictionsRouteWithChildren
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/admin/predictions': typeof AdminPredictionsRoute
   '/admin/publications': typeof AdminPublicationsRoute
   '/admin/speaking': typeof AdminSpeakingRoute
@@ -198,6 +207,7 @@ export interface FileRouteTypes {
     | '/faq'
     | '/login'
     | '/predictions'
+    | '/sitemap.xml'
     | '/admin/predictions'
     | '/admin/publications'
     | '/admin/speaking'
@@ -218,6 +228,7 @@ export interface FileRouteTypes {
     | '/faq'
     | '/login'
     | '/predictions'
+    | '/sitemap.xml'
     | '/admin/predictions'
     | '/admin/publications'
     | '/admin/speaking'
@@ -239,6 +250,7 @@ export interface FileRouteTypes {
     | '/faq'
     | '/login'
     | '/predictions'
+    | '/sitemap.xml'
     | '/admin/predictions'
     | '/admin/publications'
     | '/admin/speaking'
@@ -261,6 +273,7 @@ export interface RootRouteChildren {
   FaqRoute: typeof FaqRoute
   LoginRoute: typeof LoginRoute
   PredictionsRoute: typeof PredictionsRouteWithChildren
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   MethodologySlugRoute: typeof MethodologySlugRoute
   ResearchSlugRoute: typeof ResearchSlugRoute
   SpeakingSlugRoute: typeof SpeakingSlugRoute
@@ -271,6 +284,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/predictions': {
       id: '/predictions'
       path: '/predictions'
@@ -453,6 +473,7 @@ const rootRouteChildren: RootRouteChildren = {
   FaqRoute: FaqRoute,
   LoginRoute: LoginRoute,
   PredictionsRoute: PredictionsRouteWithChildren,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   MethodologySlugRoute: MethodologySlugRoute,
   ResearchSlugRoute: ResearchSlugRoute,
   SpeakingSlugRoute: SpeakingSlugRoute,
