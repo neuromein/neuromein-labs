@@ -19,9 +19,9 @@ export const Route = createFileRoute("/api/predictions/json")({
             },
           );
         } catch (err) {
-          const message = err instanceof Error ? err.message : "unknown error";
+          console.error("[api/predictions] fetch error:", err);
           return new Response(
-            JSON.stringify({ error: "failed to load predictions", message }),
+            JSON.stringify({ error: "Internal server error" }),
             { status: 500, headers: { "content-type": "application/json" } },
           );
         }
