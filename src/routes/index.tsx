@@ -9,13 +9,13 @@ import { HomeNeuromeinPromo } from "@/components/HomeNeuromeinPromo";
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "Андрей Майнгардт - AI-стратег | Автор исследования «Тихая замена» | NEUROMEIN" },
+      { title: "Андрей Майнгардт — AI-стратег и автор «Тихой замены»" },
       {
         name: "description",
         content:
           "AI-стратег и аналитик Андрей Майнгардт исследует трансформацию рынка труда в горизонте 2026–2030. Аналитика, исследования и проверяемые прогнозы.",
       },
-      { property: "og:title", content: "Андрей Майнгардт - AI-стратег | Автор исследования «Тихая замена» | NEUROMEIN" },
+      { property: "og:title", content: "Андрей Майнгардт — AI-стратег и автор «Тихой замены»" },
       {
         property: "og:description",
         content:
