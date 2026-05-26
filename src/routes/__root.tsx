@@ -53,6 +53,7 @@ export const Route = createRootRoute({
       { name: "viewport", content: "width=device-width, initial-scale=1" },
       { name: "author", content: "Андрей Майнгардт" },
       { name: "theme-color", content: "#08080D" },
+      { name: "google-site-verification", content: "c4oKRkYygsB6EauJGmP6RCxTrDcS46MqfZ4IT26rPC8" },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "NEUROMEIN" },
       { property: "og:locale", content: "ru_RU" },
