@@ -2,6 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import type {} from "@tanstack/react-start";
 import { supabaseAdmin } from "@/integrations/supabase/client.server";
 import { METHODOLOGY } from "@/data/methodology";
+import { RESEARCH } from "@/lib/site";
 
 const BASE_URL = "https://neuromein.ru";
 
