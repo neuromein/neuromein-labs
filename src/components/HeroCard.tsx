@@ -114,6 +114,10 @@ export function HeroCard({
             alt="Андрей Майнгардт"
             className="h-full w-full object-cover"
             loading="eager"
+            decoding="async"
+            fetchPriority="high"
+            width={96}
+            height={96}
           />
         </motion.div>
 

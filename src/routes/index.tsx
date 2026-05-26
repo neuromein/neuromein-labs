@@ -5,6 +5,7 @@ import { HomeResearchCards } from "@/components/HomeResearchCards";
 import { HomePublications } from "@/components/HomePublications";
 import { SpeakingSlider } from "@/components/SpeakingSlider";
 import { HomeNeuromeinPromo } from "@/components/HomeNeuromeinPromo";
+import avatarUrl from "@/assets/avatar.jpg";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -25,6 +26,7 @@ export const Route = createFileRoute("/")({
     ],
     links: [
       { rel: "canonical", href: "https://neuromein.ru/" },
+      { rel: "preload", as: "image", href: avatarUrl, fetchpriority: "high" },
     ],
     scripts: [
       {
