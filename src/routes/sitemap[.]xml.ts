@@ -62,6 +62,13 @@ export const Route = createFileRoute("/sitemap.xml")({
             priority: "0.6",
           });
         }
+        for (const r of RESEARCH) {
+          dynamicEntries.push({
+            path: `/research/${r.slug}`,
+            changefreq: "monthly",
+            priority: "0.7",
+          });
+        }
 
         const entries = [...staticEntries, ...dynamicEntries];
 
