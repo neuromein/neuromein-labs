@@ -24,6 +24,9 @@ export const Route = createFileRoute("/speaking/$slug")({
         { property: "og:image", content: p.imageUrl },
         { property: "og:url", content: `https://neuromein.ru/speaking/${p.slug}` },
       ],
+      links: [
+        { rel: "canonical", href: `https://neuromein.ru/speaking/${p.slug}` },
+      ],
     };
   },
   notFoundComponent: () => (

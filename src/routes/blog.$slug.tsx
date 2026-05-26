@@ -57,6 +57,32 @@ export const Route = createFileRoute("/blog/$slug")({
         { property: "og:type", content: "article" },
         { property: "og:url", content: `https://neuromein.ru/blog/${p.slug}` },
       ],
+      links: [
+        { rel: "canonical", href: `https://neuromein.ru/blog/${p.slug}` },
+      ],
+      scripts: [
+        {
+          type: "application/ld+json",
+          children: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Article",
+            headline: p.title,
+            description: p.excerpt,
+            datePublished: p.publishedAt,
+            author: {
+              "@type": "Person",
+              name: "Андрей Майнгардт",
+              url: "https://neuromein.ru/about",
+            },
+            publisher: {
+              "@type": "Organization",
+              name: "NEUROMEIN",
+              url: "https://neuromein.ru",
+            },
+            mainEntityOfPage: `https://neuromein.ru/blog/${p.slug}`,
+          }),
+        },
+      ],
     };
   },
   notFoundComponent: () => (

@@ -26,6 +26,9 @@ export const Route = createFileRoute("/methodology/$slug")({
           content: `https://neuromein.ru/methodology/${m.slug}`,
         },
       ],
+      links: [
+        { rel: "canonical", href: `https://neuromein.ru/methodology/${m.slug}` },
+      ],
       scripts: [
         {
           type: "application/ld+json",
