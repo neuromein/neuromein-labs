@@ -50,7 +50,7 @@ function SpeakingDetailPage() {
   // Split description into paragraphs by blank lines
   const paragraphs = item.description
     .split(/\n{2,}/)
-    .map((p) => p.trim())
+    .map((p: string) => p.trim())
     .filter(Boolean);
 
   return (
@@ -105,7 +105,7 @@ function SpeakingDetailPage() {
         {/* Description body */}
         {paragraphs.length > 0 && (
           <div className="max-w-[720px] mx-auto">
-            {paragraphs.map((p, i) => (
+            {paragraphs.map((p: string, i: number) => (
               <p
                 key={i}
                 className="text-[17px] sm:text-[18px] leading-[1.78] text-text-primary/90 mb-6 whitespace-pre-wrap"

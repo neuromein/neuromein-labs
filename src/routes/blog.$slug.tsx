@@ -82,7 +82,7 @@ export const Route = createFileRoute("/blog/$slug")({
 function BlogPostPage() {
   const { item: p } = Route.useLoaderData();
   const paragraphs = p.body.trim().length > 0
-    ? p.body.trim().split(/\n{2,}/).filter((para) => para.trim().length > 0)
+    ? p.body.trim().split(/\n{2,}/).filter((para: string) => para.trim().length > 0)
     : [];
 
   return (
@@ -140,7 +140,7 @@ function BlogPostPage() {
             <div className="border-t border-border pt-10 lg:pt-14">
               <div className="reading-content mx-auto max-w-[760px]">
                 {paragraphs.length > 0 ? (
-                  paragraphs.map((para, i) => (
+                  paragraphs.map((para: string, i: number) => (
                     <p
                       key={i}
                       className={i === 0 ? "text-[19px] leading-[1.75] text-text-primary sm:text-[21px]" : undefined}
