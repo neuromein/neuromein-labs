@@ -13,7 +13,7 @@ export const Route = createFileRoute("/methodology/$slug")({
     const m = loaderData?.item;
     if (!m)
       return { meta: [{ title: "Методология — NEUROMEIN" }] };
-    const title = `${m.title} — Методология | NEUROMEIN`;
+    const title = `${m.title} — NEUROMEIN`;
     return {
       meta: [
         { title },

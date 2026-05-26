@@ -18,7 +18,7 @@ export const Route = createFileRoute("/research/$slug")({
   head: ({ loaderData }) => {
     const r = loaderData?.item;
     if (!r) return { meta: [{ title: "Исследование — NEUROMEIN" }] };
-    const title = `${r.title} — NEUROMEIN | Андрей Майнгардт`;
+    const title = `${r.title} — NEUROMEIN`;
     return {
       meta: [
         { title },
