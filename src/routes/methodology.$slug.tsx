@@ -117,14 +117,14 @@ function MethodologyPage() {
           </div>
         </Reveal>
 
-        {m.blocks.map((block, i) => (
+        {m.blocks.map((block: { heading: string; paragraphs: string[] }, i: number) => (
           <Reveal key={block.heading} delay={0.05 + i * 0.05}>
             <section className="mt-14 lg:mt-16">
               <h2 className="text-[24px] lg:text-[28px] font-medium leading-[1.2] tracking-[-0.02em] text-text-primary">
                 {block.heading}
               </h2>
               <div className="mt-5 space-y-5">
-                {block.paragraphs.map((p, k) => (
+                {block.paragraphs.map((p: string, k: number) => (
                   <p
                     key={k}
                     className="text-[16px] lg:text-[17px] leading-[1.7]"
