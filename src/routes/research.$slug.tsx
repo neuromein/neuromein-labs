@@ -177,6 +177,19 @@ function ResearchPage() {
                         <path d="M8 2v9M4 7l4 4 4-4M3 14h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
                       </svg>
                     </a>
+                    {r.slug === "silent-replacement" && (
+                      <a
+                        href="https://www.litres.ru/book/andrey-mayngardt/tihaya-zamena-kak-krizisy-2026-2028-izmenyat-rynok-truda-73764754/"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 h-11 px-5 rounded-full text-[14px] font-medium border-[0.5px] border-border-strong text-text-primary hover:bg-bg-card/60 transition-colors"
+                      >
+                        Читать на Литрес
+                        <svg width="14" height="14" viewBox="0 0 16 16" fill="none" aria-hidden>
+                          <path d="M6 3h7v7M13 3L6 10M3 6v7h7" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </a>
+                    )}
                   </div>
                 </FadeIn>
 
