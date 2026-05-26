@@ -52,6 +52,9 @@ export const Route = createFileRoute("/faq")({
       },
       { property: "og:url", content: "https://neuromein.ru/faq" },
     ],
+    links: [
+      { rel: "canonical", href: "https://neuromein.ru/faq" },
+    ],
     scripts: [
       {
         type: "application/ld+json",

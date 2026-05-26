@@ -23,6 +23,9 @@ export const Route = createFileRoute("/predictions")({
       },
       { property: "og:url", content: "https://neuromein.ru/predictions" },
     ],
+    links: [
+      { rel: "canonical", href: "https://neuromein.ru/predictions" },
+    ],
   }),
   loader: () => fetchPredictions(),
   component: PredictionsPage,
