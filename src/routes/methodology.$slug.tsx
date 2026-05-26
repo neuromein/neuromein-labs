@@ -64,14 +64,17 @@ export const Route = createFileRoute("/methodology/$slug")({
       </div>
     </Layout>
   ),
-  errorComponent: ({ error }) => (
-    <Layout>
-      <div className="max-w-3xl mx-auto px-6 py-32 text-center">
-        <h1 className="text-3xl font-medium text-text-primary">Ошибка</h1>
-        <p className="mt-4 text-text-secondary">{error.message}</p>
-      </div>
-    </Layout>
-  ),
+  errorComponent: ({ error }) => {
+    if (import.meta.env.DEV) console.error(error);
+    return (
+      <Layout>
+        <div className="max-w-3xl mx-auto px-6 py-32 text-center">
+          <h1 className="text-3xl font-medium text-text-primary">Ошибка</h1>
+          <p className="mt-4 text-text-secondary">Что-то пошло не так. Попробуйте позже.</p>
+        </div>
+      </Layout>
+    );
+  },
   component: MethodologyPage,
 });
 
