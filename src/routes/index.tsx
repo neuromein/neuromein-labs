@@ -5,9 +5,18 @@ import { HomeResearchCards } from "@/components/HomeResearchCards";
 import { HomePublications } from "@/components/HomePublications";
 import { SpeakingSlider } from "@/components/SpeakingSlider";
 import { HomeNeuromeinPromo } from "@/components/HomeNeuromeinPromo";
+import { fetchSpeaking } from "@/data/speaking.fetch";
 import avatarUrl from "@/assets/avatar.jpg";
 
 export const Route = createFileRoute("/")({
+  loader: async () => {
+    try {
+      const speaking = await fetchSpeaking();
+      return { speaking };
+    } catch {
+      return { speaking: [] };
+    }
+  },
   head: () => ({
     meta: [
       { title: "Андрей Майнгардт — AI-стратег и автор «Тихой замены»" },
@@ -50,6 +59,7 @@ export const Route = createFileRoute("/")({
 });
 
 function IndexPage() {
+  const { speaking } = Route.useLoaderData();
   return (
     <Layout>
       <div className="max-w-[1320px] mx-auto">
@@ -89,7 +99,7 @@ function IndexPage() {
 
         {/* SPEAKING — 100px от исследований */}
         <section style={{ paddingTop: 100 }}>
-          <SpeakingSlider />
+          <SpeakingSlider items={speaking} />
         </section>
 
         {/* PUBLICATIONS — 100px от слайдера, 120px до footer */}
