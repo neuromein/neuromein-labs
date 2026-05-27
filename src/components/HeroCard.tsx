@@ -121,33 +121,31 @@ export function HeroCard({
           />
         </motion.div>
 
-        {/* Name */}
-        <h1
-          className="mt-7 font-medium tracking-[-0.025em] max-w-[18ch] my-[26px]"
+        {/* Name label */}
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.6, ease }}
+          className="mt-7 text-[20px] sm:text-[22px] font-medium tracking-[-0.01em]"
+          style={{ color: "#9a9aaa" }}
+        >
+          Андрей Майнгардт
+        </motion.p>
+
+        {/* H1 — main positioning */}
+        <motion.h1
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15, duration: 0.6, ease }}
+          className="mt-2 font-medium tracking-[-0.025em] max-w-[18ch]"
           style={{
-            fontSize: "clamp(40px, 6vw, 64px)",
+            fontSize: "clamp(36px, 5.5vw, 56px)",
             lineHeight: 1.05,
             color: "#f0f0f5",
           }}
         >
-          Андрей Майнгардт
-        </h1>
-
-        {/* Subtitle */}
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.6, ease }}
-          className="mt-3 max-w-[640px] my-[10px]"
-          style={{
-            fontSize: "clamp(20px, 2.8vw, 30px)",
-            lineHeight: 1.3,
-            color: "#e8e8f0",
-            fontWeight: 400,
-          }}
-        >
           AI-стратег, автор исследования «Тихая замена»
-        </motion.p>
+        </motion.h1>
 
         {/* Description */}
         <p
