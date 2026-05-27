@@ -89,7 +89,11 @@ export const Route = createRootRoute({
           "@type": "Person",
           name: "Андрей Майнгардт",
           alternateName: "Andrey Meinhardt",
-          jobTitle: "AI Strategist, Director of Strategy",
+          jobTitle: "Director of Strategy",
+          hasOccupation: {
+            "@type": "Occupation",
+            name: "AI Strategist",
+          },
           worksFor: {
             "@type": "Organization",
             name: "WMT AI",
@@ -99,6 +103,9 @@ export const Route = createRootRoute({
             "https://t.me/neuromein",
             "https://linkedin.com/in/andrew-meinhardt-306821361",
             "https://www.instagram.com/neuromein.ai/",
+            "https://github.com/neuromein/Neurosovet",
+            "https://vc.ru/id931194",
+            "https://www.litres.ru/book/andrey-mayngardt/tihaya-zamena-kak-krizisy-2026-2028-izmenyat-rynok-truda-73764754/",
           ],
           knowsAbout: [
             "Artificial Intelligence",
@@ -119,7 +126,7 @@ export const Route = createRootRoute({
           },
           mainEntityOfPage: "https://neuromein.ru",
           description:
-            "AI-стратег и аналитик. Автор исследования «Тихая замена». Исследует влияние ИИ на бизнес и рынок труда.",
+            "AI-стратег. Автор исследования «Тихая замена». Исследует влияние ИИ на бизнес и рынок труда.",
         }),
       },
     ],
