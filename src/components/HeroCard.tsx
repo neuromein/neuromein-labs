@@ -123,7 +123,7 @@ export function HeroCard({
 
         {/* Name */}
         <h1
-          className="mt-7 font-medium tracking-[-0.025em] max-w-[18ch]"
+          className="mt-7 font-medium tracking-[-0.025em] max-w-[18ch] my-[26px]"
           style={{
             fontSize: "clamp(40px, 6vw, 64px)",
             lineHeight: 1.05,
@@ -138,7 +138,7 @@ export function HeroCard({
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.6, ease }}
-          className="mt-3 max-w-[640px]"
+          className="mt-3 max-w-[640px] my-[10px]"
           style={{
             fontSize: "clamp(20px, 2.8vw, 30px)",
             lineHeight: 1.3,
