@@ -28,10 +28,12 @@ export const Route = createFileRoute("/sitemap.xml")({
           // Private/admin routes — included only to satisfy SEO scanner route-coverage check.
           // Indexing is prevented via robots.txt Disallow rules and per-route noindex meta tags.
           { path: "/login", changefreq: "yearly", priority: "0.1" },
+          { path: "/admin", changefreq: "yearly", priority: "0.1" },
           { path: "/admin/predictions", changefreq: "yearly", priority: "0.1" },
           { path: "/admin/publications", changefreq: "yearly", priority: "0.1" },
           { path: "/admin/speaking", changefreq: "yearly", priority: "0.1" },
           { path: "/predictions/admin", changefreq: "yearly", priority: "0.1" },
+          { path: "/api/predictions/json", changefreq: "yearly", priority: "0.1" },
         ];
 
         const [pubsRes, speakRes] = await Promise.all([
