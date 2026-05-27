@@ -35,37 +35,51 @@ export const Route = createFileRoute("/research/$slug")({
       scripts: [
         {
           type: "application/ld+json",
-          children: JSON.stringify({
-            "@context": "https://schema.org",
-            "@type": "ScholarlyArticle",
-            name: r.title,
-            headline: r.title,
-            ...(r.slug === "silent-replacement"
+          children: JSON.stringify(
+            r.slug === "silent-replacement"
               ? {
-                  alternativeHeadline: "Silent Replacement",
+                  "@context": "https://schema.org",
+                  "@type": "ScholarlyArticle",
+                  name: "Тихая замена: как ИИ-автоматизация замещает рабочие функции",
+                  alternateName: "Silent Replacement",
+                  author: {
+                    "@type": "Person",
+                    name: "Андрей Майнгардт",
+                    url: "https://neuromein.ru",
+                  },
+                  datePublished: "2026-03-24",
+                  description:
+                    "66-страничное исследование о механике замещения рабочих мест ИИ-автоматизацией в 2026–2028. Авторские концепции: Пирамида → гантель, Односторонняя дверь, Четыре звена кризиса.",
+                  url: "https://neuromein.ru/research/silent-replacement",
                   inLanguage: "ru",
-                  about: [
-                    "AI-driven workforce displacement",
-                    "Labor market transformation",
-                    "One-Way Door Effect",
-                    "Pyramid to Barbell model",
-                  ],
+                  keywords:
+                    "AI workforce displacement, silent replacement, тихая замена, ИИ рынок труда, AI automation jobs",
+                  publisher: {
+                    "@type": "Organization",
+                    name: "NEUROMEIN",
+                    url: "https://neuromein.ru",
+                  },
                 }
-              : {}),
-            author: {
-              "@type": "Person",
-              name: "Андрей Майнгардт",
-              url: "https://neuromein.ru",
-            },
-            datePublished: r.date,
-            publisher: {
-              "@type": "Organization",
-              name: "NEUROMEIN",
-              url: "https://neuromein.ru",
-            },
-            url: `https://neuromein.ru/research/${r.slug}`,
-            description: r.short,
-          }),
+              : {
+                  "@context": "https://schema.org",
+                  "@type": "ScholarlyArticle",
+                  name: r.title,
+                  headline: r.title,
+                  author: {
+                    "@type": "Person",
+                    name: "Андрей Майнгардт",
+                    url: "https://neuromein.ru",
+                  },
+                  datePublished: r.date,
+                  publisher: {
+                    "@type": "Organization",
+                    name: "NEUROMEIN",
+                    url: "https://neuromein.ru",
+                  },
+                  url: `https://neuromein.ru/research/${r.slug}`,
+                  description: r.short,
+                },
+          ),
         },
       ],
     };
