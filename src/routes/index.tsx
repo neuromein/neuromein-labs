@@ -53,6 +53,32 @@ export const Route = createFileRoute("/")({
             "Аналитический ресурс об искусственном интеллекте и рынке труда. Исследования, прогнозы, аналитика.",
         }),
       },
+      {
+        type: "application/ld+json",
+        children: JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "ScholarlyArticle",
+          name: "Тихая замена: как ИИ-автоматизация замещает рабочие функции",
+          alternateName: "Silent Replacement",
+          author: {
+            "@type": "Person",
+            name: "Андрей Майнгардт",
+            url: "https://neuromein.ru",
+          },
+          datePublished: "2026-03-24",
+          description:
+            "66-страничное исследование о механике замещения рабочих мест ИИ-автоматизацией в 2026–2028. Авторские концепции: Пирамида → гантель, Односторонняя дверь, Четыре звена кризиса.",
+          url: "https://neuromein.ru/research/silent-replacement",
+          inLanguage: "ru",
+          keywords:
+            "AI workforce displacement, silent replacement, тихая замена, ИИ рынок труда, AI automation jobs",
+          publisher: {
+            "@type": "Organization",
+            name: "NEUROMEIN",
+            url: "https://neuromein.ru",
+          },
+        }),
+      },
     ],
   }),
   component: IndexPage,
