@@ -129,7 +129,7 @@ export function HeroCard({
             color: "#f0f0f5",
           }}
         >
-          Андрей Майнгардт
+          Андрей Майнгардт — AI-стратег, автор исследования «Тихая замена»
         </h1>
 
         {/* Description */}
@@ -153,7 +153,7 @@ export function HeroCard({
           className="mt-5 text-[15px] sm:text-[16px]"
           style={{ color: "#9a9aaa" }}
         >
-          AI-стратег и аналитик WMT AI
+          Director of Strategy, WMT AI
         </motion.div>
 
         {/* Email + socials */}
