@@ -87,18 +87,27 @@ export const Route = createRootRoute({
         children: JSON.stringify({
           "@context": "https://schema.org",
           "@type": "Person",
+          "@id": "https://neuromein.ru/#person",
           name: "Андрей Майнгардт",
-          alternateName: "Andrey Meinhardt",
-          jobTitle: "Director of Strategy",
-          hasOccupation: {
-            "@type": "Occupation",
-            name: "Expert on AI Business Impact",
-          },
+          alternateName: ["Andrey Meinhardt", "Andrew Meinhardt", "Andrey Mayngardt"],
+          jobTitle: "Эксперт по влиянию ИИ на бизнес-процессы и рынок труда",
+          description:
+            "Эксперт по влиянию ИИ на бизнес-процессы и рынок труда. Автор исследования «Тихая замена». Исследует, как ИИ-автоматизация меняет профессии, компании и рынок труда в горизонте 2026–2030.",
+          disambiguatingDescription:
+            "Российский эксперт по влиянию ИИ на рынок труда, основатель аналитического ресурса NEUROMEIN. Не следует путать с Andrew Mainhart (сооснователь финтех-компании Oradian).",
+          nationality: "Russian",
+          knowsLanguage: ["ru"],
           worksFor: {
             "@type": "Organization",
             name: "WMT AI",
           },
+          founder: {
+            "@type": "Organization",
+            name: "NEUROMEIN",
+            url: "https://neuromein.ru",
+          },
           url: "https://neuromein.ru",
+          mainEntityOfPage: "https://neuromein.ru/about",
           sameAs: [
             "https://t.me/neuromein",
             "https://linkedin.com/in/andrew-meinhardt-306821361",
@@ -109,7 +118,6 @@ export const Route = createRootRoute({
           ],
           knowsAbout: [
             "Artificial Intelligence",
-            "AI Strategy",
             "AI-driven Labor Market Transformation",
             "Silent Replacement (Тихая замена)",
             "AI Risk Assessment for Enterprise",
@@ -118,15 +126,8 @@ export const Route = createRootRoute({
             "One-Way Door Effect in AI Automation",
             "Pyramid to Barbell Labor Market Model",
             "Corporate AI Transformation Strategy",
+            "AI Automation of Business Processes",
           ],
-          founder: {
-            "@type": "Organization",
-            name: "NEUROMEIN",
-            url: "https://neuromein.ru",
-          },
-          mainEntityOfPage: "https://neuromein.ru",
-          description:
-            "Эксперт по влиянию ИИ на бизнес-процессы и рынок труда. Автор исследования «Тихая замена». Исследует влияние ИИ на бизнес и рынок труда.",
         }),
       },
     ],
