@@ -168,13 +168,7 @@ export function HeroCard({
           className="mt-5"
         >
           <div
-            className="text-[16px] sm:text-[17px] font-medium"
-            style={{ color: "#d8d8e0" }}
-          >
-            Эксперт по влиянию ИИ на бизнес и рынок труда
-          </div>
-          <div
-            className="mt-1 text-[15px] sm:text-[16px]"
+            className="text-[15px] sm:text-[16px]"
             style={{ color: "#9a9aaa" }}
           >
             Автор исследования «Тихая замена» · Director of Strategy, WMT AI
