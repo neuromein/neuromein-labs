@@ -92,7 +92,7 @@ export const Route = createRootRoute({
           jobTitle: "Director of Strategy",
           hasOccupation: {
             "@type": "Occupation",
-            name: "AI Strategist",
+            name: "Expert on AI Business Impact",
           },
           worksFor: {
             "@type": "Organization",
@@ -126,7 +126,7 @@ export const Route = createRootRoute({
           },
           mainEntityOfPage: "https://neuromein.ru",
           description:
-            "AI-стратег. Автор исследования «Тихая замена». Исследует влияние ИИ на бизнес и рынок труда.",
+            "Эксперт по влиянию ИИ на бизнес-процессы и рынок труда. Автор исследования «Тихая замена». Исследует влияние ИИ на бизнес и рынок труда.",
         }),
       },
     ],

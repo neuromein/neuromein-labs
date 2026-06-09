@@ -144,7 +144,7 @@ export function HeroCard({
             color: "#f0f0f5",
           }}
         >
-          AI-стратег, автор исследования «Тихая замена»
+          Эксперт по влиянию ИИ на бизнес-процессы и рынок труда
         </motion.h1>
 
         {/* Description */}
@@ -168,7 +168,7 @@ export function HeroCard({
           className="mt-5 text-[15px] sm:text-[16px]"
           style={{ color: "#9a9aaa" }}
         >
-          Director of Strategy, WMT AI
+          Автор исследования «Тихая замена» · Director of Strategy, WMT AI
         </motion.div>
 
         {/* Email + socials */}

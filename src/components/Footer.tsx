@@ -37,7 +37,7 @@ export function Footer() {
               {SITE.author}
             </div>
             <p className="mt-2 text-[14px] text-text-secondary leading-relaxed">
-              AI-стратег и аналитик. Аналитический ресурс об искусственном интеллекте и рынке труда
+              Эксперт по влиянию ИИ на бизнес-процессы и рынок труда. Автор исследования «Тихая замена»
             </p>
 
             {/* Telegram CTA — primary subscribe action */}

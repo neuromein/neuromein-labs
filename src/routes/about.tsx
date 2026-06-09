@@ -6,16 +6,16 @@ import { Reveal } from "@/components/Reveal";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "Андрей Майнгардт — NEUROMEIN | AI-стратег и аналитик" },
+      { title: "Андрей Майнгардт — эксперт по влиянию ИИ на рынок труда | NEUROMEIN" },
       {
         name: "description",
         content:
-          "Андрей Майнгардт — AI-стратег и аналитик. AI Strategist в компании WMT AI. Основатель аналитического ресурса NEUROMEIN.",
+          "Андрей Майнгардт — эксперт по влиянию ИИ на бизнес-процессы и рынок труда, автор исследования «Тихая замена». Основатель аналитического ресурса NEUROMEIN.",
       },
       { property: "og:title", content: "Андрей Майнгардт — NEUROMEIN" },
       {
         property: "og:description",
-        content: "AI-стратег и аналитик. AI Strategist в WMT AI. Основатель NEUROMEIN.",
+        content: "Эксперт по влиянию ИИ на бизнес-процессы и рынок труда. Автор «Тихой замены». Основатель NEUROMEIN.",
       },
       { property: "og:url", content: "https://neuromein.ru/about" },
     ],
@@ -30,7 +30,7 @@ export const Route = createFileRoute("/about")({
           "@type": "Person",
           name: "Андрей Майнгардт",
           alternateName: "Andrey Meinhardt",
-          jobTitle: "AI Strategist, Director of Strategy",
+          jobTitle: "Director of Strategy",
           worksFor: {
             "@type": "Organization",
             name: "WMT AI",
@@ -60,7 +60,7 @@ export const Route = createFileRoute("/about")({
           },
           mainEntityOfPage: "https://neuromein.ru/about",
           description:
-            "AI-стратег и аналитик. Автор исследования «Тихая замена». Исследует влияние ИИ на бизнес и рынок труда.",
+            "Эксперт по влиянию ИИ на бизнес-процессы и рынок труда, автор исследования «Тихая замена». Исследует влияние ИИ на бизнес и рынок труда.",
         }),
       },
     ],
@@ -101,7 +101,7 @@ function AboutPage() {
                   прогнозы.
                 </p>
                 <p>
-                  Я работаю AI-стратегом в компании WMT AI, где консультирую
+                  Я работаю Director of Strategy в компании WMT AI, где консультирую
                   бизнес по внедрению генеративного ИИ и оценке рисков
                   автоматизации.
                 </p>
