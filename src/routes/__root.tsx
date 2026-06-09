@@ -114,7 +114,6 @@ export const Route = createRootRoute({
           sameAs: [
             "https://t.me/neuromein",
             "https://linkedin.com/in/andrew-meinhardt-306821361",
-            "https://www.instagram.com/neuromein.ai/",
             "https://github.com/neuromein/Neurosovet",
             "https://vc.ru/id931194",
             "https://www.litres.ru/book/andrey-mayngardt/tihaya-zamena-kak-krizisy-2026-2028-izmenyat-rynok-truda-73764754/",
