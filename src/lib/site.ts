@@ -10,6 +10,10 @@ export const SITE = {
   
   email: "andrew.meinhardt@yandex.ru",
   telegramPersonal: "@andrew_meinhardt",
+  instagram: "https://www.instagram.com/neuromein.ai/",
+  vc: "https://vc.ru/id931194",
+  litres: "https://www.litres.ru/book/andrey-mayngardt/tihaya-zamena-kak-krizisy-2026-2028-izmenyat-rynok-truda-73764754/",
+  github: "https://github.com/neuromein/Neurosovet",
 };
 
 export const NAV_LINKS = [
