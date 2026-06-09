@@ -57,6 +57,9 @@ export const Route = createRootRoute({
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "NEUROMEIN" },
       { property: "og:locale", content: "ru_RU" },
+      { property: "og:image", content: "https://neuromein.ru/og-default.png" },
+      { property: "og:image:width", content: "1200" },
+      { property: "og:image:height", content: "630" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [

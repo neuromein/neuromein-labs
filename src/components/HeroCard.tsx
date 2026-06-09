@@ -165,10 +165,20 @@ export function HeroCard({
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.36, duration: 0.6, ease }}
-          className="mt-5 text-[15px] sm:text-[16px]"
-          style={{ color: "#9a9aaa" }}
+          className="mt-5"
         >
-          Автор исследования «Тихая замена» · Director of Strategy, WMT AI
+          <div
+            className="text-[16px] sm:text-[17px] font-medium"
+            style={{ color: "#d8d8e0" }}
+          >
+            Эксперт по влиянию ИИ на бизнес и рынок труда
+          </div>
+          <div
+            className="mt-1 text-[15px] sm:text-[16px]"
+            style={{ color: "#9a9aaa" }}
+          >
+            Автор исследования «Тихая замена» · Director of Strategy, WMT AI
+          </div>
         </motion.div>
 
         {/* Email + socials */}
