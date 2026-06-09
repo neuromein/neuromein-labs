@@ -92,7 +92,7 @@ export const Route = createRootRoute({
           jobTitle: "Director of Strategy",
           hasOccupation: {
             "@type": "Occupation",
-            name: "AI Strategist",
+            name: "Expert on AI Business Impact",
           },
           worksFor: {
             "@type": "Organization",
