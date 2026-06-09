@@ -111,41 +111,6 @@ function AboutPage() {
           </div>
         </Reveal>
 
-        {/* Profiles */}
-        <Reveal>
-          <div className="mt-4 rounded-[24px] border-[0.5px] border-border bg-bg-card/40 p-8 lg:p-12">
-            <div className="label-eyebrow mb-6">Профили</div>
-            <div className="flex flex-wrap items-center gap-3">
-              {[
-                { href: SITE.telegram, label: "Telegram" },
-                { href: SITE.linkedin, label: "LinkedIn" },
-                { href: SITE.instagram, label: "Instagram" },
-                { href: SITE.vc, label: "vc.ru" },
-                { href: SITE.litres, label: "Litres (книга «Тихая замена»)" },
-                { href: SITE.github, label: "GitHub" },
-              ].map((p) => (
-                <a
-                  key={p.label}
-                  href={p.href}
-                  target="_blank"
-                  rel="noreferrer me"
-                  className="inline-flex items-center h-10 px-4 rounded-full text-[13px] transition-colors duration-300"
-                  style={{ border: "1px solid #2a2a35", color: "#bdbdc8" }}
-                  onMouseEnter={(e) => {
-                    (e.currentTarget as HTMLAnchorElement).style.borderColor = "#4A9EF5";
-                    (e.currentTarget as HTMLAnchorElement).style.color = "#f0f0f5";
-                  }}
-                  onMouseLeave={(e) => {
-                    (e.currentTarget as HTMLAnchorElement).style.borderColor = "#2a2a35";
-                    (e.currentTarget as HTMLAnchorElement).style.color = "#bdbdc8";
-                  }}
-                >
-                  {p.label}
-                </a>
-              ))}
-            </div>
-          </div>
-        </Reveal>
       </div>
     </Layout>
   );
