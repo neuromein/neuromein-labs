@@ -9,14 +9,14 @@ import type { Publication } from "@/data/publications.fetch";
  * - крупная типографика, monospaced даты
  *
  * Источник данных передаётся пропсом (БД через fetchPublications).
- * Если ничего не передано — берётся пустой массив (компонент не падает).
+ * Если ничего не передано – берётся пустой массив (компонент не падает).
  */
 export function PublicationsList({
   items,
   limit,
 }: {
   items: Publication[];
-  /** Если задан — показать только первые N публикаций. */
+  /** Если задан – показать только первые N публикаций. */
   limit?: number;
 }) {
   const list = typeof limit === "number" ? items.slice(0, limit) : items;

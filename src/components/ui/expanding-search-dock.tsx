@@ -109,7 +109,7 @@ export function ExpandingSearchDock({
   const filtered: Result[] = useMemo(() => {
     const raw = query.trim();
     if (!raw) {
-      // Empty state: show nothing — only search input is visible
+      // Empty state: show nothing – only search input is visible
       return [];
     }
 
@@ -182,7 +182,7 @@ export function ExpandingSearchDock({
 
   return (
     <>
-      {/* Trigger (collapsed pill icon) — shown only in uncontrolled mode */}
+      {/* Trigger (collapsed pill icon) – shown only in uncontrolled mode */}
       {!isControlled && !isExpanded && (
         <button
           aria-label="Поиск (⌘K)"
@@ -271,7 +271,7 @@ export function ExpandingSearchDock({
                   </button>
                 </form>
 
-                {/* Results — only render container when there is a query */}
+                {/* Results – only render container when there is a query */}
                 {query.trim().length > 0 && (
                   <div className="max-h-[60vh] overflow-y-auto px-2 py-2">
                     {filtered.length === 0 ? (
@@ -329,12 +329,12 @@ function normalize(s: string): string {
   return s
     .toLowerCase()
     .replace(/ё/g, "е")
-    .replace(/[«»"'`(),.:;!?\-—–\[\]{}/\\|]/g, " ")
+    .replace(/[«»"'`(),.:;!?\-––\[\]{}/\\|]/g, " ")
     .replace(/\s+/g, " ")
     .trim();
 }
 
-/** Crude Russian/English stemming — strip common suffixes/endings */
+/** Crude Russian/English stemming – strip common suffixes/endings */
 function stem(word: string): string {
   let w = word;
   // Russian endings (longest first)
@@ -376,7 +376,7 @@ function tokenize(s: string): string[] {
     .map(stem);
 }
 
-/** Lightweight synonym map — expands a token to several semantic variants */
+/** Lightweight synonym map – expands a token to several semantic variants */
 const SYNONYMS: Record<string, string[]> = {
   ии: ["искусствен", "интеллект", "нейросет", "ai", "генератив"],
   ai: ["искусствен", "интеллект", "ии", "нейросет"],

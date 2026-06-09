@@ -19,13 +19,13 @@ export const Route = createFileRoute("/")({
   },
   head: () => ({
     meta: [
-      { title: "Андрей Майнгардт — эксперт по влиянию ИИ на рынок труда" },
+      { title: "Андрей Майнгардт – эксперт по влиянию ИИ на рынок труда" },
       {
         name: "description",
         content:
           "Эксперт по влиянию ИИ на бизнес-процессы и рынок труда, автор исследования «Тихая замена». Аналитика и проверяемые прогнозы о трансформации рынка труда 2026–2030.",
       },
-      { property: "og:title", content: "Андрей Майнгардт — эксперт по влиянию ИИ на рынок труда" },
+      { property: "og:title", content: "Андрей Майнгардт – эксперт по влиянию ИИ на рынок труда" },
       {
         property: "og:description",
         content:
@@ -85,7 +85,7 @@ function IndexPage() {
         {/* HERO */}
         <HeroCard />
 
-        {/* RESEARCH — две карточки в ряд, 80px от hero */}
+        {/* RESEARCH – две карточки в ряд, 80px от hero */}
         <section style={{ paddingTop: 80 }}>
           <div className="flex items-end justify-between gap-4 mb-8">
             <div>
@@ -116,12 +116,12 @@ function IndexPage() {
           <HomeNeuromeinPromo />
         </section>
 
-        {/* SPEAKING — 100px от исследований */}
+        {/* SPEAKING – 100px от исследований */}
         <section style={{ paddingTop: 100 }}>
           <SpeakingSlider items={speaking} />
         </section>
 
-        {/* PUBLICATIONS — 100px от слайдера, 120px до footer */}
+        {/* PUBLICATIONS – 100px от слайдера, 120px до footer */}
         <section style={{ paddingTop: 100, paddingBottom: 120 }}>
           <HomePublications />
         </section>

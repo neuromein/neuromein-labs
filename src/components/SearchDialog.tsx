@@ -40,7 +40,7 @@ export function SearchDialog({
   return (
     <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
       <DialogPrimitive.Portal>
-        {/* Dimmed backdrop with subtle blur — like the reference */}
+        {/* Dimmed backdrop with subtle blur – like the reference */}
         <DialogPrimitive.Overlay
           className="fixed inset-0 z-50 data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0"
           style={{
@@ -69,7 +69,7 @@ export function SearchDialog({
                 "0 24px 60px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.05)",
             }}
           >
-            {/* Input row — large, like the reference screenshot */}
+            {/* Input row – large, like the reference screenshot */}
             <div
               className="flex items-center gap-3 px-5"
               style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}

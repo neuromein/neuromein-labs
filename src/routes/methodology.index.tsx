@@ -6,13 +6,13 @@ import { METHODOLOGY } from "@/data/methodology";
 export const Route = createFileRoute("/methodology/")({
   head: () => ({
     meta: [
-      { title: "Методология анализа — Андрей Майнгардт | NEUROMEIN" },
+      { title: "Методология анализа – Андрей Майнгардт | NEUROMEIN" },
       {
         name: "description",
         content:
           "Аналитические модели, которые я использую для оценки влияния ИИ на рынок труда: четыре звена кризиса, эффект односторонней двери, пирамида и гантель.",
       },
-      { property: "og:title", content: "Методология анализа — NEUROMEIN" },
+      { property: "og:title", content: "Методология анализа – NEUROMEIN" },
       {
         property: "og:description",
         content:

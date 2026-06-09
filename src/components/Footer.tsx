@@ -40,7 +40,7 @@ export function Footer() {
               Эксперт по влиянию ИИ на бизнес-процессы и рынок труда. Автор исследования «Тихая замена»
             </p>
 
-            {/* Telegram CTA — primary subscribe action */}
+            {/* Telegram CTA – primary subscribe action */}
             <a
               href={SITE.telegram}
               target="_blank"

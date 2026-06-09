@@ -17,9 +17,9 @@ export const Route = createFileRoute("/research/$slug")({
   },
   head: ({ loaderData }) => {
     const r = loaderData?.item;
-    if (!r) return { meta: [{ title: "Исследование — NEUROMEIN" }] };
+    if (!r) return { meta: [{ title: "Исследование – NEUROMEIN" }] };
     const titlePart = r.title.length > 48 ? r.title.slice(0, 47) + "…" : r.title;
-    const title = `${titlePart} — NEUROMEIN`;
+    const title = `${titlePart} – NEUROMEIN`;
     return {
       meta: [
         { title },
@@ -276,7 +276,7 @@ function ResearchPage() {
               </div>
             </div>
 
-            {/* Универсальный PDF-вьюер на pdf.js — работает во всех браузерах */}
+            {/* Универсальный PDF-вьюер на pdf.js – работает во всех браузерах */}
             {isClient ? (
               <Suspense
                 fallback={

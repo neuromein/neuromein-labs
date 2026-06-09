@@ -7,7 +7,7 @@ import {
 } from "@/data/predictions";
 
 // ============================================================================
-// Палитра — Indigo → Cyan градиент (Linear / Arc style)
+// Палитра – Indigo → Cyan градиент (Linear / Arc style)
 // ============================================================================
 
 const INDIGO = "#6366F1";
@@ -100,7 +100,7 @@ const CURATED: CuratedItem[] = [
     id: "pred-003",
     shortTitle: "Конец SaaS: Agent-as-a-Service",
     shortDescription:
-      "Вендоры начнут продавать единицы готового труда — оплата за результат, а не за лицензию.",
+      "Вендоры начнут продавать единицы готового труда – оплата за результат, а не за лицензию.",
     horizon: "Конец 2026",
     confidence: 70,
     sourceLabel: "ИИ в 2025 и прогнозы на 2026, гл. 2.2",
@@ -112,7 +112,7 @@ const CURATED: CuratedItem[] = [
     id: "pred-007",
     shortTitle: "«Ловушка джуниора»",
     shortDescription:
-      "ИИ заменяет задачи, через которые молодые специалисты входили в профессию — цепочка опыта рвётся.",
+      "ИИ заменяет задачи, через которые молодые специалисты входили в профессию – цепочка опыта рвётся.",
     horizon: "В течение 2026",
     confidence: 85,
     sourceLabel: "ИИ в 2025 и прогнозы на 2026, гл. 2.3",
@@ -160,7 +160,7 @@ const CURATED: CuratedItem[] = [
     id: "pred-015",
     shortTitle: "Закат SEO, рассвет GEO",
     shortDescription:
-      "Бренды переходят от топа выдачи к интеграции в прямой ответ ИИ; дизайн сайтов — под машины.",
+      "Бренды переходят от топа выдачи к интеграции в прямой ответ ИИ; дизайн сайтов – под машины.",
     horizon: "Конец 2026",
     confidence: 80,
     sourceLabel: "ИИ в 2025 и прогнозы на 2026, гл. 2.5",
@@ -184,8 +184,8 @@ const CURATED: CuratedItem[] = [
     id: "pred-027",
     shortTitle: "Каскад кризисов 2026–2027",
     shortDescription:
-      "Tech-коррекция, геополитическое обострение и рецессия — реальность опередила график.",
-    horizon: "Q2 2026 — середина 2027",
+      "Tech-коррекция, геополитическое обострение и рецессия – реальность опередила график.",
+    horizon: "Q2 2026 – середина 2027",
     confidence: 90,
     sourceLabel: "Тихая замена, гл. 6.3",
     pdfUrl: PDF_SILENT,
@@ -196,7 +196,7 @@ const CURATED: CuratedItem[] = [
     id: "pred-028",
     shortTitle: "Военный конфликт с макровоздействием",
     shortDescription:
-      "Вероятность хотя бы одного конфликта (Ближний Восток / Тайвань / Европа) — 90% к 2028.",
+      "Вероятность хотя бы одного конфликта (Ближний Восток / Тайвань / Европа) – 90% к 2028.",
     horizon: "2026–2028",
     confidence: 90,
     sourceLabel: "Тихая замена, гл. 4",
@@ -208,7 +208,7 @@ const CURATED: CuratedItem[] = [
     id: "pred-030",
     shortTitle: "Опережающее разрушение рабочих мест",
     shortDescription:
-      "Места исчезают до фактической замены — рынок и инвесторы режут штат на ожиданиях.",
+      "Места исчезают до фактической замены – рынок и инвесторы режут штат на ожиданиях.",
     horizon: "2026–2028",
     confidence: 85,
     sourceLabel: "Тихая замена, гл. 5",
@@ -218,9 +218,9 @@ const CURATED: CuratedItem[] = [
   },
   {
     id: "pred-032",
-    shortTitle: "Рынок труда — «гантель»",
+    shortTitle: "Рынок труда – «гантель»",
     shortDescription:
-      "Сверху — операторы ИИ, снизу — нестандартный физический труд, в середине — пустота.",
+      "Сверху – операторы ИИ, снизу – нестандартный физический труд, в середине – пустота.",
     horizon: "До 2028",
     confidence: 75,
     sourceLabel: "Тихая замена, гл. 7.4",
@@ -244,7 +244,7 @@ const CURATED: CuratedItem[] = [
     id: "pred-034",
     shortTitle: "Эффект односторонней двери",
     shortDescription:
-      "Сокращённых в кризис не вернут — позиции займут ИИ-сотрудники до восстановления экономики.",
+      "Сокращённых в кризис не вернут – позиции займут ИИ-сотрудники до восстановления экономики.",
     horizon: "2027–2029",
     confidence: 80,
     sourceLabel: "Тихая замена, гл. 3.4, 6.3",
@@ -256,7 +256,7 @@ const CURATED: CuratedItem[] = [
     id: "pred-031",
     shortTitle: "Пандемия ускорит автоматизацию интеллектуального труда",
     shortDescription:
-      "Следующая пандемия снимет социальное сопротивление замене — ИИ не уходит на больничный.",
+      "Следующая пандемия снимет социальное сопротивление замене – ИИ не уходит на больничный.",
     horizon: "2027–2028",
     confidence: 55,
     sourceLabel: "Тихая замена, гл. 5",
@@ -360,7 +360,7 @@ export function PredictionsTimeline({ predictions }: { predictions: Prediction[]
         </p>
       </header>
 
-      {/* Фильтры — pill-кнопки в стиле Apple */}
+      {/* Фильтры – pill-кнопки в стиле Apple */}
       <div className="mt-8 sm:mt-12 flex flex-wrap gap-2">
         {(Object.keys(THEME_LABELS) as ThemeKey[]).map((k) => {
           const isActive = theme === k;
@@ -486,7 +486,7 @@ export function PredictionsTimeline({ predictions }: { predictions: Prediction[]
 }
 
 // ============================================================================
-// Arc Timeline — Linear / Arc style
+// Arc Timeline – Linear / Arc style
 // ============================================================================
 
 function ArcTimeline({
@@ -679,7 +679,7 @@ function ArcTimeline({
 }
 
 // ============================================================================
-// SVG-дуга (десктоп) — вынесено в отдельный компонент для читабельности
+// SVG-дуга (десктоп) – вынесено в отдельный компонент для читабельности
 // ============================================================================
 
 function ArcSvg({
@@ -948,7 +948,7 @@ function ArcSvg({
 }
 
 // ============================================================================
-// Поповер — frosted glass карточка
+// Поповер – frosted glass карточка
 // ============================================================================
 
 function MobileQuarterList({
@@ -1017,7 +1017,7 @@ function MobileQuarterList({
                 </span>
               )}
               <span className="ml-auto flex items-center gap-2 text-[12px] text-text-tertiary tabular-nums">
-                {has ? `${count} прогн.` : "—"}
+                {has ? `${count} прогн.` : "–"}
                 {has && (
                   <ArrowUpRight
                     size={13}
@@ -1071,7 +1071,7 @@ function MobileQuarterList({
 }
 
 // ============================================================================
-// Поповер — desktop only
+// Поповер – desktop only
 // ============================================================================
 
 function ArcPopover({
@@ -1165,7 +1165,7 @@ function ArcPopover({
 }
 
 // ============================================================================
-// Карточка — Glassmorphism v2
+// Карточка – Glassmorphism v2
 // ============================================================================
 
 function GlassCard({
@@ -1369,7 +1369,7 @@ function DetailModal({
           </span>
           <span className="text-text-tertiary">·</span>
           <span className="text-text-secondary">
-            Уверенность: {curated.confidence}% — {confidenceLabel(curated.confidence)}
+            Уверенность: {curated.confidence}% – {confidenceLabel(curated.confidence)}
           </span>
         </div>
 

@@ -1,6 +1,6 @@
 // src/data/predictions.ts
-// Трекер прогнозов NEUROMEIN.ru — версия 3.0
-// ВНИМАНИЕ: Источник данных — БД Supabase (таблицы predictions + prediction_evidence).
+// Трекер прогнозов NEUROMEIN.ru – версия 3.0
+// ВНИМАНИЕ: Источник данных – БД Supabase (таблицы predictions + prediction_evidence).
 // Этот файл содержит только типы, метки категорий и хелперы.
 // Загрузка данных: см. src/data/predictions.fetch.ts
 

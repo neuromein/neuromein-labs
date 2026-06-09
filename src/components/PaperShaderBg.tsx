@@ -4,8 +4,8 @@ import { useEffect, useRef, useState } from "react";
 /**
  * Hero-фон в стиле Paper shaders (Dithering).
  * - Базовый тёмный фон на всём блоке
- * - Справа — Dithering shader: "нейросеть-волна"
- * - При наведении мыши: shader реагирует — смещается offset, ускоряется,
+ * - Справа – Dithering shader: "нейросеть-волна"
+ * - При наведении мыши: shader реагирует – смещается offset, ускоряется,
  *   усиливается "волновой" эффект (warp shape с динамическим scale/rotation)
  * - Слева текст: защищён маской и виньеткой на ВСЕХ брейкпоинтах:
  *   mobile (<640): shader снизу, текст сверху
@@ -85,7 +85,7 @@ export function PaperShaderBg() {
     };
   }, []);
 
-  // Маски: на мобильном shader снизу (текст сверху), на десктопе — справа
+  // Маски: на мобильном shader снизу (текст сверху), на десктопе – справа
   const shaderMask = isMobile
     ? "radial-gradient(ellipse 110% 60% at 50% 100%, black 25%, rgba(0,0,0,0.6) 55%, transparent 85%)"
     : "radial-gradient(ellipse 60% 95% at 92% 50%, black 28%, rgba(0,0,0,0.7) 58%, transparent 88%)";
@@ -101,7 +101,7 @@ export function PaperShaderBg() {
         }}
       />
 
-      {/* Dithering shader — ограничен маской справа/снизу, не заходит на текст */}
+      {/* Dithering shader – ограничен маской справа/снизу, не заходит на текст */}
       <div
         className="absolute inset-0 pointer-events-none transition-[mask-image] duration-300"
         style={{

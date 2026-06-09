@@ -7,7 +7,7 @@ import { Plus, Pencil, Trash2, FileText, Search, X, Eye, EyeOff } from "lucide-r
 export const Route = createFileRoute("/admin/predictions")({
   head: () => ({
     meta: [
-      { title: "Прогнозы — Личный кабинет" },
+      { title: "Прогнозы – Личный кабинет" },
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),

@@ -46,9 +46,9 @@ export const Route = createFileRoute("/blog/$slug")({
   },
   head: ({ loaderData }) => {
     const p = loaderData?.item;
-    if (!p) return { meta: [{ title: "Публикация — NEUROMEIN" }] };
+    if (!p) return { meta: [{ title: "Публикация – NEUROMEIN" }] };
     const titlePart = p.title.length > 48 ? p.title.slice(0, 47) + "…" : p.title;
-    const title = `${titlePart} — NEUROMEIN`;
+    const title = `${titlePart} – NEUROMEIN`;
     return {
       meta: [
         { title },

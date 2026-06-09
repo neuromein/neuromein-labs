@@ -57,7 +57,7 @@ export function Header() {
     })),
   ];
 
-  // Pill background — liquid glass: very translucent, strong blur, subtle saturation boost
+  // Pill background – liquid glass: very translucent, strong blur, subtle saturation boost
   const pillBg = scrolled
     ? "rgba(12, 12, 18, 0.55)"
     : "rgba(12, 12, 18, 0.32)";
@@ -67,7 +67,7 @@ export function Header() {
 
   return (
     <header className="fixed top-4 inset-x-0 z-50 flex justify-center px-4">
-      {/* Desktop pill — fixed width, three-zone layout (logo / nav / search) */}
+      {/* Desktop pill – fixed width, three-zone layout (logo / nav / search) */}
       <div
         className="hidden lg:grid grid-cols-[auto_1fr_auto] items-center gap-6 w-full max-w-[920px] pl-5 pr-3 py-2.5 rounded-full transition-[background,backdrop-filter] duration-300"
         style={{
@@ -121,7 +121,7 @@ export function Header() {
         </button>
       </div>
 
-      {/* Mobile / tablet pill — shown below lg (< 1024px) */}
+      {/* Mobile / tablet pill – shown below lg (< 1024px) */}
       <div
         className="lg:hidden flex items-center justify-between w-full max-w-[420px] pl-4 pr-2 py-2 rounded-full transition-[background,backdrop-filter] duration-300"
         style={{
@@ -281,7 +281,7 @@ function SearchIcon() {
 }
 
 function BurgerIcon({ open }: { open: boolean }) {
-  // 3 horizontal lines — color #888898 visually via currentColor on text-text-primary
+  // 3 horizontal lines – color #888898 visually via currentColor on text-text-primary
   return (
     <div className="flex flex-col gap-[5px]" style={{ color: open ? "#f0f0f5" : "#888898" }}>
       <span

@@ -28,7 +28,7 @@ import { formatEventDate } from "@/data/speaking.fetch";
 export const Route = createFileRoute("/admin/speaking")({
   head: () => ({
     meta: [
-      { title: "Выступления — Личный кабинет" },
+      { title: "Выступления – Личный кабинет" },
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),

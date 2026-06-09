@@ -54,7 +54,7 @@ export function HomePublications() {
     setCanNext(el.scrollLeft + el.clientWidth < el.scrollWidth - 4);
   };
 
-  // На монтировании — ставим скролл в конец дублированного списка,
+  // На монтировании – ставим скролл в конец дублированного списка,
   // чтобы авто-прокрутка шла "влево" (в обратную сторону).
   useEffect(() => {
     const el = scrollerRef.current;
@@ -112,7 +112,7 @@ export function HomePublications() {
       if (!paused && !userInteracting) {
         const half = el.scrollWidth / 2;
         let next = el.scrollLeft - SPEED * dt;
-        // бесшовное зацикливание: если ушли в начало — прыгаем на середину
+        // бесшовное зацикливание: если ушли в начало – прыгаем на середину
         if (next <= 0) {
           next += half;
         }
