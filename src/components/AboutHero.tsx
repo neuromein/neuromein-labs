@@ -90,7 +90,7 @@ export function AboutHero() {
               lineHeight: 1.55,
             }}
           >
-            AI-стратег и аналитик · Основатель NEUROMEIN · AI Strategist в WMT AI
+            Эксперт по влиянию ИИ на бизнес-процессы и рынок труда · Автор исследования «Тихая замена» · Основатель NEUROMEIN
           </motion.p>
 
           <motion.div
