@@ -45,10 +45,7 @@ export const Route = createFileRoute("/")({
           "@type": "WebSite",
           name: "NEUROMEIN",
           url: "https://neuromein.ru",
-          author: {
-            "@type": "Person",
-            name: "Андрей Майнгардт",
-          },
+          author: { "@id": "https://neuromein.ru/#person" },
           description:
             "Аналитический ресурс об искусственном интеллекте и рынке труда. Исследования, прогнозы, аналитика.",
         }),
@@ -60,11 +57,7 @@ export const Route = createFileRoute("/")({
           "@type": "ScholarlyArticle",
           name: "Тихая замена: как ИИ-автоматизация замещает рабочие функции",
           alternateName: "Silent Replacement",
-          author: {
-            "@type": "Person",
-            name: "Андрей Майнгардт",
-            url: "https://neuromein.ru",
-          },
+          author: { "@id": "https://neuromein.ru/#person" },
           datePublished: "2026-03-24",
           description:
             "66-страничное исследование о механике замещения рабочих мест ИИ-автоматизацией в 2026–2028. Авторские концепции: Пирамида → гантель, Односторонняя дверь, Четыре звена кризиса.",
