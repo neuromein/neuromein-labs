@@ -80,7 +80,7 @@ export function Header() {
         }}
       >
         <Link to="/" aria-label="NEUROMEIN" className="flex items-center justify-center h-11 px-[3px]">
-          <img src={logoUrl} alt="NEUROMEIN" className="h-[15px] w-auto opacity-95" />
+          <img src={logoUrl} alt="Логотип NEUROMEIN" className="h-[15px] w-auto opacity-95" />
         </Link>
         <nav
           className="flex items-center justify-center gap-0.5"
@@ -134,7 +134,7 @@ export function Header() {
         }}
       >
         <Link to="/" aria-label="NEUROMEIN" className="flex items-center h-10">
-          <img src={logoUrl} alt="NEUROMEIN" className="h-[15px] w-auto" />
+          <img src={logoUrl} alt="Логотип NEUROMEIN" className="h-[15px] w-auto" />
         </Link>
         <div className="flex items-center gap-1">
           <button
@@ -178,7 +178,7 @@ export function Header() {
               style={{ background: "#08080D" }}
             >
               <div className="flex items-center justify-between px-6 pt-6 pb-2">
-                <img src={logoUrl} alt="NEUROMEIN" className="h-[16px] w-auto opacity-90" />
+                <img src={logoUrl} alt="Логотип NEUROMEIN" className="h-[16px] w-auto opacity-90" />
                 <button
                   aria-label="Закрыть меню"
                   onClick={() => setOpen(false)}
