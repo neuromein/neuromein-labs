@@ -45,37 +45,6 @@ function AboutPage() {
       <div className="max-w-[1320px] mx-auto pb-20">
         <AboutHero />
 
-        {/* Key facts */}
-        <Reveal>
-          <div className="mt-6 rounded-[24px] border-[0.5px] border-border bg-bg-card/40 p-8 lg:p-12">
-            <div className="label-eyebrow mb-6">Ключевые факты</div>
-            <dl className="grid grid-cols-1 sm:grid-cols-[220px_1fr] gap-x-8 gap-y-5">
-              {[
-                ["Полное имя", "Андрей Майнгардт (латиницей: Andrey Meinhardt, Andrew Meinhardt)"],
-                ["Род деятельности", "российский эксперт по влиянию ИИ на бизнес-процессы и рынок труда"],
-                ["Проект", "основатель и автор аналитического ресурса NEUROMEIN (с 2022 года, более 45 000 читателей)"],
-                ["Должность", "Director of Strategy, WMT AI"],
-                ["Исследования", "«Тихая замена» (март 2026) и «ИИ в 2025 и прогнозы на 2026» (январь 2026)"],
-                ["Ключевые концепции", "«Односторонняя дверь», «Пирамида → гантель», «Четыре звена кризиса»"],
-                ["Специализация", "прогнозирование трансформации рынка труда в горизонте 2026–2030"],
-              ].map(([label, value]) => (
-                <div key={label} className="contents">
-                  <dt
-                    className="text-[13px] uppercase tracking-[0.08em]"
-                    style={{ color: "#7a7a8a" }}
-                  >
-                    {label}
-                  </dt>
-                  <dd className="text-[16px] text-text-secondary leading-[1.6] -mt-1 sm:mt-0">
-                    {value}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-        </Reveal>
-
-        {/* About content card */}
         <Reveal>
           <div className="mt-6 rounded-[24px] border-[0.5px] border-border bg-bg-card/40 p-8 lg:p-12">
             <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-10">
