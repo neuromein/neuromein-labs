@@ -54,7 +54,7 @@ import { formatPublicationDate } from "@/data/publications.fetch";
 export const Route = createFileRoute("/admin/publications")({
   head: () => ({
     meta: [
-      { title: "Публикации — Личный кабинет" },
+      { title: "Публикации – Личный кабинет" },
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),

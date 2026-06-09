@@ -4,7 +4,7 @@ import { SITE } from "@/lib/site";
 import avatarUrl from "@/assets/avatar.jpg";
 
 /**
- * Hero страницы /about — двухколоночный блок: фото слева, имя/роль/контакты справа.
+ * Hero страницы /about – двухколоночный блок: фото слева, имя/роль/контакты справа.
  */
 export function AboutHero() {
   const ease = [0.22, 1, 0.36, 1] as const;

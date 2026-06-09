@@ -10,13 +10,13 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/predictions")({
   head: () => ({
     meta: [
-      { title: "Прогнозы и их проверка — NEUROMEIN | Андрей Майнгардт" },
+      { title: "Прогнозы и их проверка – NEUROMEIN | Андрей Майнгардт" },
       {
         name: "description",
         content:
           "Публичный prediction tracker: фиксированные прогнозы Андрея Майнгардта о развитии ИИ и рынка труда с проверкой по срокам.",
       },
-      { property: "og:title", content: "Прогнозы и их проверка — NEUROMEIN" },
+      { property: "og:title", content: "Прогнозы и их проверка – NEUROMEIN" },
       {
         property: "og:description",
         content: "Проверяемые прогнозы об ИИ и рынке труда с публичной сверкой результатов.",
@@ -73,7 +73,7 @@ function PredictionsPage() {
             <StatTile label="В процессе" value={stats.byStatus.in_progress} />
             <StatTile
               label="Точность"
-              value={stats.accuracy === null ? "—" : `${stats.accuracy}%`}
+              value={stats.accuracy === null ? "–" : `${stats.accuracy}%`}
             />
           </div>
 

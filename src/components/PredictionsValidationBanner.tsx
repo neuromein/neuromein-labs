@@ -28,7 +28,7 @@ export function PredictionsValidationBanner({
       >
         <CheckCircle2 size={14} className="text-text-secondary shrink-0" />
         <span>
-          Валидация данных: проверено {report.totalChecked} прогнозов — структура корректна
+          Валидация данных: проверено {report.totalChecked} прогнозов – структура корректна
         </span>
       </div>
     );
@@ -89,7 +89,7 @@ export function PredictionsValidationBanner({
                     </div>
                     <div className="text-text-secondary mt-1">
                       <span className="text-text-primary">{iss.predictionTitle}</span>
-                      {" — "}
+                      {" – "}
                       <span className="text-amber-300">{iss.message}</span>
                     </div>
                   </li>

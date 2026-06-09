@@ -97,7 +97,7 @@ export function validatePredictions(
   duplicates.forEach((dupId) => {
     issues.push({
       predictionId: dupId,
-      predictionTitle: "—",
+      predictionTitle: "–",
       path: "id",
       message: `дубликат id: "${dupId}"`,
     });

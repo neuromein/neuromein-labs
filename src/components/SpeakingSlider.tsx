@@ -16,7 +16,7 @@ export function SpeakingSlider({ items: itemsProp }: { items?: SpeakingEngagemen
         if (!cancelled) setItems(rows);
       })
       .catch(() => {
-        /* fail silently — section just stays empty */
+        /* fail silently – section just stays empty */
       });
     return () => {
       cancelled = true;
@@ -62,7 +62,7 @@ export function SpeakingSlider({ items: itemsProp }: { items?: SpeakingEngagemen
     let interactionTimer: number | null = null;
     let raf = 0;
     let last = performance.now();
-    const SPEED = 18; // пикселей в секунду — медленно и плавно
+    const SPEED = 18; // пикселей в секунду – медленно и плавно
 
     const onEnter = () => {
       paused = true;
@@ -71,7 +71,7 @@ export function SpeakingSlider({ items: itemsProp }: { items?: SpeakingEngagemen
       paused = false;
     };
     const onUserScroll = () => {
-      // если пользователь сам скроллит — приостанавливаем на 2.5с
+      // если пользователь сам скроллит – приостанавливаем на 2.5с
       userInteracting = true;
       if (interactionTimer) window.clearTimeout(interactionTimer);
       interactionTimer = window.setTimeout(() => {
@@ -237,7 +237,7 @@ function SpeakingCard({ item }: { item: SpeakingEngagement }) {
         e.currentTarget.style.borderColor = "#1c1c28";
       }}
     >
-      {/* Image — 4:3 */}
+      {/* Image – 4:3 */}
       <div
         className="relative w-full overflow-hidden"
         style={{ aspectRatio: "4 / 3", background: "#0a0a10" }}

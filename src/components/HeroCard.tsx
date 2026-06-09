@@ -7,8 +7,8 @@ import avatarUrl from "@/assets/avatar.jpg";
 
 /**
  * Hero-секция:
- * - без `title` (главная) — две колонки: лево copy+CTA, право — SVG-нейросеть, снизу карточки исследований
- * - с `title` (страницы типа /about) — заголовок-имя 36px, подзаголовок 18px, дети (MetaGrid и т.п.)
+ * - без `title` (главная) – две колонки: лево copy+CTA, право – SVG-нейросеть, снизу карточки исследований
+ * - с `title` (страницы типа /about) – заголовок-имя 36px, подзаголовок 18px, дети (MetaGrid и т.п.)
  *
  * Контакты/соцсети убраны (они только в /about и footer).
  */
@@ -86,7 +86,7 @@ export function HeroCard({
     );
   }
 
-  // Default home hero — фото слева, имя + описание + контакты справа
+  // Default home hero – фото слева, имя + описание + контакты справа
   return (
     <motion.section
       initial={{ opacity: 0, y: 16 }}
@@ -132,7 +132,7 @@ export function HeroCard({
           Андрей Майнгардт
         </motion.p>
 
-        {/* H1 — main positioning */}
+        {/* H1 – main positioning */}
         <motion.h1
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}

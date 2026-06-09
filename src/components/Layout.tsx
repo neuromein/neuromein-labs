@@ -5,7 +5,7 @@ import { Footer } from "./Footer";
 export function Layout({ children }: { children: ReactNode }) {
   return (
     <div className="relative min-h-screen flex flex-col bg-bg overflow-hidden">
-      {/* Ambient blue glow — top */}
+      {/* Ambient blue glow – top */}
       <div
         aria-hidden
         className="pointer-events-none absolute -top-40 left-1/2 -translate-x-1/2 w-[1200px] h-[700px] rounded-full opacity-60 z-0"
@@ -15,7 +15,7 @@ export function Layout({ children }: { children: ReactNode }) {
           filter: "blur(80px)",
         }}
       />
-      {/* Ambient blue glow — bottom (как на madiyour.com) */}
+      {/* Ambient blue glow – bottom (как на madiyour.com) */}
       <div
         aria-hidden
         className="pointer-events-none absolute bottom-0 left-1/2 -translate-x-1/2 w-[1400px] h-[600px] rounded-full opacity-70 z-0"

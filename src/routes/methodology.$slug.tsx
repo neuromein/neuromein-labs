@@ -12,8 +12,8 @@ export const Route = createFileRoute("/methodology/$slug")({
   head: ({ loaderData }) => {
     const m = loaderData?.item;
     if (!m)
-      return { meta: [{ title: "Методология — NEUROMEIN" }] };
-    const title = `${m.title} — NEUROMEIN`;
+      return { meta: [{ title: "Методология – NEUROMEIN" }] };
+    const title = `${m.title} – NEUROMEIN`;
     return {
       meta: [
         { title },
@@ -35,7 +35,7 @@ export const Route = createFileRoute("/methodology/$slug")({
           children: JSON.stringify({
             "@context": "https://schema.org",
             "@type": "ScholarlyArticle",
-            headline: `${m.title} — модель ИИ-замещения рабочих мест`,
+            headline: `${m.title} – модель ИИ-замещения рабочих мест`,
             author: {
               "@type": "Person",
               name: "Андрей Майнгардт",

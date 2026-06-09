@@ -74,7 +74,7 @@ export function PillCta({
   );
 }
 
-/* Ghost pill button — used for secondary actions */
+/* Ghost pill button – used for secondary actions */
 export function GhostPill({
   children,
   href,
@@ -180,7 +180,7 @@ export function Pill({
   );
 }
 
-/* Page header — huge typographic display in Daniel Santos style */
+/* Page header – huge typographic display in Daniel Santos style */
 export function PageHeader({
   eyebrow,
   title,

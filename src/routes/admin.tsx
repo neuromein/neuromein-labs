@@ -8,7 +8,7 @@ import { toast } from "sonner";
 export const Route = createFileRoute("/admin")({
   head: () => ({
     meta: [
-      { title: "Личный кабинет — NEUROMEIN" },
+      { title: "Личный кабинет – NEUROMEIN" },
       { name: "robots", content: "noindex, nofollow" },
     ],
   }),

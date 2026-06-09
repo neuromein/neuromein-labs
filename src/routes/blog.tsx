@@ -12,13 +12,13 @@ import { supabase } from "@/integrations/supabase/client";
 export const Route = createFileRoute("/blog")({
   head: () => ({
     meta: [
-      { title: "Публикации — NEUROMEIN | Андрей Майнгардт" },
+      { title: "Публикации – NEUROMEIN | Андрей Майнгардт" },
       {
         name: "description",
         content:
           "Аналитические заметки, разборы событий и мнения Андрея Майнгардта о рынке ИИ и трансформации работы.",
       },
-      { property: "og:title", content: "Публикации — NEUROMEIN" },
+      { property: "og:title", content: "Публикации – NEUROMEIN" },
       {
         property: "og:description",
         content: "Аналитические заметки и разборы об ИИ и рынке труда.",

@@ -9,13 +9,13 @@ import { RESEARCH } from "@/lib/site";
 export const Route = createFileRoute("/research/")({
   head: () => ({
     meta: [
-      { title: "Исследования — NEUROMEIN | Андрей Майнгардт" },
+      { title: "Исследования – NEUROMEIN | Андрей Майнгардт" },
       {
         name: "description",
         content:
           "Крупные аналитические работы Андрея Майнгардта о влиянии ИИ на рынок труда.",
       },
-      { property: "og:title", content: "Исследования — NEUROMEIN" },
+      { property: "og:title", content: "Исследования – NEUROMEIN" },
       {
         property: "og:description",
         content: "Аналитические исследования о влиянии ИИ на рынок труда и экономику.",
@@ -36,7 +36,7 @@ function ResearchListPage() {
         <PageHero
           eyebrow="Аналитика"
           title="Исследования"
-          description="Крупные аналитические работы о влиянии ИИ на рынок труда и экономику. Каждое — с проверяемыми прогнозами и открытой методологией."
+          description="Крупные аналитические работы о влиянии ИИ на рынок труда и экономику. Каждое – с проверяемыми прогнозами и открытой методологией."
         />
 
         <div className="mt-6 space-y-4">
