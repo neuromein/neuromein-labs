@@ -6,7 +6,7 @@ import { Reveal } from "@/components/Reveal";
 export const Route = createFileRoute("/about")({
   head: () => ({
     meta: [
-      { title: "Андрей Майнгардт — эксперт по влиянию ИИ на рынок труда | NEUROMEIN" },
+      { title: "Андрей Майнгардт — об авторе и проекте NEUROMEIN" },
       {
         name: "description",
         content:

@@ -343,7 +343,7 @@ export function PredictionsTimeline({ predictions }: { predictions: Prediction[]
     <section aria-labelledby="timeline-heading" className="mt-4">
       {/* Заголовок */}
       <header className="max-w-4xl pt-4 sm:pt-8">
-        <h2
+        <h1
           id="timeline-heading"
           className="text-[30px] sm:text-[40px] md:text-[52px] lg:text-[64px] font-medium leading-[1.02] sm:leading-[0.98] tracking-[-0.035em] text-text-primary text-balance"
         >
@@ -354,7 +354,7 @@ export function PredictionsTimeline({ predictions }: { predictions: Prediction[]
           >
             и их проверка
           </span>
-        </h2>
+        </h1>
         <p className="mt-5 sm:mt-6 text-[14.5px] sm:text-[15px] md:text-[17px] text-text-secondary leading-[1.55] max-w-[640px]">
           Шкала на основе исследований «Тихая замена» и «ИИ в 2025 и прогнозы на 2026 год». Каждый прогноз привязан к кварталу и сопровождается уровнем уверенности
         </p>
