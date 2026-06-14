@@ -107,7 +107,7 @@ export function HeroCard({
         >
           {/* Avatar */}
           <div
-            className="relative h-14 w-14 sm:h-16 sm:w-16 rounded-[14px] overflow-hidden shrink-0"
+            className="relative h-[73px] w-[73px] sm:h-[83px] sm:w-[83px] rounded-[14px] overflow-hidden shrink-0"
             style={{
               border: "1px solid rgba(255,255,255,0.10)",
               boxShadow:
@@ -121,8 +121,8 @@ export function HeroCard({
               loading="eager"
               decoding="async"
               fetchPriority="high"
-              width={64}
-              height={64}
+              width={83}
+              height={83}
             />
           </div>
 
