@@ -149,10 +149,10 @@ export function HeroCard({
           transition={{ delay: 0.15, duration: 0.6, ease }}
           style={{
             marginTop: 20,
-            fontSize: "clamp(2.25rem, 3.6vw, 3.25rem)",
-            fontWeight: 800,
+            fontSize: "clamp(2.15rem, 3.4vw, 3.1rem)",
+            fontWeight: 650,
             lineHeight: 1.08,
-            letterSpacing: "-0.025em",
+            letterSpacing: "-0.02em",
             color: "#f0f0f5",
             maxWidth: 860,
             textWrap: "balance",
