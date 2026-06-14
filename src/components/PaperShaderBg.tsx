@@ -43,11 +43,22 @@ export function PaperShaderBg() {
     let inside = false;
     let raf = 0;
 
+    // Listen on window so the shader reacts everywhere over the hero,
+    // even when the cursor is above the text column (which has its own
+    // pointer-events). Без этого реакция была только по углам блока.
     const onMove = (e: PointerEvent) => {
       const r = wrap.getBoundingClientRect();
-      mx = (e.clientX - r.left) / r.width;
-      my = (e.clientY - r.top) / r.height;
-      inside = true;
+      const x = (e.clientX - r.left) / r.width;
+      const y = (e.clientY - r.top) / r.height;
+      if (x >= 0 && x <= 1 && y >= 0 && y <= 1) {
+        mx = x;
+        my = y;
+        inside = true;
+      } else {
+        inside = false;
+        mx = 0.5;
+        my = 0.5;
+      }
     };
     const onLeave = () => {
       inside = false;
@@ -56,32 +67,33 @@ export function PaperShaderBg() {
     };
 
     const tick = () => {
-      cx += (mx - cx) * 0.06;
-      cy += (my - cy) * 0.06;
+      // более медленный lerp – плавнее следует за курсором
+      cx += (mx - cx) * 0.025;
+      cy += (my - cy) * 0.025;
 
       const dx = (cx - 0.5) * 2; // -1..1
       const dy = (cy - 0.5) * 2;
 
       setShaderState({
-        offsetX: dx * 0.6,
-        offsetY: dy * 0.6,
-        scale: 1 + Math.hypot(dx, dy) * 0.35,
-        rotation: dx * 25,
-        speed: inside ? 1.4 : 0.6,
-        pxSize: inside ? 2.0 : 2.4,
+        offsetX: dx * 0.45,
+        offsetY: dy * 0.45,
+        scale: 1 + Math.hypot(dx, dy) * 0.2,
+        rotation: dx * 12,
+        speed: inside ? 0.45 : 0.25,
+        pxSize: inside ? 2.2 : 2.4,
       });
 
       raf = requestAnimationFrame(tick);
     };
 
-    wrap.addEventListener("pointermove", onMove);
-    wrap.addEventListener("pointerleave", onLeave);
+    window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("pointerleave", onLeave);
     raf = requestAnimationFrame(tick);
 
     return () => {
       cancelAnimationFrame(raf);
-      wrap.removeEventListener("pointermove", onMove);
-      wrap.removeEventListener("pointerleave", onLeave);
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointerleave", onLeave);
     };
   }, []);
 
