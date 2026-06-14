@@ -129,7 +129,7 @@ export function HeroCard({
           {/* Name */}
           <div
             style={{
-              color: "rgba(255,255,255,0.70)",
+              color: "rgba(255,255,255,0.75)",
               fontSize: 13,
               fontWeight: 600,
               letterSpacing: "0.13em",
