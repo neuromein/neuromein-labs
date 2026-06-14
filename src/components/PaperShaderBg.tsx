@@ -67,9 +67,9 @@ export function PaperShaderBg() {
     };
 
     const tick = () => {
-      // более медленный lerp – плавнее следует за курсором
-      cx += (mx - cx) * 0.025;
-      cy += (my - cy) * 0.025;
+      // ещё более плавный lerp – следует за курсором мягче
+      cx += (mx - cx) * 0.018;
+      cy += (my - cy) * 0.018;
 
       const dx = (cx - 0.5) * 2; // -1..1
       const dy = (cy - 0.5) * 2;
@@ -79,7 +79,7 @@ export function PaperShaderBg() {
         offsetY: dy * 0.45,
         scale: 1 + Math.hypot(dx, dy) * 0.2,
         rotation: dx * 12,
-        speed: inside ? 0.45 : 0.25,
+        speed: 0.25,
         pxSize: inside ? 2.2 : 2.4,
       });
 
