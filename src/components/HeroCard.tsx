@@ -131,10 +131,11 @@ export function HeroCard({
             style={{
               color: "rgba(255,255,255,0.70)",
               fontSize: 15,
-              fontWeight: 600,
+              fontWeight: 700,
               letterSpacing: "0.13em",
               textTransform: "uppercase",
               lineHeight: 1.35,
+              fontFamily: "'Manrope', sans-serif",
             }}
           >
             <div>Андрей</div>
@@ -149,13 +150,14 @@ export function HeroCard({
           transition={{ delay: 0.15, duration: 0.6, ease }}
           style={{
             marginTop: 20,
-            fontSize: "clamp(2.5rem, 4.5vw, 4rem)",
-            fontWeight: 600,
+            fontSize: "clamp(2.25rem, 3.6vw, 3.25rem)",
+            fontWeight: 800,
             lineHeight: 1.08,
-            letterSpacing: "-0.02em",
+            letterSpacing: "-0.025em",
             color: "#f0f0f5",
-            maxWidth: 780,
+            maxWidth: 860,
             textWrap: "balance",
+            fontFamily: "'Manrope', sans-serif",
           }}
         >
           Эксперт по влиянию ИИ на бизнес-процессы и рынок труда
@@ -173,6 +175,8 @@ export function HeroCard({
             lineHeight: 1.4,
             fontWeight: 400,
             color: "rgba(255,255,255,0.80)",
+            textWrap: "balance",
+            fontFamily: "'Inter', sans-serif",
           }}
         >
           Исследую, какие задачи, профессии и процессы меняет ИИ и показываю, к чему
@@ -186,7 +190,7 @@ export function HeroCard({
           transition={{ delay: 0.36, duration: 0.6, ease }}
           style={{ marginTop: 28 }}
         >
-          <div style={{ fontSize: 15, color: "rgba(255,255,255,0.55)" }}>
+          <div style={{ fontSize: 15, color: "rgba(255,255,255,0.55)", fontFamily: "'Inter', sans-serif" }}>
             Автор исследования «Тихая замена»
             <span style={{ color: "var(--primary)", margin: "0 0.5em" }}>·</span>
             Director of Strategy, WMT AI
