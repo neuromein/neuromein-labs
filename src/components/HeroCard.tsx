@@ -132,13 +132,12 @@ export function HeroCard({
               color: "rgba(255,255,255,0.75)",
               fontSize: 18,
               fontWeight: 600,
-              letterSpacing: "0.13em",
-              textTransform: "uppercase",
+              letterSpacing: "0.04em",
               lineHeight: 1.2,
               fontFamily: "'Manrope', sans-serif",
             }}
           >
-            МАЙНГАРДТ АНДРЕЙ
+            Майнгардт Андрей
           </div>
         </motion.div>
 
