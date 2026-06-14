@@ -103,7 +103,7 @@ export function HeroCard({
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.6, ease }}
-          className="flex flex-col items-start gap-2"
+          className="flex items-center gap-3.5"
         >
           {/* Avatar */}
           <div
@@ -130,7 +130,7 @@ export function HeroCard({
           <div
             style={{
               color: "rgba(255,255,255,0.75)",
-              fontSize: 18,
+              fontSize: 22,
               fontWeight: 600,
               letterSpacing: "0.13em",
               textTransform: "uppercase",
