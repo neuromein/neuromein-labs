@@ -103,15 +103,15 @@ export function HeroCard({
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.6, ease }}
-          className="flex items-center gap-5"
+          className="flex items-center gap-3.5"
         >
           {/* Avatar */}
           <div
-            className="relative h-[88px] w-[88px] sm:h-[96px] sm:w-[96px] rounded-[18px] overflow-hidden shrink-0"
+            className="relative h-14 w-14 sm:h-16 sm:w-16 rounded-[14px] overflow-hidden shrink-0"
             style={{
               border: "1px solid rgba(255,255,255,0.10)",
               boxShadow:
-                "0 12px 30px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06)",
+                "0 8px 20px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255,255,255,0.06)",
             }}
           >
             <img
@@ -121,8 +121,8 @@ export function HeroCard({
               loading="eager"
               decoding="async"
               fetchPriority="high"
-              width={96}
-              height={96}
+              width={64}
+              height={64}
             />
           </div>
 
@@ -130,16 +130,15 @@ export function HeroCard({
           <div
             style={{
               color: "rgba(255,255,255,0.70)",
-              fontSize: 15,
-              fontWeight: 700,
+              fontSize: 13,
+              fontWeight: 600,
               letterSpacing: "0.13em",
               textTransform: "uppercase",
-              lineHeight: 1.35,
+              lineHeight: 1.2,
               fontFamily: "'Manrope', sans-serif",
             }}
           >
-            <div>Андрей</div>
-            <div>Майнгардт</div>
+            Андрей Майнгардт
           </div>
         </motion.div>
 
@@ -150,10 +149,10 @@ export function HeroCard({
           transition={{ delay: 0.15, duration: 0.6, ease }}
           style={{
             marginTop: 20,
-            fontSize: "clamp(2.25rem, 3.6vw, 3.25rem)",
-            fontWeight: 800,
+            fontSize: "clamp(2.15rem, 3.4vw, 3.1rem)",
+            fontWeight: 650,
             lineHeight: 1.08,
-            letterSpacing: "-0.025em",
+            letterSpacing: "-0.02em",
             color: "#f0f0f5",
             maxWidth: 860,
             textWrap: "balance",
