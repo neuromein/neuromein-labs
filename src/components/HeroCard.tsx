@@ -92,11 +92,11 @@ export function HeroCard({
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease }}
-      className="relative overflow-hidden rounded-[28px] border-[0.5px] border-border"
+      className="relative overflow-hidden min-h-[88vh] flex items-center"
     >
       <PaperShaderBg />
 
-      <div className="relative z-10 p-7 sm:p-10 lg:p-14 pointer-events-auto">
+      <div className="relative z-10 w-full max-w-[1320px] mx-auto px-6 sm:px-10 lg:px-14 py-16 sm:py-20 lg:py-24 pointer-events-auto">
         {/* Avatar */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
@@ -121,13 +121,19 @@ export function HeroCard({
           />
         </motion.div>
 
-        {/* Name label */}
+        {/* Name eyebrow */}
         <motion.p
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.6, ease }}
-          className="mt-7 text-[20px] sm:text-[22px] font-medium tracking-[-0.01em]"
-          style={{ color: "#9a9aaa" }}
+          className="mt-6"
+          style={{
+            color: "#9a9aaa",
+            fontSize: "clamp(13px, 1.05vw, 15px)",
+            fontWeight: 500,
+            letterSpacing: "0.1em",
+            textTransform: "uppercase",
+          }}
         >
           Андрей Майнгардт
         </motion.p>
@@ -137,11 +143,13 @@ export function HeroCard({
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15, duration: 0.6, ease }}
-          className="mt-2 font-medium tracking-[-0.025em] max-w-[18ch]"
+          className="mt-3 font-medium max-w-[22ch]"
           style={{
-            fontSize: "clamp(36px, 5.5vw, 56px)",
-            lineHeight: 1.05,
+            fontSize: "clamp(32px, 4.4vw, 48px)",
+            lineHeight: 1.1,
+            letterSpacing: "-0.02em",
             color: "#f0f0f5",
+            textWrap: "balance",
           }}
         >
           Эксперт по влиянию ИИ на бизнес-процессы и рынок труда
@@ -149,7 +157,7 @@ export function HeroCard({
 
         {/* Description */}
         <p
-          className="mt-6 max-w-[640px] text-2xl"
+          className="mt-5 max-w-[640px] text-xl sm:text-2xl"
           style={{
             lineHeight: 1.45,
             color: "#d8d8e0",
@@ -165,7 +173,7 @@ export function HeroCard({
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.36, duration: 0.6, ease }}
-          className="mt-5"
+          className="mt-7"
         >
           <div
             className="text-[15px] sm:text-[16px]"
@@ -180,7 +188,7 @@ export function HeroCard({
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.44, duration: 0.6, ease }}
-          className="mt-9 flex flex-wrap items-center gap-2.5"
+          className="mt-8 flex flex-wrap items-center gap-2.5"
         >
           <SocialIconLink href={`mailto:${SITE.email}`} label={SITE.email}>
             <MailIcon />

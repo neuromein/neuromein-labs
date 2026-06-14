@@ -88,7 +88,7 @@ export function PaperShaderBg() {
   // Маски: на мобильном shader снизу (текст сверху), на десктопе – справа
   const shaderMask = isMobile
     ? "radial-gradient(ellipse 110% 60% at 50% 100%, black 25%, rgba(0,0,0,0.6) 55%, transparent 85%)"
-    : "radial-gradient(ellipse 60% 95% at 92% 50%, black 28%, rgba(0,0,0,0.7) 58%, transparent 88%)";
+    : "radial-gradient(ellipse 85% 130% at 100% 20%, black 45%, rgba(0,0,0,0.8) 70%, transparent 100%)";
 
   return (
     <div ref={wrapRef} className="absolute inset-0 z-0 overflow-hidden" aria-hidden>
@@ -130,7 +130,7 @@ export function PaperShaderBg() {
         className="absolute inset-0 pointer-events-none hidden sm:block"
         style={{
           background:
-            "linear-gradient(90deg, oklch(0.10 0.02 260 / 0.98) 0%, oklch(0.10 0.02 260 / 0.85) 30%, oklch(0.10 0.02 260 / 0.4) 50%, transparent 65%)",
+            "linear-gradient(90deg, oklch(0.10 0.02 260 / 0.98) 0%, oklch(0.10 0.02 260 / 0.88) 35%, oklch(0.10 0.02 260 / 0.45) 55%, transparent 75%)",
         }}
       />
       {/* Mobile: затемняем верхнюю часть */}

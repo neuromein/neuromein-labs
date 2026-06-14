@@ -81,10 +81,12 @@ function IndexPage() {
   const { speaking } = Route.useLoaderData();
   return (
     <Layout>
-      <div className="max-w-[1320px] mx-auto">
-        {/* HERO */}
+      {/* HERO – full-bleed, прорывается через паддинги <main> и уезжает под header */}
+      <div className="relative left-1/2 right-1/2 -mx-[50vw] w-screen -mt-24 lg:-mt-28">
         <HeroCard />
+      </div>
 
+      <div className="max-w-[1320px] mx-auto">
         {/* RESEARCH – две карточки в ряд, 80px от hero */}
         <section style={{ paddingTop: 80 }}>
           <div className="flex items-end justify-between gap-4 mb-8">
