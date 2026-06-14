@@ -138,7 +138,7 @@ export function HeroCard({
               fontFamily: "'Manrope', sans-serif",
             }}
           >
-            Андрей Майнгардт
+            МАЙНГАРДТ АНДРЕЙ
           </div>
         </motion.div>
 
