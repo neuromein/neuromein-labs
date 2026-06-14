@@ -98,46 +98,49 @@ export function HeroCard({
 
       <div className="relative z-10 w-full max-w-[1320px] mx-auto px-6 sm:px-10 lg:px-14 pointer-events-auto">
         <div className="max-w-[620px]">
-        {/* Avatar */}
+        {/* Avatar + Name row */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.6, ease }}
-          className="relative h-[88px] w-[88px] sm:h-[96px] sm:w-[96px] rounded-[18px] overflow-hidden"
-          style={{
-            border: "1px solid rgba(255,255,255,0.10)",
-            boxShadow:
-              "0 12px 30px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06)",
-          }}
+          className="flex items-center gap-5"
         >
-          <img
-            src={avatarUrl}
-            alt="Андрей Майнгардт"
-            className="h-full w-full object-cover"
-            loading="eager"
-            decoding="async"
-            fetchPriority="high"
-            width={96}
-            height={96}
-          />
-        </motion.div>
+          {/* Avatar */}
+          <div
+            className="relative h-[88px] w-[88px] sm:h-[96px] sm:w-[96px] rounded-[18px] overflow-hidden shrink-0"
+            style={{
+              border: "1px solid rgba(255,255,255,0.10)",
+              boxShadow:
+                "0 12px 30px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06)",
+            }}
+          >
+            <img
+              src={avatarUrl}
+              alt="Андрей Майнгардт"
+              className="h-full w-full object-cover"
+              loading="eager"
+              decoding="async"
+              fetchPriority="high"
+              width={96}
+              height={96}
+            />
+          </div>
 
-        {/* Name eyebrow */}
-        <motion.p
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.1, duration: 0.6, ease }}
-          style={{
-            marginTop: 24,
-            color: "rgba(255,255,255,0.70)",
-            fontSize: 15,
-            fontWeight: 600,
-            letterSpacing: "0.13em",
-            textTransform: "uppercase",
-          }}
-        >
-          Андрей Майнгардт
-        </motion.p>
+          {/* Name */}
+          <div
+            style={{
+              color: "rgba(255,255,255,0.70)",
+              fontSize: 15,
+              fontWeight: 600,
+              letterSpacing: "0.13em",
+              textTransform: "uppercase",
+              lineHeight: 1.35,
+            }}
+          >
+            <div>Андрей</div>
+            <div>Майнгардт</div>
+          </div>
+        </motion.div>
 
         {/* H1 – main positioning */}
         <motion.h1
@@ -159,7 +162,10 @@ export function HeroCard({
         </motion.h1>
 
         {/* Description */}
-        <p
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.22, duration: 0.6, ease }}
           style={{
             marginTop: 24,
             maxWidth: 680,
@@ -169,9 +175,9 @@ export function HeroCard({
             color: "rgba(255,255,255,0.80)",
           }}
         >
-          Исследую влияние ИИ на бизнес и рынок труда и показываю, к чему
+          Исследую, какие задачи, профессии и процессы меняет ИИ и показываю, к чему
           готовиться бизнесу и людям
-        </p>
+        </motion.p>
 
         {/* Role */}
         <motion.div
