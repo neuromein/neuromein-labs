@@ -129,7 +129,7 @@ export function HeroCard({
           {/* Name */}
           <div
             style={{
-              color: "rgba(255,255,255,0.70)",
+              color: "rgba(255,255,255,0.75)",
               fontSize: 13,
               fontWeight: 600,
               letterSpacing: "0.13em",
@@ -150,7 +150,7 @@ export function HeroCard({
           style={{
             marginTop: 20,
             fontSize: "clamp(2.15rem, 3.4vw, 3.1rem)",
-            fontWeight: 650,
+            fontWeight: 600,
             lineHeight: 1.08,
             letterSpacing: "-0.02em",
             color: "#f0f0f5",
@@ -170,10 +170,10 @@ export function HeroCard({
           style={{
             marginTop: 24,
             maxWidth: 680,
-            fontSize: 21,
+            fontSize: 22,
             lineHeight: 1.4,
             fontWeight: 400,
-            color: "rgba(255,255,255,0.80)",
+            color: "rgba(255,255,255,0.82)",
             textWrap: "balance",
             fontFamily: "'Inter', sans-serif",
           }}
