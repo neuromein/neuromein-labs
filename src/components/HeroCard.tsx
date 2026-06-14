@@ -204,15 +204,14 @@ export function HeroCard({
           className="flex flex-wrap items-center gap-2.5"
           style={{ marginTop: 32 }}
         >
-          <SocialIconLink href={`mailto:${SITE.email}`} label={SITE.email}>
-            <MailIcon />
-          </SocialIconLink>
-
           <SocialIconLink href={SITE.telegram} label="Telegram">
             <TelegramIcon />
           </SocialIconLink>
           <SocialIconLink href={SITE.linkedin} label="LinkedIn">
             <LinkedInIcon />
+          </SocialIconLink>
+          <SocialIconLink href={`mailto:${SITE.email}`} label={SITE.email}>
+            <MailIcon />
           </SocialIconLink>
         </motion.div>
 
