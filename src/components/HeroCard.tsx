@@ -170,10 +170,10 @@ export function HeroCard({
           style={{
             marginTop: 24,
             maxWidth: 680,
-            fontSize: 21,
+            fontSize: 22,
             lineHeight: 1.4,
             fontWeight: 400,
-            color: "rgba(255,255,255,0.80)",
+            color: "rgba(255,255,255,0.82)",
             textWrap: "balance",
             fontFamily: "'Inter', sans-serif",
           }}
