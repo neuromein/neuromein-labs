@@ -3,7 +3,7 @@ import { motion } from "framer-motion";
 import { InteractiveNeuralBg } from "./InteractiveNeuralBg";
 import { PaperShaderBg } from "./PaperShaderBg";
 import { SITE } from "@/lib/site";
-
+import avatarUrl from "@/assets/avatar.jpg";
 
 /**
  * Hero-секция:
@@ -86,108 +86,126 @@ export function HeroCard({
     );
   }
 
-  // Default home hero – текст слева, фон-волна справа
+  // Default home hero – фото слева, имя + описание + контакты справа
   return (
     <motion.section
       initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.7, ease }}
-      className="relative overflow-hidden min-h-[88vh] flex items-start"
+      className="relative overflow-hidden min-h-[88vh] flex items-center"
     >
       <PaperShaderBg />
 
-      <div className="relative z-10 w-full px-6 sm:px-10 lg:px-14 pt-[18vh] lg:pt-[20vh] pb-16 pointer-events-auto">
-        <div className="max-w-[640px]">
-          {/* Name eyebrow */}
-          <motion.p
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.1, duration: 0.6, ease }}
-            style={{
-              color: "#b8b8c8",
-              fontSize: 15,
-              fontWeight: 600,
-              letterSpacing: "0.15em",
-              textTransform: "uppercase",
-            }}
+      <div className="relative z-10 w-full max-w-[1320px] mx-auto px-6 sm:px-10 lg:px-14 py-16 sm:py-20 lg:py-24 pointer-events-auto">
+        {/* Avatar */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.6, ease }}
+          className="relative h-[88px] w-[88px] sm:h-[96px] sm:w-[96px] rounded-[18px] overflow-hidden"
+          style={{
+            border: "1px solid rgba(255,255,255,0.10)",
+            boxShadow:
+              "0 12px 30px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.06)",
+          }}
+        >
+          <img
+            src={avatarUrl}
+            alt="Андрей Майнгардт"
+            className="h-full w-full object-cover"
+            loading="eager"
+            decoding="async"
+            fetchPriority="high"
+            width={96}
+            height={96}
+          />
+        </motion.div>
+
+        {/* Name eyebrow */}
+        <motion.p
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.1, duration: 0.6, ease }}
+          className="mt-6"
+          style={{
+            color: "#9a9aaa",
+            fontSize: "clamp(13px, 1.05vw, 15px)",
+            fontWeight: 500,
+            letterSpacing: "0.1em",
+            textTransform: "uppercase",
+          }}
+        >
+          Андрей Майнгардт
+        </motion.p>
+
+        {/* H1 – main positioning */}
+        <motion.h1
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.15, duration: 0.6, ease }}
+          className="mt-3 font-medium max-w-[22ch]"
+          style={{
+            fontSize: "clamp(32px, 4.4vw, 48px)",
+            lineHeight: 1.1,
+            letterSpacing: "-0.02em",
+            color: "#f0f0f5",
+            textWrap: "balance",
+          }}
+        >
+          Эксперт по влиянию ИИ на бизнес-процессы и рынок труда
+        </motion.h1>
+
+        {/* Description */}
+        <p
+          className="mt-5 max-w-[640px] text-xl sm:text-2xl"
+          style={{
+            lineHeight: 1.45,
+            color: "#d8d8e0",
+            fontWeight: 400,
+          }}
+        >
+          Исследую влияние ИИ на бизнес и рынок труда и показываю, к чему
+          готовиться бизнесу и людям
+        </p>
+
+        {/* Role */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.36, duration: 0.6, ease }}
+          className="mt-7"
+        >
+          <div
+            className="text-[15px] sm:text-[16px]"
+            style={{ color: "#9a9aaa" }}
           >
-            Андрей Майнгардт
-          </motion.p>
+            Автор исследования «Тихая замена» · Director of Strategy, WMT AI
+          </div>
+        </motion.div>
 
-          {/* H1 – main positioning */}
-          <motion.h1
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.15, duration: 0.6, ease }}
-            className="font-bold"
-            style={{
-              fontSize: "clamp(2.4rem, 4.6vw, 3.5rem)",
-              lineHeight: 1.08,
-              letterSpacing: "-0.02em",
-              color: "#f0f0f5",
-              textWrap: "balance",
-              maxWidth: 660,
-              marginTop: 18,
-            }}
-          >
-            Эксперт по влиянию ИИ на бизнес-процессы и рынок труда
-          </motion.h1>
+        {/* Email + socials */}
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.44, duration: 0.6, ease }}
+          className="mt-8 flex flex-wrap items-center gap-2.5"
+        >
+          <SocialIconLink href={`mailto:${SITE.email}`} label={SITE.email}>
+            <MailIcon />
+          </SocialIconLink>
 
-          {/* Description */}
-          <p
-            style={{
-              marginTop: 24,
-              maxWidth: 560,
-              fontSize: "clamp(18px, 1.3vw, 20px)",
-              lineHeight: 1.45,
-              color: "rgba(240,240,245,0.72)",
-              fontWeight: 400,
-            }}
-          >
-            Исследую влияние ИИ на бизнес и рынок труда и показываю, к чему
-            готовиться бизнесу и людям
-          </p>
+          <SocialIconLink href={SITE.telegram} label="Telegram">
+            <TelegramIcon />
+          </SocialIconLink>
+          <SocialIconLink href={SITE.linkedin} label="LinkedIn">
+            <LinkedInIcon />
+          </SocialIconLink>
+        </motion.div>
 
-          {/* Role */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.36, duration: 0.6, ease }}
-            style={{ marginTop: 28 }}
-          >
-            <div
-              style={{ fontSize: 15, color: "rgba(240,240,245,0.58)" }}
-            >
-              Автор исследования «Тихая замена» · Director of Strategy, WMT AI
-            </div>
-          </motion.div>
-
-          {/* Email + socials */}
-          <motion.div
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.44, duration: 0.6, ease }}
-            className="flex flex-wrap items-center gap-2.5"
-            style={{ marginTop: 34 }}
-          >
-            <SocialIconLink href={`mailto:${SITE.email}`} label={SITE.email}>
-              <MailIcon />
-            </SocialIconLink>
-
-            <SocialIconLink href={SITE.telegram} label="Telegram">
-              <TelegramIcon />
-            </SocialIconLink>
-            <SocialIconLink href={SITE.linkedin} label="LinkedIn">
-              <LinkedInIcon />
-            </SocialIconLink>
-          </motion.div>
-
-          {children}
-        </div>
+        {children}
       </div>
     </motion.section>
   );
-
 }
 
 function SocialIconWrap({ children }: { children: ReactNode }) {
