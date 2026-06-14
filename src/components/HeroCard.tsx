@@ -150,7 +150,7 @@ export function HeroCard({
           style={{
             marginTop: 20,
             fontSize: "clamp(2.15rem, 3.4vw, 3.1rem)",
-            fontWeight: 650,
+            fontWeight: 600,
             lineHeight: 1.08,
             letterSpacing: "-0.02em",
             color: "#f0f0f5",
