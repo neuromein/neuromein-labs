@@ -41,12 +41,6 @@ export function PaperShaderBg() {
     let cx = 0.5;
     let cy = 0.5;
     let inside = false;
-    let currentOffsetX = 0;
-    let currentOffsetY = 0;
-    let currentScale = 1;
-    let currentRotation = 0;
-    let currentSpeed = 0.25;
-    let currentPxSize = 2.4;
     let raf = 0;
 
     // Listen on window so the shader reacts everywhere over the hero,
@@ -73,33 +67,20 @@ export function PaperShaderBg() {
     };
 
     const tick = () => {
-      // медленный lerp – волна мягко догоняет курсор без резких рывков
-      cx += (mx - cx) * 0.012;
-      cy += (my - cy) * 0.012;
+      // более медленный lerp – плавнее следует за курсором
+      cx += (mx - cx) * 0.025;
+      cy += (my - cy) * 0.025;
 
       const dx = (cx - 0.5) * 2; // -1..1
       const dy = (cy - 0.5) * 2;
-      const targetOffsetX = dx * 0.24;
-      const targetOffsetY = dy * 0.24;
-      const targetScale = 1 + Math.hypot(dx, dy) * 0.08;
-      const targetRotation = dx * 5;
-      const targetSpeed = inside ? 0.28 : 0.18;
-      const targetPxSize = inside ? 2.32 : 2.4;
-
-      currentOffsetX += (targetOffsetX - currentOffsetX) * 0.045;
-      currentOffsetY += (targetOffsetY - currentOffsetY) * 0.045;
-      currentScale += (targetScale - currentScale) * 0.045;
-      currentRotation += (targetRotation - currentRotation) * 0.045;
-      currentSpeed += (targetSpeed - currentSpeed) * 0.025;
-      currentPxSize += (targetPxSize - currentPxSize) * 0.025;
 
       setShaderState({
-        offsetX: currentOffsetX,
-        offsetY: currentOffsetY,
-        scale: currentScale,
-        rotation: currentRotation,
-        speed: currentSpeed,
-        pxSize: currentPxSize,
+        offsetX: dx * 0.45,
+        offsetY: dy * 0.45,
+        scale: 1 + Math.hypot(dx, dy) * 0.2,
+        rotation: dx * 12,
+        speed: inside ? 0.45 : 0.25,
+        pxSize: inside ? 2.2 : 2.4,
       });
 
       raf = requestAnimationFrame(tick);
