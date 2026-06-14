@@ -130,7 +130,7 @@ export function HeroCard({
           <div
             style={{
               color: "rgba(255,255,255,0.75)",
-              fontSize: 13,
+              fontSize: 22,
               fontWeight: 600,
               letterSpacing: "0.13em",
               textTransform: "uppercase",
