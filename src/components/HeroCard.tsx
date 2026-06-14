@@ -96,7 +96,8 @@ export function HeroCard({
     >
       <PaperShaderBg />
 
-      <div className="relative z-10 w-full max-w-[1320px] mx-auto px-6 sm:px-10 lg:px-14 py-16 sm:py-20 lg:py-24 pointer-events-auto">
+      <div className="relative z-10 w-full max-w-[1320px] mx-auto px-6 sm:px-10 lg:px-14 pointer-events-auto">
+        <div className="max-w-[620px]">
         {/* Avatar */}
         <motion.div
           initial={{ opacity: 0, y: 12 }}
@@ -126,12 +127,12 @@ export function HeroCard({
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.1, duration: 0.6, ease }}
-          className="mt-6"
           style={{
-            color: "#9a9aaa",
-            fontSize: "clamp(13px, 1.05vw, 15px)",
-            fontWeight: 500,
-            letterSpacing: "0.1em",
+            marginTop: 24,
+            color: "rgba(255,255,255,0.70)",
+            fontSize: 15,
+            fontWeight: 600,
+            letterSpacing: "0.13em",
             textTransform: "uppercase",
           }}
         >
@@ -143,12 +144,14 @@ export function HeroCard({
           initial={{ opacity: 0, y: 12 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.15, duration: 0.6, ease }}
-          className="mt-3 font-medium max-w-[22ch]"
           style={{
-            fontSize: "clamp(32px, 4.4vw, 48px)",
-            lineHeight: 1.1,
+            marginTop: 20,
+            fontSize: "clamp(2.5rem, 4.5vw, 4rem)",
+            fontWeight: 600,
+            lineHeight: 1.08,
             letterSpacing: "-0.02em",
             color: "#f0f0f5",
+            maxWidth: 780,
             textWrap: "balance",
           }}
         >
@@ -157,11 +160,13 @@ export function HeroCard({
 
         {/* Description */}
         <p
-          className="mt-5 max-w-[640px] text-xl sm:text-2xl"
           style={{
-            lineHeight: 1.45,
-            color: "#d8d8e0",
+            marginTop: 24,
+            maxWidth: 680,
+            fontSize: 21,
+            lineHeight: 1.4,
             fontWeight: 400,
+            color: "rgba(255,255,255,0.80)",
           }}
         >
           Исследую влияние ИИ на бизнес и рынок труда и показываю, к чему
@@ -173,13 +178,12 @@ export function HeroCard({
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.36, duration: 0.6, ease }}
-          className="mt-7"
+          style={{ marginTop: 28 }}
         >
-          <div
-            className="text-[15px] sm:text-[16px]"
-            style={{ color: "#9a9aaa" }}
-          >
-            Автор исследования «Тихая замена» · Director of Strategy, WMT AI
+          <div style={{ fontSize: 15, color: "rgba(255,255,255,0.55)" }}>
+            Автор исследования «Тихая замена»
+            <span style={{ color: "var(--primary)", margin: "0 0.5em" }}>·</span>
+            Director of Strategy, WMT AI
           </div>
         </motion.div>
 
@@ -188,7 +192,8 @@ export function HeroCard({
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.44, duration: 0.6, ease }}
-          className="mt-8 flex flex-wrap items-center gap-2.5"
+          className="flex flex-wrap items-center gap-2.5"
+          style={{ marginTop: 32 }}
         >
           <SocialIconLink href={`mailto:${SITE.email}`} label={SITE.email}>
             <MailIcon />
@@ -203,6 +208,7 @@ export function HeroCard({
         </motion.div>
 
         {children}
+        </div>
       </div>
     </motion.section>
   );
